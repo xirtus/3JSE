@@ -4,7 +4,7 @@
 
 `PLUGIN_ARCHITECTURE.md` names `@3jse/water` and `@3jse/foliage` as official plugins to be built. That was written before checking whether they need to be *built* at all. They mostly don't. The Three.js/WebGPU ecosystem already has individual developers shipping water and vegetation work that is better than what a small core team would produce from scratch in the same timeframe — this document replaces "someday we'll build these" with a concrete policy for wrapping that work instead, plus an in-editor mechanism for pulling in the next one without waiting for a core-team release cycle.
 
-This is `ARCHITECTURE.md` principle 4 ("plugins are first-class") and the build/wrap/adopt framework in `PLUGIN_ARCHITECTURE.md`, made concrete against real repositories instead of a hypothetical table.
+This is `ARCHITECTURE.md` principle 4 ("plugins are first-class") and the build/wrap/adopt framework in `PLUGIN_ARCHITECTURE.md`, made concrete against real repositories instead of a hypothetical table. A third case study extends the same discipline to the adjacent engine itself: Babylon.js — what 3JSE differentiates against, and what its permissively-licensed tooling stack offers as reference.
 
 ## Case study: github.com/owenyuwono
 
@@ -34,6 +34,75 @@ A second, differently-shaped case, worth documenting precisely because it *doesn
 
 The one real commitment this adoption forces, stated plainly: it pins the editor's UI layer to **React**. `ARCHITECTURE.md` and `EDITOR.md` previously left that framework choice open; this is the concrete reason to close it now rather than defer it further — a library this well-matched to the exact problem (built by a team that has already shipped a professional 3D editor's Inspector) is worth the commitment, and Tauri's webview hosting model (`EDITOR.md`) is indifferent to which framework runs inside it.
 
+## Case study: Babylon.js — the adjacent engine
+
+The two case studies above cover small demo repositories and an editor UI library. This one covers the one project actually *adjacent* to 3JSE itself, and it exists for a different reason than either. Babylon.js (Apache-2.0, Microsoft-backed, first released 2013) is the closest thing to 3JSE in the world — a TypeScript, WebGPU-capable engine with a deep tooling stack. That means two jobs: **(1)** pin the differentiation hard enough that 3JSE never drifts into rebuilding Babylon, and **(2)** inventory what to adopt, because well over a decade of permissively-licensed tooling is the best free reference stack in web 3D — ignoring it would violate the same build/wrap/adopt discipline this document exists for.
+
+### What Babylon actually is
+
+Checked against the public repository and docs, not assumed:
+
+| Piece | What it is | License |
+|---|---|---|
+| `@babylonjs/core` + ~30 satellite packages | Monolithic engine; satellites are tightly coupled to core internals | Apache-2.0 |
+| Own renderer | WebGL2 + WebGPU paths maintained in-house, plus Babylon Native (JSI-based native runtime for iOS/Android/desktop) | Apache-2.0 |
+| Playground | Browser REPL with shareable snippet IDs — their community and docs engine | Apache-2.0 |
+| Inspector | Runtime debug overlay: picking, property readout, render stats | Apache-2.0 |
+| Node Material Editor (NME) | Visual shader authoring with frame nodes and previews — materials only, no gameplay logic | Apache-2.0 |
+| glTF sandbox / validator | Asset-checking tooling, environment studio, Draco/KTX2/BasisU handling | Apache-2.0 |
+| Physics plugins | Ammo, Cannon, Havok (WASM), Oimo behind one plugin interface | Apache-2.0 |
+| Scene serialization | Engine-coupled `.babylon` format with its own versioning history | — |
+| Governance | Yearly majors, long deprecation warnings, public breaking-changes policy | — |
+
+### How 3JSE differs — pinned
+
+Babylon is the best renderer the web has. 3JSE is everything a renderer needs around it to become a platform. That is a different layer, not a better renderer — `VISION.md`'s non-goals apply to Babylon exactly as they apply to Unreal:
+
+1. **Platform-first vs engine-first.** Babylon's primary authoring surface is code; its serialization is engine-coupled. 3JSE's primary authoring surface is the editor (`EDITOR.md`), and the runtime is one standalone layer of ten (`ARCHITECTURE.md`).
+2. **One IR, four frontends vs code-only plus materials-only graphs.** NME is excellent at shaders and says nothing about gameplay. 3JSE Graph compiles to the same IR as hand-written TypeScript (`GAMEPLAY_IR.md`, `VISUAL_SCRIPTING.md`), bidirectionally — there is no Babylon equivalent to editing logic in a graph and reading it back as code.
+3. **AI-native vs library.** An agent operating Babylon writes JavaScript against a library, the same posture as raw Three.js. An agent operating 3JSE uses the editor's own command surface and verifies by running the game (`AI_AGENT_API.md`). Nothing about Babylon's architecture prevents this — it simply was not designed in, and retrofitting it onto a monolith is a different project from designing it in from layer 0.
+4. **Project format.** `.babylon` is an engine artifact; 3JSE projects are readable, deterministic, git-diffable text (`PROJECT_FORMAT.md`).
+5. **Renderer posture.** Babylon's financing went into owning the renderer — that is its bet and its moat. 3JSE's bet is the opposite: Three.js as an upgradable dependency, never a fork (`ARCHITECTURE.md` principle 1), fighting everywhere the renderer *isn't*.
+6. **Governance and coupling.** Microsoft-backed MIT vs independent GPL-3.0; a monolith with coupled satellites vs a small core with first-class plugins (`PLUGIN_ARCHITECTURE.md`). Both are coherent; they produce different guarantees.
+
+### What to adopt — the inventory
+
+- **The Playground mechanism (adopt the mechanism, Phase 2).** Snippet IDs in URLs, save-to-gist, docs/forum integration. 3JSE's editor-in-a-tab is already half a playground; shareable project-link mechanics turn "share a project by URL" (`EDITOR.md`) from a convenience into a community engine. No Babylon code is needed — the *mechanism* is the asset.
+- **Inspector → reference for a Viewport debug overlay (reference).** Picking, property readout, and draw-call stats as a dev-time overlay fit the Profiler/Console panel family (`EDITOR.md`) directly; port the pattern, never the code (engine-coupled to `@babylonjs/core`).
+- **NME → the Material/Shader Graph's UX reference (reference).** Frame nodes, preview thumbnails, subgraphs — `RENDERING.md`'s TSL-compiling graph gets its interaction model from NME the way `apate` contributed techniques below: as documented pattern ports, never imported code.
+- **glTF sandbox/validator → the Asset Pipeline's analyze checklist.** Their validation list, environment-studio conventions, and Draco/KTX2/BasisU matrix are a ready-made spec for `ASSET_PIPELINE.md`'s analyze-and-suggest step.
+- **Multi-backend physics plugin API → validation for `@3jse/physics-rapier`.** Ammo/Cannon/Havok/Oimo behind one interface (`PHYSICS.md`) proves the abstraction; when a second backend arrives it slots in the same way — the registry's physics capability notes should flag this for the day that happens.
+- **GPU particle architecture → Phase 5 VFX graph reference.** Compute-based, per-particle data textures — the architecture `ROADMAP.md` Phase 5's VFX graph should adopt rather than CPU-reinvent.
+- **Babylon Native → input for `BUILD_DEPLOYMENT.md`'s mobile/desktop story.** Their JSI shell is the alternative to the Tauri-plus-wrapper route; studying it either validates the current bet or changes it cheaply, before `BUILD_DEPLOYMENT.md`'s wrapper phase locks in.
+- **Serialization and versioning history → free hardening for `PROJECT_FORMAT.md`.** A decade-plus of "what breaks between versions," plus a public yearly-major deprecation policy, are the two inputs `PROJECT_FORMAT.md`'s migration design and `PLUGIN_ARCHITECTURE.md`'s stability guarantees should be checked against.
+- **Docs discipline.** Every Babylon feature page carries a live Playground snippet. Once the Playground mechanism lands, 3JSE docs should require the same — the manual is design-strong and example-thin today.
+
+### Registry entries — a third disposition: reference
+
+The two adoptable codebases (Inspector, NME) are Apache-2.0 and pass the license gate, but Tier A's criterion — "adaptable without forking the upstream project wholesale" — they fail: both are wired into `@babylonjs/core` internals, and extracting them is a rewrite, not a wrap. Tier B's project-level staging is the wrong mechanism for the same reason the Galacean adoption above is: engine-team reference material is not a per-project opt-in decision. The registry therefore gains a third disposition, **`reference`**, formalizing the precedent `minos` and `apate` already set informally:
+
+```json
+{
+  "id": "babylon-nme",
+  "source": "github.com/BabylonJS/Babylon.js",
+  "pinnedCommit": "<reviewed-commit>",
+  "license": { "spdx": "Apache-2.0", "verifiedBy": "human", "verifiedAt": "2026-08-24" },
+  "stack": { "renderer": "webgl2+webgpu", "framework": "babylon.js" },
+  "tier": "reference",
+  "package": null,
+  "capability": "material-graph-ux",
+  "notes": "Reference only. The frame-node/preview/subgraph interaction model is the adoptable core; port patterns into RENDERING.md's Material Graph, never import. Engine-coupled to @babylonjs/core."
+}
+```
+
+Reference entries appear in the Open Source panel with a "Reference" badge and attribution, have no import button, and cannot be staged into a project. They exist so that a human or an agent porting patterns has the pinned, license-verified source attached to the task — the same plan → act → verify loop as a Tier B adaptation, minus the project-local staging. `babylon-inspector` is the second entry; the Playground, glTF-sandbox, physics-API, and serialization rows above are adoption notes, not entries — there is no code to stage.
+
+### What deliberately is not adopted
+
+- **The community Babylon.js Editor.** An editor bolted onto a code-first engine, operating outside the engine's own command surface — precisely the "parallel, drifting authority" failure mode `ARCHITECTURE.md` principle 3 exists to prevent. It is the clearest available evidence that 3JSE's editor-as-GUI-for-the-command-API design is the correct bet, not a stylistic choice.
+- **The monolith's coupling model.** Satellite packages reaching into core internals is how one well-funded team ships fast; it is also the opposite of the plugin boundary `PLUGIN_ARCHITECTURE.md` needs. Adopt their output, not their structure.
+- **The renderer war.** Babylon maintains WebGL2, WebGPU, and a native runtime in-house. 3JSE rides Three.js and its WebGPU migration (`PERFORMANCE.md`'s dual-path posture) — matching Babylon's renderer investment is a non-goal (`VISION.md`), not a gap.
+
 ## Two integration tiers
 
 ### Tier A — Bundled official plugin
@@ -49,6 +118,8 @@ Naming convention: `@3jse/<capability>-<upstream-name>`, so the origin stays vis
 **Criteria**: everything else — license unclear or not yet human-verified, not yet adapted, or simply not curated into Tier A yet. This is the default landing tier for anything new; graduating to Tier A is a deliberate, reviewed step, never automatic.
 
 Tier B packages are **never bundled into the default install or a shipped Publish build**. They are pulled into a specific project on explicit user action inside the editor, staged as visible, attributed reference source, and left for a human or an AI agent to adapt — the Agent API's plan → act → verify loop (`AI_AGENT_API.md`) applies directly here: "adapt the staged `tiamat` fluid sim into a `FluidVolume` component" is a legitimate agent task once a human has confirmed the license is acceptable for the project.
+
+A third disposition, **`reference`**, covers engine-team reference material that is neither a per-project import nor a wrap — defined in the Babylon.js case study above, formalizing the `minos`/`apate` precedent. Reference entries are listed for attribution and attachable to agent tasks, but have no import button and never stage into a project.
 
 ## The in-app fetcher: `@3jse/vendor`
 
@@ -102,3 +173,5 @@ Fetched Tier B source is **never executed in the editor process at import time**
 ## Roadmap placement
 
 `@3jse/vendor` (the fetcher and registry panel) belongs in **Phase 3**, alongside 3JSE Graph's plugin extension points (`ROADMAP.md`) — deliberately earlier than the Tier A plugins it enables. A developer should be able to browse and stage the best available open-source work long before an official core-team adapter exists for it; Tier B staging plus the Agent API's assist loop is what makes that useful even before Phase 5, when `@3jse/water-poseidon`, `@3jse/foliage-gaia`, and `@3jse/flora-dryad` are the actual planned graduations into `@3jse/terrain`/`@3jse/water`/`@3jse/foliage`'s Phase 5 delivery (`ROADMAP.md`).
+
+The Babylon.js reference entries land with the same Phase 3 delivery (the Open Source panel's "Reference" badge exists from day one), and the Playground-mechanism adoption is a Phase 2-adjacent `EDITOR.md` item rather than a registry concern — no code crosses over. The GPU-particle architecture is read when Phase 5's VFX graph starts, not before.
