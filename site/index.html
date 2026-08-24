@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>3JSE — The WebGPU-native Game Engine</title>
+<meta name="description" content="3JSE is the open-source, AI-native game engine for the open web. TypeScript, WebGPU, visual scripting, and an editor that boots instantly — the next Godot, the answer to Unreal for a web-first future.">
+<meta property="og:title" content="3JSE — The WebGPU-native Game Engine">
+<meta property="og:description" content="Built around Three.js. Designed for TypeScript, visual scripting, and AI agents. One game, four frontends.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://3jse.com">
+<meta property="og:image" content="https://3jse.com/assets/img/3jse-banner.svg">
+<link rel="icon" type="image/svg+xml" href="assets/img/3jse-logo.svg">
+<link rel="stylesheet" href="assets/css/site.css">
+<script type="importmap">
+{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}
+</script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="hdr">
+    <a class="brand" href="#top">
+      <span class="brand-mark"><svg viewBox="0 0 512 512" width="26" height="26" aria-hidden="true"><polygon points="256,134 142,200 256,266 370,200" fill="#22d3ee"/><polygon points="142,200 256,266 256,398 142,332" fill="#818cf8"/><polygon points="370,200 256,266 256,398 370,332" fill="#e879f9"/></svg></span>
+      <span class="brand-name">3JSE</span>
+      <span class="brand-tag">the WebGPU-native game engine</span>
+    </a>
+    <nav class="nav">
+      <a href="#about">The Engine</a>
+      <a href="#frontends">Four Frontends</a>
+      <a href="#compare">vs. The Giants</a>
+      <a href="#editor">The Editor</a>
+      <a href="#roadmap">Roadmap</a>
+      <a href="manual.html">Manual</a>
+      <a class="nav-cta" href="https://github.com/xirtus/3JSE" target="_blank" rel="noopener">GitHub ↗</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ============ HERO: live viewport, framed like the editor ============ -->
+<section class="hero" id="top">
+  <div class="hero-frame">
+    <div class="frame-tabs">
+      <span class="win-dots"><i></i><i></i><i></i></span>
+      <span class="tab active">Viewport</span>
+      <span class="tab">3JSE Graph</span>
+      <span class="tab">Code Editor</span>
+      <span class="tab">AI Agent</span>
+      <span class="tab-right">3jse-editor — v0.1.0</span>
+    </div>
+    <div class="frame-viewport">
+      <img class="hero-fallback" src="assets/img/3jse-banner.svg" alt="" aria-hidden="true">
+      <canvas id="hero-canvas"></canvas>
+      <div class="hero-copy">
+        <span class="hero-kicker">Open Source · WebGPU · TypeScript</span>
+        <h1>The <span class="grad">WebGPU-native</span> Game Engine</h1>
+        <p class="hero-sub">Built around Three.js. Designed for TypeScript, visual scripting, and AI agents — one game, four frontends. Boot the editor in a browser tab. Ship your game as a URL.</p>
+        <div class="hero-ctas">
+          <a class="btn btn-primary" href="manual.html">📖 Read the design manual</a>
+          <a class="btn btn-ghost" href="https://github.com/xirtus/3JSE" target="_blank" rel="noopener">★ Star on GitHub</a>
+        </div>
+        <div class="hero-badges">
+          <span><b>WebGPU</b> · Three.js</span>
+          <span><b>TypeScript</b> everywhere</span>
+          <span><b>AI-native</b> Agent API</span>
+          <span><b>GPL-3.0</b> free software</span>
+        </div>
+      </div>
+    </div>
+    <div class="frame-status">
+      <span class="ok">●</span> WebGPU — running
+      <span>entities <b>10,000</b></span>
+      <span class="hide-sm">draw calls <b>42</b></span>
+      <span class="hide-sm">one Gameplay IR</span>
+      <span class="right">pre-alpha v0.1 · no rebuild, ever</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ABOUT ============ -->
+<div class="wrap">
+<section class="section" id="about">
+  <div class="section-head">
+    <div class="section-kicker">The pitch</div>
+    <h2>What is 3JSE?</h2>
+    <p>An open-source game engine and editor for the platform that will run the next billion games: <strong>the web</strong>.</p>
+  </div>
+
+  <div class="panel">
+    <div class="panel-head"><span class="dot"></span><span class="pname">Inspector — what 3JSE is</span><span class="pchip">read-only</span></div>
+    <div class="panel-body">
+      <p class="lead">Godot proved open source can be world-class. Unreal proved what the bar is — a real editor, expressive visual scripting, a deep gameplay library, and a pipeline from blank project to shipped game. <strong>3JSE rebuilds that bar for the modern stack: WebGPU, TypeScript, and AI-assisted development.</strong></p>
+      <p class="muted" style="margin-top:16px">Three.js already won the "does the web have a real renderer" argument. What the web has never had is everything a renderer needs around it to become a <em>platform</em>: an editor you can see your scene in, gameplay logic you don't hand-wire, an asset pipeline that isn't a shell script, and a way for a non-programmer — or an AI agent — to safely change how the game plays. That gap, not rendering quality, is what 3JSE closes.</p>
+      <blockquote class="pull-quote">
+        "If Unreal Engine were invented today — for WebGPU, TypeScript, and AI-assisted development — what would it look like?"
+        <span class="attrib">— docs/VISION.md, the founding question</span>
+      </blockquote>
+      <p class="muted">And it is built <strong>around</strong> Three.js, never on top of a fork of it. Three.js stays a normal, upgradable dependency — if a project outgrows 3JSE's abstractions, it can drop to raw Three.js at any layer without losing anything.</p>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-head"><span class="dot"></span><span class="pname">Inspector — why it wins</span><span class="pchip">6 properties</span></div>
+    <div class="panel-body">
+      <div class="grid-3">
+        <div class="card">
+          <span class="emoji">⚡</span>
+          <h3>Instant everywhere</h3>
+          <p>Editor boots in a browser tab. Games ship as a URL, PWA, desktop app, mobile wrapper, or XR — no multi-gigabyte installer, no export farm.</p>
+        </div>
+        <div class="card">
+          <span class="emoji">🧬</span>
+          <h3>One language: TypeScript</h3>
+          <p>No scripting-vs-engine split, no C++/Blueprints boundary. The components you write are the same ones the editor, the graph, and the AI use.</p>
+        </div>
+        <div class="card">
+          <span class="emoji">🤖</span>
+          <h3>AI-native at the root</h3>
+          <p>An Agent API exposes the editor's own command surface. Agents observe, plan, act, and verify by actually running the game — changes stay legible to humans.</p>
+        </div>
+        <div class="card">
+          <span class="emoji">📄</span>
+          <h3>Projects are software projects</h3>
+          <p>Scenes, prefabs, and graphs are readable, deterministic, git-diffable text files — never a proprietary binary blob only the editor can open.</p>
+        </div>
+        <div class="card">
+          <span class="emoji">🧩</span>
+          <h3>Plugins are first-class</h3>
+          <p>The engine itself is a curated set of official plugins on a small core. Third-party physics, terrain, or gameplay packages install exactly like official ones.</p>
+        </div>
+        <div class="card">
+          <span class="emoji">🔓</span>
+          <h3>Upgradeable forever</h3>
+          <p>Three.js is a pinned dependency, not a vendored fork. Your engine upgrades like any other npm package — for the lifetime of your game.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOUR FRONTENDS ============ -->
+<section class="section" id="frontends">
+  <div class="section-head">
+    <div class="section-kicker">The big idea</div>
+    <h2>One game. Four frontends.</h2>
+    <p>Every engine forces you to pick a way of working — and silently maintains four parallel, drifting versions of your game. 3JSE rests on a single decision: <strong>one canonical, typed, serializable representation of what your game does</strong> — the 3JSE Gameplay IR.</p>
+  </div>
+  <div class="grid-4">
+    <div class="card">
+      <span class="emoji">🎨</span>
+      <h3>Editor</h3>
+      <p>Drag, place, inspect, sculpt. A desktop-class dockable GUI — for artists and level designers.</p>
+      <div class="foot">humans edit visually</div>
+    </div>
+    <div class="card">
+      <span class="emoji">💻</span>
+      <h3>TypeScript</h3>
+      <p>The same components, systems, and APIs the editor itself uses. No separate scripting language to learn.</p>
+      <div class="foot">programmers write code</div>
+    </div>
+    <div class="card">
+      <span class="emoji">🕸️</span>
+      <h3>3JSE Graph</h3>
+      <p>Full visual scripting for gameplay — not a toy, not materials-only. Compiles to the same IR as hand-written TypeScript.</p>
+      <div class="foot">designers connect graphs</div>
+    </div>
+    <div class="card">
+      <span class="emoji">🤖</span>
+      <h3>AI agents</h3>
+      <p>Structured primitives through the Agent API — never simulated mouse clicks. Plan, act, run the game, verify, hand back.</p>
+      <div class="foot">agents operate the engine</div>
+    </div>
+  </div>
+  <p class="muted small" style="margin-top:16px">Four ways of working. Zero parallel versions. The IR is the architectural spine — everything else hangs from it. <a href="manual.html#gameplay-ir">Read the IR design →</a></p>
+</section>
+
+<!-- ============ COMPARISON ============ -->
+<section class="section" id="compare">
+  <div class="section-head">
+    <div class="section-kicker">The honest comparison</div>
+    <h2>vs. the giants</h2>
+    <p>We don't pretend the web out-renders Nanite. We win where the web wins decisively — and we say so.</p>
+  </div>
+  <div class="panel">
+    <div class="panel-head"><span class="dot"></span><span class="pname">Content Browser — engine_compare.tsv</span><span class="pchip">3 rows</span></div>
+    <div class="panel-body" style="padding:14px">
+      <div class="table-scroll">
+        <table class="compare">
+          <thead>
+            <tr><th></th><th class="col-3jse">3JSE</th><th class="vs">Godot</th><th class="vs">Unreal Engine</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Language</td><td class="col-3jse hl"><b>TypeScript — one language, everywhere</b></td><td>GDScript / C#</td><td>C++ + Blueprints</td></tr>
+            <tr><td>Editor boot</td><td class="col-3jse hl"><b>Instant — it's a web app</b></td><td>Seconds</td><td>Minutes</td></tr>
+            <tr><td>Project format</td><td class="col-3jse hl"><b>Readable, git-diffable text</b></td><td>Text scenes</td><td>Binary .uassets</td></tr>
+            <tr><td>Distribution</td><td class="col-3jse hl"><b>A URL — PWA, desktop, mobile, XR</b></td><td>Exported binaries</td><td>Multi-GB installers</td></tr>
+            <tr><td>AI-native</td><td class="col-3jse hl"><b>First-class Agent API</b></td><td>Emerging</td><td>Emerging</td></tr>
+            <tr><td>Visual scripting</td><td class="col-3jse hl"><b>3JSE Graph — compiles to the same IR as code</b></td><td>VisualScript (deprecated)</td><td>Blueprints (excellent)</td></tr>
+            <tr><td>Rendering</td><td class="col-3jse hl">WebGPU via Three.js — and honest about it</td><td>Vulkan / GLES3</td><td>Nanite / Lumen — the ceiling</td></tr>
+            <tr><td>License</td><td class="col-3jse hl">GPL-3.0, free software</td><td>MIT</td><td>Source-available, royalties</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="muted small" style="padding:14px 16px 6px">Unreal's strengths — the editor, the scripting, the systems — are not tied to C++ or a desktop process model. They're tied to having all layers agree on one representation of a game. That's the part 3JSE rebuilds for the web.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ARCHITECTURE ============ -->
+<section class="section" id="architecture">
+  <div class="section-head">
+    <div class="section-kicker">Under the hood</div>
+    <h2>Ten layers. One IR.</h2>
+    <p>Two of them ship in your game. The rest are tooling — and every layer reads and writes the same Gameplay IR.</p>
+  </div>
+  <figure class="fig">
+    <img src="assets/img/3jse-architecture.svg" alt="The ten layers of 3JSE: Three.js, Runtime, Editor, Asset Pipeline, Gameplay Framework, 3JSE Graph, AI Layer, Plugin System, Build+Deploy, Projects+Templates">
+    <figcaption class="figcap">fig. 1 — the ten layers. Cyan ships inside your game; violet never does.</figcaption>
+  </figure>
+  <div class="principle-list">
+    <div class="principle"><span class="n">01</span><p><b>Three.js is a dependency, never a fork.</b> No subsystem reaches into internals; every project can drop to raw Three.js at any layer.</p></div>
+    <div class="principle"><span class="n">02</span><p><b>One IR, many frontends.</b> TypeScript, 3JSE Graph, and AI agents compile to the same IR. No second, opaque execution engine.</p></div>
+    <div class="principle"><span class="n">03</span><p><b>Everything the editor can do, code can do.</b> The editor is a GUI for the runtime's command API — not a separate authority.</p></div>
+    <div class="principle"><span class="n">04</span><p><b>Plugins are first-class.</b> Official subsystems are just curated plugins on a small core; third-party packages install the same way.</p></div>
+    <div class="principle"><span class="n">05</span><p><b>Projects are software projects.</b> Readable, deterministic files under version control — never a proprietary binary.</p></div>
+    <div class="principle"><span class="n">06</span><p><b>Built to be extended by AI.</b> Every feature lands in a small, predictable set of places — a constraint, not a nicety.</p></div>
+  </div>
+</section>
+
+<!-- ============ EDITOR ============ -->
+<section class="section" id="editor">
+  <div class="section-head">
+    <div class="section-kicker">The editor</div>
+    <h2>A desktop-class editor. In a tab.</h2>
+    <p>Play, pause, inspect, modify, resume — live, in-process, no rebuild. Browser for quick edits and shared project links; Tauri desktop app for serious work. Games built with it never depend on the editor at runtime.</p>
+  </div>
+  <div class="inventory">
+    <div class="inv-card"><div class="inv-tab">Viewport <span class="tag">live</span></div><p>Live WebGPU render, gizmos, camera navigation, stats overlay.</p></div>
+    <div class="inv-card"><div class="inv-tab">Hierarchy</div><p>Entity tree with prefab instances visually distinguished.</p></div>
+    <div class="inv-card"><div class="inv-tab">Inspector</div><p>Schema-generated component editors, multi-edit diffing.</p></div>
+    <div class="inv-card"><div class="inv-tab">Content Browser</div><p>Assets — meshes, textures, audio, prefabs, graphs — tagged, searchable, thumbnailed.</p></div>
+    <div class="inv-card"><div class="inv-tab">3JSE Graph</div><p>Full-tab node canvas for gameplay logic.</p></div>
+    <div class="inv-card"><div class="inv-tab">Material / Shader Graph</div><p>Node editor compiling to Three.js TSL.</p></div>
+    <div class="inv-card"><div class="inv-tab">Code Editor</div><p>Embedded Monaco-class TypeScript with LSP.</p></div>
+    <div class="inv-card"><div class="inv-tab">Animation Tools</div><p>Timeline, state machines, blend trees, skeleton view.</p></div>
+    <div class="inv-card"><div class="inv-tab">Physics Editor</div><p>Collider gizmos, constraint authoring — Rapier under the hood.</p></div>
+    <div class="inv-card"><div class="inv-tab">UI / HUD Editor</div><p>Retained-mode layout canvas.</p></div>
+    <div class="inv-card"><div class="inv-tab">Profiler</div><p>Frame timing by system, draw call, GPU pass.</p></div>
+    <div class="inv-card"><div class="inv-tab">Console</div><p>Logs, warnings, errors — clickable to source, TS line or graph node.</p></div>
+    <div class="inv-card"><div class="inv-tab">Debugger</div><p>Breakpoints, step, watch — across TypeScript and graphs.</p></div>
+    <div class="inv-card"><div class="inv-tab">AI Panel <span class="tag">soon</span></div><p>The Agent API surface: observe → plan → act → verify.</p></div>
+  </div>
+</section>
+
+<!-- ============ ROADMAP ============ -->
+<section class="section" id="roadmap">
+  <div class="section-head">
+    <div class="section-kicker">The plan</div>
+    <h2>Roadmap</h2>
+    <p>Dependency-ordered, not calendar-ordered — each phase proves what the next one depends on.</p>
+  </div>
+  <div class="panel">
+    <div class="panel-head"><span class="dot"></span><span class="pname">Console — roadmap.log</span><span class="pchip">8 phases</span></div>
+    <div class="panel-body">
+      <div class="timeline">
+        <div class="phase"><h3><span class="num">P0</span>Technical experiments</h3><p>De-risk the bets: IR round-trip, ECS-over-Object3D performance, editor shell.</p></div>
+        <div class="phase"><h3><span class="num">P1</span>Editor MVP</h3><p>Build a scene visually with zero hand-written code.</p></div>
+        <div class="phase"><h3><span class="num">P2</span>Gameplay Engine</h3><p>Components, prefabs, physics, input, saves, animation — a real game.</p></div>
+        <div class="phase"><h3><span class="num">P3</span>3JSE Graph</h3><p>Visual scripting that compiles to the same IR as TypeScript.</p></div>
+        <div class="phase"><h3><span class="num">P4</span>AI-native authoring</h3><p>The Agent API loop — an engine an AI can operate.</p></div>
+        <div class="phase"><h3><span class="num">P5</span>Professional tools</h3><p>Terrain, cinematics, VFX graphs, navigation.</p></div>
+        <div class="phase"><h3><span class="num">P6</span>Ecosystem</h3><p>Templates, package sharing, multiplayer.</p></div>
+        <div class="phase"><h3><span class="num">P7</span>Unreal-class workflow</h3><p>The full studio-grade suite — on the web platform.</p></div>
+      </div>
+      <div class="note" style="margin-top:22px"><b>Status:</b> 3JSE is in active, early development (phases 0–2). The architecture is designed and documented; the foundations are being poured. Expect breaking changes — this is the moment to watch, shape, and build with it.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ MANUAL ============ -->
+<section class="section" id="manual">
+  <div class="section-head">
+    <div class="section-kicker">The design manual</div>
+    <h2>Every decision. Every bet. Written down.</h2>
+    <p>The complete 24-document design manual — written to be read by humans <em>and</em> by the AI agents that will help build the engine.</p>
+  </div>
+  <div class="grid-3">
+    <a class="card doc-card" href="manual.html#vision"><span class="doc-file">VISION.md</span><span class="emoji">🔭</span><h3>The Vision</h3><p>Why 3JSE exists, the core bet, and what success looks like.</p></a>
+    <a class="card doc-card" href="manual.html#architecture"><span class="doc-file">ARCHITECTURE.md</span><span class="emoji">🏛️</span><h3>The Architecture</h3><p>Ten layers, six principles, one command surface.</p></a>
+    <a class="card doc-card" href="manual.html#gameplay-ir"><span class="doc-file">GAMEPLAY_IR.md</span><span class="emoji">🧬</span><h3>The Gameplay IR</h3><p>The single representation every frontend compiles to.</p></a>
+    <a class="card doc-card" href="manual.html#editor"><span class="doc-file">EDITOR.md</span><span class="emoji">🖥️</span><h3>The Editor</h3><p>All 22 dockable panels, browser or Tauri, one codebase.</p></a>
+    <a class="card doc-card" href="manual.html#ai-agent-api"><span class="doc-file">AI_AGENT_API.md</span><span class="emoji">🤖</span><h3>The AI Agent API</h3><p>Observe → plan → act → verify. Trust tiers included.</p></a>
+    <a class="card doc-card" href="manual.html#roadmap"><span class="doc-file">ROADMAP.md</span><span class="emoji">🗺️</span><h3>The Roadmap</h3><p>Eight phases, dependency-ordered, from spikes to ecosystem.</p></a>
+  </div>
+  <div class="cta-band">
+    <h3>Read the full manual</h3>
+    <p>24 documents, fully cross-linked, on one page. Physics, rendering, networking, the object model, Verse compatibility, the vendor registry — everything.</p>
+    <a class="btn btn-primary" href="manual.html">📖 Open the design manual</a>
+  </div>
+</section>
+</div>
+
+<footer class="site-footer">
+  <div class="foot-inner">
+    <p><strong>3JSE</strong> — the WebGPU-native game engine. GPL-3.0 · © 2026 the 3JSE project.</p>
+    <nav>
+      <a href="manual.html">Manual</a>
+      <a href="https://github.com/xirtus/3JSE" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://github.com/xirtus/3JSE/blob/main/LICENSE" target="_blank" rel="noopener">License</a>
+    </nav>
+  </div>
+</footer>
+
+<script type="module" src="assets/js/main.js"></script>
+</body>
+</html>
