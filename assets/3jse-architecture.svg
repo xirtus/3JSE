@@ -1,0 +1,111 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="760" viewBox="0 0 1000 760">
+  <defs>
+    <linearGradient id="headline" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#22d3ee"/>
+      <stop offset="100%" stop-color="#e879f9"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="1" y="1" width="998" height="758" rx="18" fill="#060a13" stroke="#1c2942" stroke-width="1.5"/>
+
+  <text x="32" y="42" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="13" font-weight="700" letter-spacing="4" fill="#64748b">THE TEN LAYERS</text>
+  <text x="968" y="42" text-anchor="end" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="13" font-style="italic" fill="#64748b">One Gameplay IR runs through them all</text>
+
+  <!-- row template: y = 58 + i*65, h = 56 -->
+  <g>
+    <rect x="28" y="58" width="944" height="56" rx="10" fill="#0c1526" stroke="#1c2942"/>
+    <rect x="28" y="58" width="6" height="56" rx="3" fill="#22d3ee"/>
+    <text x="56" y="93" text-anchor="middle" font-family="ui-monospace, Menlo, monospace" font-size="20" font-weight="700" fill="#22d3ee">0</text>
+    <text x="82" y="79" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="18" font-weight="700" fill="#e2e8f0">Three.js <tspan font-size="13" font-weight="400" fill="#64748b">(dependency)</tspan></text>
+    <text x="82" y="101" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="13" fill="#8ba0ba">Object3D scene graph, WebGPU renderer, TSL, loaders — never a fork</text>
+    <rect x="884" y="75" width="72" height="22" rx="11" fill="#22d3ee" fill-opacity="0.12" stroke="#22d3ee" stroke-opacity="0.5"/>
+    <text x="920" y="90" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10.5" font-weight="700" fill="#67e8f9">SHIPS</text>
+  </g>
+  <g>
+    <rect x="28" y="123" width="944" height="56" rx="10" fill="#0c1526" stroke="#1c2942"/>
+    <rect x="28" y="123" width="6" height="56" rx="3" fill="#22d3ee"/>
+    <text x="56" y="158" text-anchor="middle" font-family="ui-monospace, Menlo, monospace" font-size="20" font-weight="700" fill="#22d3ee">1</text>
+    <text x="82" y="144" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="18" font-weight="700" fill="#e2e8f0">Runtime <tspan font-size="13" font-weight="600" fill="#67e8f9">@3jse/runtime</tspan></text>
+    <text x="82" y="166" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="13" fill="#8ba0ba">World &#183; Level &#183; Entity/Component, archetype scheduler, tick order</text>
+    <rect x="884" y="140" width="72" height="22" rx="11" fill="#22d3ee" fill-opacity="0.12" stroke="#22d3ee" stroke-opacity="0.5"/>
+    <text x="920" y="155" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10.5" font-weight="700" fill="#67e8f9">SHIPS</text>
+  </g>
+  <g>
+    <rect x="28" y="188" width="944" height="56" rx="10" fill="#0c1526" stroke="#1c2942"/>
+    <rect x="28" y="188" width="6" height="56" rx="3" fill="#8b5cf6"/>
+    <text x="56" y="223" text-anchor="middle" font-family="ui-monospace, Menlo, monospace" font-size="20" font-weight="700" fill="#a78bfa">2</text>
+    <text x="82" y="209" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="18" font-weight="700" fill="#e2e8f0">Editor</text>
+    <text x="82" y="231" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="13" fill="#8ba0ba">Dockable viewport, hierarchy, inspector, content browser, play-in-editor</text>
+    <rect x="874" y="205" width="82" height="22" rx="11" fill="#8b5cf6" fill-opacity="0.12" stroke="#8b5cf6" stroke-opacity="0.5"/>
+    <text x="915" y="220" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10.5" font-weight="700" fill="#a78bfa">TOOLING</text>
+  </g>
+  <g>
+    <rect x="28" y="253" width="944" height="56" rx="10" fill="#0c1526" stroke="#1c2942"/>
+    <rect x="28" y="253" width="6" height="56" rx="3" fill="#8b5cf6"/>
+    <text x="56" y="288" text-anchor="middle" font-family="ui-monospace, Menlo, monospace" font-size="20" font-weight="700" fill="#a78bfa">3</text>
+    <text x="82" y="274" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="18" font-weight="700" fill="#e2e8f0">Asset Pipeline</text>
+    <text x="82" y="296" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="13" fill="#8ba0ba">Import, analyze, optimize — glTF, textures, audio, animation</text>
+    <rect x="874" y="270" width="82" height="22" rx="11" fill="#8b5cf6" fill-opacity="0.12" stroke="#8b5cf6" stroke-opacity="0.5"/>
+    <text x="915" y="285" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10.5" font-weight="700" fill="#a78bfa">TOOLING</text>
+  </g>
+  <g>
+    <rect x="28" y="318" width="944" height="56" rx="10" fill="#0c1526" stroke="#1c2942"/>
+    <rect x="28" y="318" width="6" height="56" rx="3" fill="#8b5cf6"/>
+    <text x="56" y="353" text-anchor="middle" font-family="ui-monospace, Menlo, monospace" font-size="20" font-weight="700" fill="#a78bfa">4</text>
+    <text x="82" y="339" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="18" font-weight="700" fill="#e2e8f0">Gameplay Framework</text>
+    <text x="82" y="361" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="13" fill="#8ba0ba">CharacterController, Inventory, SaveGame, BehaviorTree&#8230;</text>
+    <rect x="874" y="335" width="82" height="22" rx="11" fill="#8b5cf6" fill-opacity="0.12" stroke="#8b5cf6" stroke-opacity="0.5"/>
+    <text x="915" y="350" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10.5" font-weight="700" fill="#a78bfa">TOOLING</text>
+  </g>
+  <g>
+    <rect x="28" y="383" width="944" height="56" rx="10" fill="#0c1526" stroke="#1c2942"/>
+    <rect x="28" y="383" width="6" height="56" rx="3" fill="#8b5cf6"/>
+    <text x="56" y="418" text-anchor="middle" font-family="ui-monospace, Menlo, monospace" font-size="20" font-weight="700" fill="#a78bfa">5</text>
+    <text x="82" y="404" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="18" font-weight="700" fill="#e2e8f0">3JSE Graph</text>
+    <text x="82" y="426" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="13" fill="#8ba0ba">Visual scripting that compiles to the same Gameplay IR</text>
+    <rect x="874" y="400" width="82" height="22" rx="11" fill="#8b5cf6" fill-opacity="0.12" stroke="#8b5cf6" stroke-opacity="0.5"/>
+    <text x="915" y="415" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10.5" font-weight="700" fill="#a78bfa">TOOLING</text>
+  </g>
+  <g>
+    <rect x="28" y="448" width="944" height="56" rx="10" fill="#0c1526" stroke="#1c2942"/>
+    <rect x="28" y="448" width="6" height="56" rx="3" fill="#8b5cf6"/>
+    <text x="56" y="483" text-anchor="middle" font-family="ui-monospace, Menlo, monospace" font-size="20" font-weight="700" fill="#a78bfa">6</text>
+    <text x="82" y="469" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="18" font-weight="700" fill="#e2e8f0">AI Layer</text>
+    <text x="82" y="491" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="13" fill="#8ba0ba">Agent API — observe &#8594; plan &#8594; act &#8594; verify, human-legible changes</text>
+    <rect x="874" y="465" width="82" height="22" rx="11" fill="#8b5cf6" fill-opacity="0.12" stroke="#8b5cf6" stroke-opacity="0.5"/>
+    <text x="915" y="480" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10.5" font-weight="700" fill="#a78bfa">TOOLING</text>
+  </g>
+  <g>
+    <rect x="28" y="513" width="944" height="56" rx="10" fill="#0c1526" stroke="#1c2942"/>
+    <rect x="28" y="513" width="6" height="56" rx="3" fill="#8b5cf6"/>
+    <text x="56" y="548" text-anchor="middle" font-family="ui-monospace, Menlo, monospace" font-size="20" font-weight="700" fill="#a78bfa">7</text>
+    <text x="82" y="534" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="18" font-weight="700" fill="#e2e8f0">Plugin System</text>
+    <text x="82" y="556" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="13" fill="#8ba0ba">@3jse/* packages; third-party plugins are first-class citizens</text>
+    <rect x="874" y="530" width="82" height="22" rx="11" fill="#8b5cf6" fill-opacity="0.12" stroke="#8b5cf6" stroke-opacity="0.5"/>
+    <text x="915" y="545" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10.5" font-weight="700" fill="#a78bfa">TOOLING</text>
+  </g>
+  <g>
+    <rect x="28" y="578" width="944" height="56" rx="10" fill="#0c1526" stroke="#1c2942"/>
+    <rect x="28" y="578" width="6" height="56" rx="3" fill="#8b5cf6"/>
+    <text x="56" y="613" text-anchor="middle" font-family="ui-monospace, Menlo, monospace" font-size="20" font-weight="700" fill="#a78bfa">8</text>
+    <text x="82" y="599" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="18" font-weight="700" fill="#e2e8f0">Build + Deploy</text>
+    <text x="82" y="621" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="13" fill="#8ba0ba">Play &#8594; publish: static web, PWA, desktop shell, mobile, XR</text>
+    <rect x="874" y="595" width="82" height="22" rx="11" fill="#8b5cf6" fill-opacity="0.12" stroke="#8b5cf6" stroke-opacity="0.5"/>
+    <text x="915" y="610" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10.5" font-weight="700" fill="#a78bfa">TOOLING</text>
+  </g>
+  <g>
+    <rect x="28" y="643" width="944" height="56" rx="10" fill="#0c1526" stroke="#1c2942"/>
+    <rect x="28" y="643" width="6" height="56" rx="3" fill="#8b5cf6"/>
+    <text x="56" y="678" text-anchor="middle" font-family="ui-monospace, Menlo, monospace" font-size="20" font-weight="700" fill="#a78bfa">9</text>
+    <text x="82" y="664" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="18" font-weight="700" fill="#e2e8f0">Projects + Templates</text>
+    <text x="82" y="686" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="13" fill="#8ba0ba">Genre starter kits and project scaffolding</text>
+    <rect x="874" y="660" width="82" height="22" rx="11" fill="#8b5cf6" fill-opacity="0.12" stroke="#8b5cf6" stroke-opacity="0.5"/>
+    <text x="915" y="675" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10.5" font-weight="700" fill="#a78bfa">TOOLING</text>
+  </g>
+
+  <!-- legend -->
+  <rect x="32" y="722" width="11" height="11" rx="2" fill="#22d3ee"/>
+  <text x="51" y="732" font-family="system-ui, sans-serif" font-size="13" fill="#8ba0ba">Runtime — ships inside your game</text>
+  <rect x="310" y="722" width="11" height="11" rx="2" fill="#8b5cf6"/>
+  <text x="329" y="732" font-family="system-ui, sans-serif" font-size="13" fill="#8ba0ba">Development-time — never in the shipped bundle</text>
+</svg>
