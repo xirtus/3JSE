@@ -1,0 +1,379 @@
+/* Layout only — typography/interaction come from @galacean/editor-ui's ThemeProvider
+   (main.tsx), and its own components (Button, TreeItemContent, SegmentControl, ...) correctly
+   pick up dark-theme text colors from it. What ThemeProvider does *not* do is inject its color
+   tokens as globally-readable CSS custom properties — confirmed by inspecting the actual
+   injected stylesheets, not assumed: `--colors-*` resolved to nothing everywhere outside a
+   styled() component, which is why an earlier pass at this file left every panel transparent
+   (readable light-gray component text over the page's default white). The tokens below are
+   this app's own small palette, picked to match what @galacean/editor-ui's components already
+   render (confirmed via getComputedStyle, not guessed) — not a bridge into their theme system.
+
+   The dock shell itself (resizable splits, tab groups) is panels/DockLayout.tsx +
+   @galacean/editor-ui's ResizablePanel/SegmentControl — this file only styles panel content
+   and the small chrome DockLayout doesn't own (region padding, tab strip). Full drag-to-undock
+   docking is still out of scope, per DockLayout.tsx's doc comment. */
+
+:root {
+  --c-bg: #0c0d11;
+  --c-surface: #15171d;
+  --c-surface-subtle: rgba(255, 255, 255, 0.06);
+  --c-border: #262b36;
+  --c-text: #d7d9de;
+  --c-text-dim: #b0b4ba;
+  --c-warning: #e0a83e;
+  --c-danger: #e05a5a;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+  background: var(--c-bg);
+}
+
+.app-shell {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  color: var(--c-text);
+  background: var(--c-bg);
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+}
+
+.app-loading {
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  opacity: 0.6;
+}
+
+.app-toolbar {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--c-border);
+  background: var(--c-surface);
+}
+
+.app-title {
+  font-size: 13px;
+  font-weight: 600;
+  opacity: 0.85;
+  margin-right: auto;
+}
+
+.app-body {
+  flex: 1;
+  min-height: 0;
+}
+
+/* ---------- dock shell (panels/DockLayout.tsx, panels/RegionTabs.tsx) ---------- */
+
+.dock-root {
+  display: flex;
+  height: 100%;
+  min-height: 0;
+}
+
+.dock-pane {
+  height: 100%;
+  min-height: 0;
+}
+
+.dock-center-column {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.dock-center-top {
+  flex: 1;
+  min-height: 0;
+}
+
+.dock-region {
+  height: 100%;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--c-surface);
+  border-right: 1px solid var(--c-border);
+}
+
+.dock-center-top .dock-region,
+.dock-center-column > .dock-pane .dock-region {
+  border-right: none;
+}
+
+.dock-region-tabs {
+  flex: none;
+  padding: 6px 8px;
+  border-bottom: 1px solid var(--c-border);
+  overflow-x: auto;
+}
+
+.dock-region-body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+/* The center region's full-tab editors (Viewport, and eventually Graph/Material Graph/Code
+   Editor/Animation/...) are all full-bleed canvases, never scrolling text content, on the
+   darkest background layer. */
+.dock-center-top .dock-region-body {
+  overflow: hidden;
+  background: var(--c-bg);
+}
+
+.panel-header {
+  padding: 8px 10px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  opacity: 0.6;
+}
+
+.hierarchy-panel {
+  padding: 6px 0;
+}
+
+.hierarchy-tree {
+  padding: 0 4px;
+}
+
+.hierarchy-prefab-badge {
+  font-size: 9px;
+  opacity: 0.6;
+  margin-left: 4px;
+}
+
+.hierarchy-list {
+  list-style: none;
+  margin: 0;
+  padding: 0 6px;
+}
+
+.prefab-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  padding: 4px 8px;
+}
+
+.prefab-row-name {
+  font-size: 13px;
+}
+
+.prefab-overrides {
+  margin-top: 4px;
+  font-size: 11px;
+  opacity: 0.7;
+}
+
+.prefab-overrides code {
+  background: var(--c-surface-subtle);
+  border-radius: 3px;
+  padding: 1px 4px;
+  margin-right: 4px;
+}
+
+.panel-empty {
+  padding: 14px;
+  font-size: 13px;
+  opacity: 0.6;
+}
+
+.panel-empty-inline {
+  font-size: 12px;
+  opacity: 0.6;
+  margin: 0 0 8px;
+}
+
+/* ---------- planned-panel stub (panels/planned.tsx) ---------- */
+
+.planned-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+}
+
+.planned-title {
+  font-size: 13px;
+  font-weight: 600;
+  opacity: 0.85;
+  margin: 0;
+}
+
+.planned-note {
+  font-size: 12px;
+  opacity: 0.55;
+  margin: 0;
+}
+
+.planned-note code {
+  background: var(--c-surface-subtle);
+  border-radius: 3px;
+  padding: 1px 4px;
+}
+
+/* ---------- console (panels/ConsolePanel.tsx) ---------- */
+
+.console-panel {
+  padding: 4px 0;
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 12px;
+}
+
+.console-entry {
+  display: flex;
+  gap: 10px;
+  padding: 4px 10px;
+  border-bottom: 1px solid var(--c-border);
+}
+
+.console-time {
+  opacity: 0.45;
+  flex: none;
+}
+
+.console-entry-warn .console-message {
+  color: var(--c-warning);
+}
+
+.console-entry-error .console-message {
+  color: var(--c-danger);
+}
+
+/* ---------- settings-style panels (ProjectSettingsPanel, InputMappingPanel) ---------- */
+
+.settings-panel {
+  padding: 10px;
+}
+
+.settings-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.settings-list li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 0;
+  font-size: 12px;
+}
+
+.settings-list code {
+  background: var(--c-surface-subtle);
+  border-radius: 3px;
+  padding: 1px 4px;
+  flex: none;
+}
+
+.settings-list-detail {
+  opacity: 0.6;
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 11px;
+}
+
+.save-slot-row {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.save-slot-row input {
+  flex: 1;
+  min-width: 0;
+  background: var(--c-bg);
+  border: 1px solid var(--c-border);
+  border-radius: 4px;
+  color: var(--c-text);
+  font-size: 12px;
+  padding: 4px 6px;
+}
+
+.entity-header-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.entity-title {
+  margin: 4px 0 0;
+  font-size: 14px;
+}
+
+.entity-id {
+  font-size: 11px;
+  opacity: 0.5;
+  margin-bottom: 12px;
+}
+
+.component-block {
+  border-top: 1px solid var(--c-border);
+  padding: 10px 0;
+}
+
+.component-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.field-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 6px;
+  font-size: 12px;
+}
+
+.field-label {
+  opacity: 0.7;
+  text-transform: capitalize;
+  flex: none;
+  width: 80px;
+}
+
+.vector-inputs {
+  display: flex;
+  gap: 4px;
+  flex: 1;
+}
+
+.vector-inputs > * {
+  width: 100%;
+  min-width: 0;
+}
+
+.field-value-readonly {
+  opacity: 0.6;
+  font-family: monospace;
+}
+
+.add-component-row {
+  display: flex;
+  gap: 6px;
+  margin-top: 12px;
+  align-items: center;
+}
