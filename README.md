@@ -79,6 +79,7 @@ The design principles that hold it together:
 |---|---|
 | [`@3jse/runtime`](packages/runtime) | The core: `World` → `Level` → `Entity`/`Component`, archetype scheduler, tick order. Standalone — zero editor dependency |
 | [`@3jse/editor`](apps/editor) | The editor app (browser or Tauri) — a GUI for the runtime's own command API |
+| [`@3jse/extras`](packages/extras) | Assemble-first imports: `three-mesh-bvh`, `troika-three-text`, `postprocessing`, `maath`, `three-stdlib` — MIT ecosystem parts, adopted not rebuilt (license notebook: `packages/vendor/licenses.json`) |
 | [`@3jse/ir`](packages/ir) | The Gameplay IR: interpreter, JS/TS emitters, source-mapped round-trip between graphs and code |
 | [`@3jse/animation`](packages/animation) | Animation graphs, state machines, blend trees |
 | [`@3jse/character`](packages/character) | CharacterController, camera rig |
