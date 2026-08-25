@@ -70,6 +70,8 @@ Dependency-ordered, not calendar-ordered — each phase specifies what it needs 
 
 **Exit criteria**: a designer with no TypeScript experience can build non-trivial gameplay logic (an event chain with branching, timers, and state) entirely in the graph editor, and a programmer can read the compiled output without needing the graph open.
 
+**Opportunistic, not blocking**: a Playground — a shareable-URL sandbox holding a snippet id (scene + graph state), modeled directly on Babylon.js's Playground, which is as much that engine's primary community/onboarding mechanism as it is a debugging tool. It becomes buildable the moment `@3jse/ir`/`@3jse/graph` exist (this phase), needs no engine-architecture changes to add, and is worth picking up whenever it's convenient rather than gating on it — the adoption target is the *mechanism* (a snippet id, a save/fork/share flow), not Babylon's implementation. Once it exists, docs gain a companion discipline worth holding to going forward: a feature described in the manual without a live Playground link demonstrating it is treated as documentation debt, the same way an untested code path is.
+
 ---
 
 ## Phase 4 — AI-native authoring

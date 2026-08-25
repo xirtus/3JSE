@@ -1,4 +1,4 @@
-import type { IRGraph, IRRef } from "./types.js";
+import type { IRGraph, IRRef, IRType } from "./types.js";
 
 /** One emitted line's IR provenance — docs/GAMEPLAY_IR.md: "every emitted line carries a
  *  reference back to the originating IR node ID." 1-indexed to match editor line numbers. */
@@ -10,6 +10,15 @@ export interface SourceMapEntry {
 export interface EmitResult {
   code: string;
   sourceMap: SourceMapEntry[];
+}
+
+/** 3IR's `IRType` isn't TypeScript syntax as-is ("entityRef" is a domain concept, not a real
+ *  type name) — this is the emitter's mapping to what actually appears in emitted signatures.
+ *  `Entity` is expected to be in scope wherever emitted code is used (an `import type { Entity }
+ *  from "@3jse/runtime"` this package deliberately doesn't own — see host.ts's doc comment on
+ *  why @3jse/ir has no @3jse/runtime dependency). */
+function tsTypeText(type: IRType): string {
+  return type === "entityRef" ? "Entity" : type;
 }
 
 const COMPARISON_TEXT: Record<string, string> = {
@@ -42,6 +51,14 @@ export function emit(graph: IRGraph): EmitResult {
       if (!left || !right) throw new Error(`Pure node "${node.id}" (${node.op}) needs two inputs.`);
       return `(${refText(left)} ${COMPARISON_TEXT[node.op]} ${refText(right)})`;
     }
+    if (node.kind === "query") {
+      return `${refText(node.entity)}.hasComponent(${JSON.stringify(node.component)})`;
+    }
+    if (node.kind === "get") {
+      // `<any>` and `!`, not a generated Component struct type: this slice's emitter doesn't
+      // look field types up from ComponentRegistry yet (types.ts's GetNode doc comment).
+      return `${refText(node.entity)}.getComponent<any>(${JSON.stringify(node.component)})!.${node.field}`;
+    }
     throw new Error(`Node "${node.id}" (${node.kind}) does not produce a value.`);
   }
 
@@ -52,6 +69,14 @@ export function emit(graph: IRGraph): EmitResult {
     if (node.kind === "call") {
       mark(node.id);
       lines.push(`${indent}${node.target}(${node.args.map(refText).join(", ")});`);
+      emitStmt(node.next, indent);
+      return;
+    }
+    if (node.kind === "set") {
+      mark(node.id);
+      lines.push(
+        `${indent}${refText(node.entity)}.getComponent<any>(${JSON.stringify(node.component)})!.${node.field} = ${refText(node.value)};`,
+      );
       emitStmt(node.next, indent);
       return;
     }
@@ -71,7 +96,7 @@ export function emit(graph: IRGraph): EmitResult {
   if (!entry || entry.kind !== "event") throw new Error("IRGraph.entry must reference an EventNode.");
 
   mark(entry.id);
-  const params = entry.params.map((p) => `${p.name}: ${p.type}`).join(", ");
+  const params = entry.params.map((p) => `${p.name}: ${tsTypeText(p.type)}`).join(", ");
   lines.push(`function ${entry.name}(${params}): void {`);
   emitStmt(entry.next, "  ");
   lines.push(`}`);

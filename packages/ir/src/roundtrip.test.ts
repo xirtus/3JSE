@@ -1,12 +1,22 @@
-import * as ts from "typescript";
 import { describe, expect, it } from "vitest";
 import { parseTsSubset } from "./tsFrontend.js";
 import { interpret } from "./interpreter.js";
 import { emit } from "./emitter.js";
+import type { IRHost } from "./host.js";
+import { assertValidTs } from "./testUtils.js";
 
 // docs/ROADMAP.md Phase 0's exit criterion: "confirm the source-map round-trip
 // (docs/GAMEPLAY_IR.md's bidirectional-editing claim) actually works on a small recognized TS
 // subset before it's load-bearing for the whole engine." This file is that confirmation.
+//
+// This graph never touches a Component, so a no-op host is a legitimate stand-in here — the
+// real IRHost is exercised end-to-end in entityRoundtrip.test.ts.
+const NOOP_HOST: IRHost = {
+  hasComponent: () => false,
+  getField: () => undefined,
+  setField: () => {},
+  call: () => undefined,
+};
 
 const SOURCE = `
 function onDamage(amount: number, current: number): void {
@@ -17,24 +27,6 @@ function onDamage(amount: number, current: number): void {
   }
 }
 `;
-
-function assertValidTs(code: string): void {
-  const path = "emitted.ts";
-  const sf = ts.createSourceFile(path, code, ts.ScriptTarget.ES2022, true);
-  const program = ts.createProgram({
-    rootNames: [path],
-    options: { noEmit: true, strict: true },
-    host: {
-      ...ts.createCompilerHost({}),
-      getSourceFile: (fileName) => (fileName === path ? sf : undefined),
-      writeFile: () => {},
-      fileExists: (fileName) => fileName === path,
-      readFile: (fileName) => (fileName === path ? code : undefined),
-    },
-  });
-  const diagnostics = program.getSyntacticDiagnostics(sf);
-  expect(diagnostics, ts.formatDiagnostics(diagnostics, ts.createCompilerHost({}))).toHaveLength(0);
-}
 
 describe("3IR prototype — TS subset frontend", () => {
   it("parses the recognized subset into all 5 node kinds", () => {
@@ -51,13 +43,13 @@ describe("3IR prototype — TS subset frontend", () => {
 describe("3IR prototype — interpreter", () => {
   it("takes the 'then' branch and calls applyDeath when amount > current", () => {
     const graph = parseTsSubset(SOURCE);
-    const result = interpret(graph, { amount: 10, current: 5 });
+    const result = interpret(graph, { amount: 10, current: 5 }, NOOP_HOST);
     expect(result.calls).toEqual([{ target: "applyDeath", args: [] }]);
   });
 
   it("takes the 'else' branch and calls applyDamage(amount) when amount <= current", () => {
     const graph = parseTsSubset(SOURCE);
-    const result = interpret(graph, { amount: 3, current: 5 });
+    const result = interpret(graph, { amount: 3, current: 5 }, NOOP_HOST);
     expect(result.calls).toEqual([{ target: "applyDamage", args: [3] }]);
   });
 });
@@ -95,7 +87,7 @@ describe("3IR prototype — JS/TS emitter + source map", () => {
       [3, 5],
     ]) {
       const args = { amount, current };
-      expect(interpret(reparsed, args)).toEqual(interpret(original, args));
+      expect(interpret(reparsed, args, NOOP_HOST)).toEqual(interpret(original, args, NOOP_HOST));
     }
   });
 });

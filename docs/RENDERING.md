@@ -18,8 +18,12 @@ Supported node categories:
 - **Vertex animation**: wind sway, wave displacement — driven by TSL's vertex-stage node graph, usable by `@3jse/water` and `@3jse/foliage` directly.
 - **Transparency/blending**: alpha modes, refraction approximations.
 - **Post-processing**: the same node graph authors screen-space effects against Three.js's WebGPU-native pass system, exposed in the editor as an ordered, reorderable effect stack (Environment Settings panel, `EDITOR.md`).
-- **Compute**: TSL's compute-shader nodes are exposed for advanced users/plugins (GPU particle simulation, GPU-driven foliage placement) — a deliberately advanced, opt-in node category rather than part of the default palette.
+- **Compute**: TSL's compute-shader nodes are exposed for advanced users/plugins (GPU particle simulation, GPU-driven foliage placement) — a deliberately advanced, opt-in node category rather than part of the default palette. `ROADMAP.md` Phase 5's particle/VFX graph is the primary consumer of this category, and its architecture reference is Babylon.js's GPU particle system specifically: per-particle simulation state (position, velocity, age, custom attributes) packed into a data texture and advanced entirely on the GPU via a compute pass, with the CPU only ever touching emission parameters — not the per-particle read-modify-write loop a CPU-simulated system needs. Adopted as the architectural pattern for `@3jse/particles` when Phase 5 builds it, compiled through TSL's own compute nodes rather than a ported implementation.
 - **Custom nodes**: a plugin can register a new Material Graph node the same way it registers a 3JSE Graph node (`PLUGIN_ARCHITECTURE.md`) — both are instances of the same "register a typed node into a graph editor" extension point.
+
+### UX reference
+
+Babylon.js's Node Material Editor is the direct UX reference for this panel — not for its compiler (TSL is 3JSE's compilation target, as above), but for the parts of a node-based material editor that are genuinely hard to get right and don't need reinventing: frame/group nodes for organizing a large graph, live preview thumbnails on individual nodes (not just the final material ball) so a mid-graph value is visible without wiring a temporary output, collapsible subgraphs for reusable node clusters, and — most directly relevant given the WebGPU/WebGL2 dual-backend posture above — a visible fallback-node pattern for marking which parts of a graph don't have a WebGL2-compatible path, the same category of problem `VENDOR_INTEGRATIONS.md` already flags for WebGPU-only vendor plugins like `poseidon`/`demiurge`.
 
 ### Why TSL specifically, and what the WebGL2 fallback means
 

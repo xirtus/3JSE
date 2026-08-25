@@ -4,6 +4,7 @@ import { createPrefab, instantiatePrefab, type Entity, type Level, type Prefab, 
 import { DockLayout } from "./panels/DockLayout.js";
 import type { EditorContext, LogEntry } from "./panels/types.js";
 import { buildSampleWorld } from "./sampleScene.js";
+import { buildDoorTriggerGraph } from "./sampleGraph.js";
 import "./App.css";
 
 let nextLogId = 1;
@@ -46,6 +47,12 @@ function EditorShell({ world, level }: { world: World; level: Level }) {
   // Level.allEntities is a live snapshot read fresh on every render; creating/instantiating an
   // Entity outside React state still needs *some* state change to trigger a re-render.
   const [, bumpRefresh] = useState(0);
+
+  // docs/ROADMAP.md Phase 3's 3JSE Graph demo content — see sampleGraph.ts's doc comment. Built
+  // once per EditorShell mount, not per render.
+  const [graph] = useState(() => buildDoorTriggerGraph());
+  const [selectedGraphNodeId, setSelectedGraphNodeId] = useState<string | null>(null);
+  const [debugVisitedNodeIds, setDebugVisitedNodeIds] = useState<string[]>([]);
 
   const selectedEntity = selectedId ? (level.getEntity(selectedId) ?? null) : null;
 
@@ -92,6 +99,11 @@ function EditorShell({ world, level }: { world: World; level: Level }) {
     logs,
     pushLog,
     refresh: () => bumpRefresh((n) => n + 1),
+    graph,
+    selectedGraphNodeId,
+    setSelectedGraphNodeId,
+    debugVisitedNodeIds,
+    setDebugVisitedNodeIds,
   };
 
   return (

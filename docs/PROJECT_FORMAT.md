@@ -30,6 +30,10 @@ This is the literal structure the brief specifies, because it already matches ho
 - **Human-readable JSON**, pretty-printed with a fixed indent, not minified and not a binary pack format — this is the direct implementation of "readable, diffable, recoverable without the editor": any text editor, and any AI agent's plain file-read tool, can open a scene file and understand it.
 - **Large binary payloads stay binary, referenced by path/hash** — a texture or a mesh's binary data doesn't belong inlined into a JSON scene file; the scene file stores a reference (`asset://<hash>`), and the asset itself sits under `/assets` as its native binary format, which is both the correct diff granularity (a texture re-export shows as one changed binary file, not a giant base64 diff) and how Git's own binary-diffing (or Git LFS, for large asset sets) is meant to be used.
 
+## Versioning and migration
+
+Every serialized file (`Level`, `Prefab`, a 3JSE Graph) carries an explicit schema-version field, checked on load, never inferred from content shape. This is a lesson worth taking directly from Babylon.js's own scene-serialization history rather than re-learning it: a scene format that has been in production for over a decade accumulates real, specific breakage patterns — a field silently renamed between versions, a default value that changed meaning, an enum that gained a case old files don't have — and the fix that actually holds up is a versioned, ordered chain of small migration functions (`v3 → v4 → v5 …`) run automatically on load, each one narrow enough to unit-test against a real fixture file from that version, rather than a single "best guess" up-converter that tries to handle every historical shape in one pass. A file's version field is what tells the loader which migrations to run and lets it refuse — loudly, not silently — a version newer than the running engine understands.
+
 ## Example: a Level file (abbreviated)
 
 ```json

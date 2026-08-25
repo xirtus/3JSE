@@ -35,6 +35,10 @@ A small number of named tiers (e.g. `Low` / `Medium` / `High` / `Ultra`), each a
 
 The Profiler surfaces GPU memory (texture/mesh VRAM estimate), JS heap, and asset-cache size as first-class panels, with per-quality-tier target budgets documented per platform class (a `Low`-tier mobile target and an `Ultra`-tier desktop target have deliberately different budget ceilings, set and revisited as real project data comes in during `ROADMAP.md`'s later phases rather than fixed speculatively here).
 
+## GPU frame capture
+
+The Profiler's draw-call view is backed by a Spector.js-style capture: a single frame's full GPU command sequence (draw calls, state changes, bound textures/buffers, shader source per pass) captured on demand from the live Viewport, not a separate standalone tool a developer has to leave the editor to use. This is adopted as an integration pattern, not a code dependency — whether it's Spector.js itself or a WebGPU-native capture mechanism built against Three.js's own render-graph instrumentation is an implementation choice at build time, not a design commitment made here. What matters architecturally is that "what did the GPU actually do this frame" is one click from the Viewport a developer (or an agent, via `runtime.captureFrame`/`runtime.getPerf` in `AI_AGENT_API.md`) is already looking at, the same "debug tooling lives where the problem is, not in a separate app" posture Babylon's Inspector debug layer models for the editor as a whole (picking, live property readout, and draw-call stats overlaid directly on the running scene rather than in a disconnected panel).
+
 ## Shader compilation
 
 TSL's node-graph materials compile to WGSL/GLSL ahead-of-time at build (`RENDERING.md`, `BUILD_DEPLOYMENT.md`) wherever the material's inputs are static; runtime shader variant compilation (from dynamic material parameter combinations) is minimized by the Material Graph editor warning when a graph structure implies runtime branching that will produce shader-compile stalls — surfaced as a build-time lint, not discovered as a hitch during play.

@@ -1,5 +1,6 @@
 import type { ComponentType } from "react";
 import type { Entity, Prefab, World, Level } from "@3jse/runtime";
+import type { IRGraph } from "@3jse/ir";
 
 export interface LogEntry {
   id: number;
@@ -32,6 +33,21 @@ export interface EditorContext {
    *  state (docs/PROJECT_FORMAT.md), so this is the seam any panel uses to say "something in the
    *  World changed, re-read it." */
   refresh: () => void;
+
+  /** docs/ROADMAP.md Phase 3's 3JSE Graph demo content — the door/trigger worked example from
+   *  docs/VISUAL_SCRIPTING.md, shared across GraphPanel/CodeEditorPanel/DebuggerPanel so they
+   *  stay in sync (one graph, three views — docs/GAMEPLAY_IR.md's whole point). No canvas
+   *  editing yet (GraphCanvas's own doc comment), so this is fixed demo content, not a project
+   *  asset — the Graph/Code/Debugger panels below are read/run-only over it. */
+  graph: IRGraph;
+  selectedGraphNodeId: string | null;
+  setSelectedGraphNodeId: (id: string | null) => void;
+  /** The last interpret() run's full visited-node trace (packages/ir's InterpretResult) — what
+   *  DebuggerPanel's "Run" populates and GraphPanel highlights, docs/VISUAL_SCRIPTING.md's
+   *  "Execution history" / active-wire idea, scoped to "highlight what a completed run visited"
+   *  rather than live per-frame values during actual gameplay (real future work). */
+  debugVisitedNodeIds: string[];
+  setDebugVisitedNodeIds: (ids: string[]) => void;
 }
 
 export type PanelRegion = "left" | "center" | "right" | "bottom";

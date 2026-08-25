@@ -9,11 +9,17 @@
     "typecheck": "tsc --noEmit -p tsconfig.json"
   },
   "dependencies": {
+    "@3jse/agent": "workspace:*",
     "@3jse/animation": "workspace:*",
+    "@3jse/assets": "workspace:*",
     "@3jse/character": "workspace:*",
+    "@3jse/graph": "workspace:*",
+    "@3jse/ir": "workspace:*",
     "@3jse/physics-rapier": "workspace:*",
     "@3jse/runtime": "workspace:*",
     "@3jse/save": "workspace:*",
+    "@3jse/vendor": "workspace:*",
+    "@modelcontextprotocol/sdk": "^1.30.0",
     "@galacean/editor-ui": "^1.2.0",
     "@galacean/gui": "^1.2.1",
     "react": "^18.3.1",

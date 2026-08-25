@@ -16,6 +16,7 @@
     "typescript": "^5.7.0"
   },
   "devDependencies": {
+    "@3jse/runtime": "workspace:*",
     "vitest": "^2.1.0"
   }
 }

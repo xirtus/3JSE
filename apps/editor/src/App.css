@@ -377,3 +377,283 @@ body,
   margin-top: 12px;
   align-items: center;
 }
+
+/* ---------- 3JSE Graph (panels/GraphPanel.tsx, @3jse/graph) ---------- */
+
+.graph-panel {
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+}
+
+/* ---------- Code Editor (panels/CodeEditorPanel.tsx) ---------- */
+
+.code-editor-panel {
+  margin: 0;
+  padding: 8px 0;
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.code-line {
+  display: flex;
+  gap: 12px;
+  padding: 0 12px;
+  cursor: pointer;
+  white-space: pre;
+}
+
+.code-line:hover {
+  background: var(--c-surface-subtle);
+}
+
+.code-line-selected {
+  background: rgba(74, 127, 214, 0.22);
+}
+
+.code-line-no {
+  opacity: 0.35;
+  flex: none;
+  width: 24px;
+  text-align: right;
+  user-select: none;
+}
+
+.code-line-text {
+  color: var(--c-text);
+}
+
+/* ---------- Debugger (panels/DebuggerPanel.tsx) ---------- */
+
+.debugger-panel {
+  padding: 10px;
+}
+
+.debugger-controls {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.debugger-log {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  color: var(--c-text-dim);
+}
+
+/* ---------- Open Source (panels/OpenSourcePanel.tsx, @3jse/vendor) ---------- */
+
+.open-source-panel {
+  display: flex;
+  flex-direction: column;
+  padding: 4px 0;
+}
+
+.vendor-entry {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--c-border);
+}
+
+.vendor-entry-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.vendor-entry-id {
+  font-weight: 600;
+  font-size: 13px;
+}
+
+.vendor-tier {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 1px 6px;
+  border-radius: 3px;
+}
+
+.vendor-tier-a {
+  background: rgba(74, 197, 106, 0.18);
+  color: #4ac56a;
+}
+
+.vendor-tier-b {
+  background: rgba(224, 168, 62, 0.18);
+  color: var(--c-warning);
+}
+
+.vendor-tier-reference {
+  background: var(--c-surface-subtle);
+  color: var(--c-text-dim);
+}
+
+.vendor-stars {
+  font-size: 11px;
+  opacity: 0.6;
+}
+
+.vendor-entry-meta {
+  display: flex;
+  gap: 12px;
+  font-size: 11px;
+  opacity: 0.7;
+  margin-bottom: 4px;
+}
+
+.vendor-entry-meta code {
+  background: var(--c-surface-subtle);
+  border-radius: 3px;
+  padding: 1px 4px;
+}
+
+.vendor-notes {
+  font-size: 11px;
+  opacity: 0.6;
+  margin: 0 0 6px;
+  max-width: 640px;
+}
+
+.vendor-staged {
+  margin-top: 4px;
+}
+
+.vendor-notices {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 11px;
+  background: var(--c-surface-subtle);
+  border-radius: 4px;
+  padding: 8px;
+  margin: 4px 0 0;
+  white-space: pre-wrap;
+  max-width: 640px;
+}
+
+/* ---------- Agent Panel (panels/AgentPanel.tsx, @3jse/agent) ---------- */
+
+.agent-panel {
+  padding: 10px;
+}
+
+.agent-plan {
+  list-style: none;
+  margin: 10px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.agent-step {
+  font-size: 12px;
+  padding: 6px 8px;
+  border-radius: 4px;
+  border-left: 2px solid var(--c-border);
+  background: var(--c-surface-subtle);
+}
+
+.agent-step-running {
+  border-left-color: var(--c-warning);
+}
+
+.agent-step-done {
+  border-left-color: #4ac56a;
+}
+
+.agent-step-error {
+  border-left-color: var(--c-danger);
+}
+
+.agent-step-label {
+  display: block;
+}
+
+.agent-step-tool {
+  opacity: 0.55;
+  font-size: 10px;
+}
+
+.agent-step-result {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 10px;
+  opacity: 0.7;
+  margin-top: 2px;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.agent-diff {
+  margin-top: 12px;
+}
+
+.agent-diff-block {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 11px;
+  background: var(--c-surface-subtle);
+  border-radius: 4px;
+  padding: 8px;
+  margin: 4px 0;
+  white-space: pre-wrap;
+}
+
+.agent-diff-arrow {
+  text-align: center;
+  opacity: 0.5;
+}
+
+/* ---------- Content Browser (panels/ContentBrowserPanel.tsx, @3jse/assets) ---------- */
+
+.content-browser-panel {
+  padding: 10px;
+}
+
+.content-browser-picker input {
+  color: var(--c-text);
+  font-size: 12px;
+}
+
+.content-browser-result {
+  margin-top: 10px;
+}
+
+.content-browser-mono {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 11px;
+}
+
+.content-browser-warnings {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.content-browser-warning {
+  font-size: 11px;
+  padding: 4px 6px;
+  border-radius: 3px;
+  background: var(--c-surface-subtle);
+}
+
+.content-browser-warning-severity {
+  font-weight: 600;
+  margin-right: 4px;
+}
+
+.content-browser-warning-error .content-browser-warning-severity {
+  color: var(--c-danger);
+}
+
+.content-browser-warning-warning .content-browser-warning-severity {
+  color: var(--c-warning);
+}
+
+.content-browser-warning-info .content-browser-warning-severity {
+  opacity: 0.6;
+}
