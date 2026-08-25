@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>POM / SPOM sphere</title>
+<style>
+  html,body{margin:0;height:100%;background:#0b0d10;color:#dfe4ea;font:13px system-ui,sans-serif;overflow:hidden}
+  #ui{position:fixed;top:12px;left:12px;background:#171b21e0;padding:12px;border-radius:8px;width:230px;
+      max-height:calc(100vh - 40px);overflow-y:auto}
+  h2{font-size:10px;letter-spacing:.09em;text-transform:uppercase;opacity:.5;margin:12px 0 5px;font-weight:600}
+  h2:first-child{margin-top:0}
+  #render,#shape{display:grid;grid-template-columns:1fr 1fr;gap:3px}
+  #render button,#shape button{margin:0}
+  button:disabled{opacity:.3;cursor:not-allowed}
+  button{display:block;width:100%;margin:0 0 3px;padding:6px 7px;border:0;border-radius:5px;
+         background:#262c35;color:#dfe4ea;cursor:pointer;text-align:left;font:inherit}
+  button.on{background:#3b82f6;color:#fff}
+  label{display:block;margin-top:8px;opacity:.8}
+  .check{display:flex;align-items:center;gap:7px;margin:0 0 3px;opacity:1;cursor:pointer}
+  input[type=range]{width:100%}
+  #stats{position:fixed;top:12px;right:12px;background:#171b21e0;padding:10px 12px;border-radius:8px;
+         display:grid;grid-template-columns:auto auto;gap:4px 18px;font-variant-numeric:tabular-nums}
+  #stats b{font-weight:400;opacity:.55}
+  #stats span{text-align:right}
+  #hint{margin-top:12px;opacity:.5;font-size:11px;line-height:1.5}
+</style>
+</head>
+<body>
+<div id="ui">
+  <h2>Shape</h2>
+  <div id="shape"></div>
+
+  <h2>Rendering mode</h2>
+  <div id="render"></div>
+
+  <h2>View</h2>
+  <div id="view"></div>
+
+  <h2>Lighting &amp; scene</h2>
+  <label class="check"><input id="shadow" type="checkbox" checked> Self-shadowing</label>
+  <label class="check"><input id="ground" type="checkbox"> Ground</label>
+  <label class="check"><input id="taa" type="checkbox"> TAA</label>
+
+  <h2>Parallax depth &amp; march</h2>
+  <label for="depth">Depth <span id="depth-v"></span></label>
+  <input id="depth" type="range" min="0" max="0.15" step="0.005" value="0.05">
+  <label for="steps">Steps <span id="steps-v"></span></label>
+  <input id="steps" type="range" min="8" max="128" step="1" value="48">
+
+  <div id="hint">drag = orbit · scroll = zoom · keys 1-4 · hover a mode for what it does</div>
+</div>
+
+<div id="stats">
+  <b>Triangles</b><span id="s-tris">–</span>
+  <b>GPU</b><span id="s-gpu">–</span>
+  <b>CPU</b><span id="s-cpu">–</span>
+</div>
+<script type="module" src="/src/main.js"></script>
+</body>
+</html>

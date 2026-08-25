@@ -12,5 +12,9 @@
   "engines": {
     "node": ">=20"
   },
-  "packageManager": "pnpm@11.7.0"
+  "packageManager": "pnpm@11.7.0",
+  "devDependencies": {
+    "three": "^0.185.1",
+    "@types/three": "^0.185.0"
+  }
 }

@@ -1,0 +1,199 @@
+struct Params {
+  particleCount: u32,
+  tableSize: u32,
+  maxPerCell: u32,
+  fieldResolution: u32,
+  H: f32,
+  H2: f32,
+  mass: f32,
+  restDensity: f32,
+  stiffness: f32,
+  viscosity: f32,
+  gravity: f32,
+  boundaryDamping: f32,
+  maxVelocity: f32,
+  collisionRadius: f32,
+  collisionStiffness: f32,
+  xsphEpsilon: f32,
+  surfaceTension: f32,
+  dt: f32,
+  poly6Coeff: f32,
+  spikyCoeff: f32,
+  viscLapCoeff: f32,
+  invCellSize: f32,
+  halfContainerX: f32,
+  halfContainerZ: f32,
+  containerMaxY: f32,
+  fieldDomainMinX: f32,
+  fieldDomainMinY: f32,
+  fieldDomainMinZ: f32,
+  fieldCellSize: f32,
+  fieldInvCellSize: f32,
+  splatRadius2: f32,
+  splatRadiusCells: u32,
+}
+
+struct Obstacle {
+  posRadius: vec4<f32>,
+  velMass: vec4<f32>,
+}
+
+struct ObstacleData {
+  count: u32,
+  _pad0: u32,
+  _pad1: u32,
+  _pad2: u32,
+  obstacles: array<Obstacle, 8>,
+}
+
+@group(0) @binding(0) var<uniform> params: Params;
+@group(0) @binding(1) var<storage, read> positions: array<vec4<f32>>;
+@group(0) @binding(2) var<storage, read> velocities: array<vec4<f32>>;
+@group(0) @binding(3) var<storage, read> densityPressure: array<vec2<f32>>;
+@group(0) @binding(4) var<storage, read_write> forces: array<vec4<f32>>;
+@group(0) @binding(5) var<storage, read_write> xsph: array<vec4<f32>>;
+@group(0) @binding(6) var<storage, read> cellCounts: array<u32>;
+@group(0) @binding(7) var<storage, read> cellEntries: array<u32>;
+@group(0) @binding(8) var<uniform> obstacleData: ObstacleData;
+
+fn hashCell(cx: i32, cy: i32, cz: i32, tableSize: u32) -> u32 {
+  let h = (cx * 73856093) ^ (cy * 19349663) ^ (cz * 83492791);
+  return u32(h & 0x7FFFFFFF) % tableSize;
+}
+
+@compute @workgroup_size(256)
+fn main(@builtin(global_invocation_id) gid: vec3<u32>) {
+  let i = gid.x;
+  if (i >= params.particleCount) {
+    return;
+  }
+
+  let posI = positions[i].xyz;
+  let velI = velocities[i].xyz;
+  let dp = densityPressure[i];
+  let densityI = dp.x;
+  let pressureI = dp.y;
+
+  let cxi = i32(floor((posI.x + params.halfContainerX) * params.invCellSize));
+  let cyi = i32(floor(posI.y * params.invCellSize));
+  let czi = i32(floor((posI.z + params.halfContainerZ) * params.invCellSize));
+
+  var force = vec3<f32>(0.0, params.gravity * densityI, 0.0);
+  var xsphAcc = vec3<f32>(0.0);
+  var trappedAir = 0.0;
+
+  for (var dx = -1; dx <= 1; dx++) {
+    for (var dy = -1; dy <= 1; dy++) {
+      for (var dz = -1; dz <= 1; dz++) {
+        let cellHash = hashCell(cxi + dx, cyi + dy, czi + dz, params.tableSize);
+        let count = min(cellCounts[cellHash], params.maxPerCell);
+        let base = cellHash * params.maxPerCell;
+        for (var k = 0u; k < count; k++) {
+          let j = cellEntries[base + k];
+          if (j == i) {
+            continue;
+          }
+
+          let diff = posI - positions[j].xyz;
+          let r2 = dot(diff, diff);
+          if (r2 >= params.H2 || r2 < 1e-8) {
+            continue;
+          }
+
+          let invR = inverseSqrt(r2);
+          let r = r2 * invR;
+          let dir = diff * invR;
+          let hr = params.H - r;
+          let densityJ = densityPressure[j].x;
+          let pressureJ = densityPressure[j].y;
+          let invDensJ = 1.0 / densityJ;
+          let velJ = velocities[j].xyz;
+
+          let avgPressure = (pressureI + pressureJ) * 0.5;
+          let pressureMag = -params.mass * avgPressure * invDensJ * params.spikyCoeff * hr * hr;
+          force += dir * pressureMag;
+
+          if (r < params.collisionRadius) {
+            let overlap = params.collisionRadius - r;
+            force += dir * params.collisionStiffness * overlap;
+          }
+
+          let viscMag = params.viscosity * params.mass * invDensJ * params.viscLapCoeff * hr;
+          force += viscMag * (velJ - velI);
+
+          let cohesion = 1.0 - r / params.H;
+          let cohMag = params.surfaceTension * params.mass * params.mass * invDensJ * cohesion * cohesion;
+          force -= dir * cohMag;
+
+          let d2 = params.H2 - r2;
+          let w = params.poly6Coeff * d2 * d2 * d2;
+          let rhoAvg = (densityI + densityJ) * 0.5;
+          let xsphW = params.mass / rhoAvg * w;
+          xsphAcc += (velJ - velI) * xsphW;
+
+          let vDiff = length(velJ - velI);
+          if (vDiff > 1e-6) {
+            let velDir = (velJ - velI) / vDiff;
+            let dirAlign = 1.0 - dot(velDir, dir);
+            trappedAir += params.mass * invDensJ * vDiff * max(dirAlign, 0.0) * w;
+          }
+        }
+      }
+    }
+  }
+
+  // Obstacle mirror particle forces
+  for (var o = 0u; o < obstacleData.count; o++) {
+    let obs = obstacleData.obstacles[o];
+    let obsPos = obs.posRadius.xyz;
+    let obsRadius = obs.posRadius.w;
+    let obsVel = obs.velMass.xyz;
+    if (obsRadius < 1e-6) {
+      continue;
+    }
+
+    let diff = posI - obsPos;
+    let dist = length(diff);
+    let surfaceDist = dist - obsRadius;
+
+    if (surfaceDist >= params.H || surfaceDist < 0.0 || dist < 1e-6) {
+      continue;
+    }
+
+    let normal = diff / dist;
+
+    let hr = params.H - surfaceDist;
+
+    // Pressure force from mirror particle at obstacle surface
+    let mirrorPressure = pressureI;
+    let invMirrorDens = 1.0 / params.restDensity;
+    let avgP = (pressureI + mirrorPressure) * 0.5;
+    let pMag = -params.mass * avgP * invMirrorDens * params.spikyCoeff * hr * hr;
+    force += normal * pMag;
+
+    // Viscosity from obstacle velocity
+    let viscMag = params.viscosity * params.mass * invMirrorDens * params.viscLapCoeff * hr;
+    force += viscMag * (obsVel - velI);
+  }
+
+  // Wall boundary spring forces — geometry-based, independent of pressure
+  let bDist = params.H * 2.0;
+  let bStiff = 15000.0;
+
+  let dFloor = posI.y;
+  let dCeil  = params.containerMaxY - posI.y;
+  let dNegX  = posI.x + params.halfContainerX;
+  let dPosX  = params.halfContainerX - posI.x;
+  let dNegZ  = posI.z + params.halfContainerZ;
+  let dPosZ  = params.halfContainerZ - posI.z;
+
+  if (dFloor < bDist) { let q = 1.0 - dFloor / bDist; force.y += bStiff * q * q; }
+  if (dCeil  < bDist) { let q = 1.0 - dCeil  / bDist; force.y -= bStiff * q * q; }
+  if (dNegX  < bDist) { let q = 1.0 - dNegX  / bDist; force.x += bStiff * q * q; }
+  if (dPosX  < bDist) { let q = 1.0 - dPosX  / bDist; force.x -= bStiff * q * q; }
+  if (dNegZ  < bDist) { let q = 1.0 - dNegZ  / bDist; force.z += bStiff * q * q; }
+  if (dPosZ  < bDist) { let q = 1.0 - dPosZ  / bDist; force.z -= bStiff * q * q; }
+
+  forces[i] = vec4<f32>(force, 0.0);
+  xsph[i] = vec4<f32>(xsphAcc, trappedAir);
+}

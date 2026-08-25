@@ -1,8 +1,8 @@
 {
   "version": 1,
-  "generatedAt": "2026-08-25T06:34:51.760Z",
+  "generatedAt": "2026-08-25T06:50:08.370Z",
   "policy": "docs/VENDOR_INTEGRATIONS.md (Assemble-first posture)",
-  "notes": "verifiedBy values: 'human' (LICENSE file read at pinned revision), 'npm-registry' (registry metadata — recorded, not trusted), '' (unverified). Prefer MIT / Apache-2.0 / BSD / GPL-compatible imports; GPL imports are fine (3JSE is GPL-3.0) but their copyleft flows onward — see policy.",
+  "notes": "verifiedBy values: 'human' (LICENSE file read at pinned revision), 'npm-registry' (registry metadata \u2014 recorded, not trusted), '' (unverified). Prefer MIT / Apache-2.0 / BSD / GPL-compatible imports; GPL imports are fine (3JSE is GPL-3.0) but their copyleft flows onward \u2014 see policy.",
   "entries": [
     {
       "name": "@dimforge/rapier3d-compat",
@@ -22,7 +22,7 @@
       "repo": "https://github.com/galacean/editor-ui",
       "verifiedBy": "human",
       "scope": "workspace-dependency",
-      "note": "No license field in the npm package.json; repo LICENSE is MIT — human-verified (VENDOR_INTEGRATIONS.md case study)."
+      "note": "No license field in the npm package.json; repo LICENSE is MIT \u2014 human-verified (VENDOR_INTEGRATIONS.md case study)."
     },
     {
       "name": "@galacean/gui",
@@ -96,7 +96,7 @@
     },
     {
       "name": "three",
-      "version": "0.185.1",
+      "version": "0.160.0",
       "range": "^0.185.1",
       "license": "MIT",
       "repo": "https://github.com/mrdoob/three.js",
@@ -166,12 +166,89 @@
     },
     {
       "name": "zod",
-      "version": "3.25.76",
+      "version": "3.23.8",
       "range": "^3.24.0",
       "license": "MIT",
       "repo": "https://github.com/colinhacks/zod",
       "verifiedBy": "installed-package-json",
       "scope": "workspace-dependency",
+      "note": ""
+    },
+    {
+      "name": "apate",
+      "pkgName": "apate",
+      "source": "github.com/owenyuwono/apate",
+      "license": "MIT",
+      "repo": "",
+      "verifiedBy": "",
+      "scope": "vendored-upstream",
+      "vendored": "packages/vendor/upstream/apate",
+      "note": ""
+    },
+    {
+      "name": "demiurge",
+      "pkgName": "demiurge",
+      "source": "github.com/owenyuwono/demiurge",
+      "license": "MIT",
+      "repo": "",
+      "verifiedBy": "",
+      "scope": "vendored-upstream",
+      "vendored": "packages/vendor/upstream/demiurge",
+      "note": ""
+    },
+    {
+      "name": "dryad",
+      "pkgName": "demicreatures",
+      "source": "github.com/owenyuwono/dryad",
+      "license": "MIT",
+      "repo": "",
+      "verifiedBy": "",
+      "scope": "vendored-upstream",
+      "vendored": "packages/vendor/upstream/dryad",
+      "note": ""
+    },
+    {
+      "name": "gaia",
+      "pkgName": "grassgen",
+      "source": "github.com/owenyuwono/gaia",
+      "license": "MIT",
+      "repo": "",
+      "verifiedBy": "",
+      "scope": "vendored-upstream",
+      "vendored": "packages/vendor/upstream/gaia",
+      "note": ""
+    },
+    {
+      "name": "minos",
+      "pkgName": "",
+      "source": "github.com/owenyuwono/minos",
+      "license": "MIT",
+      "repo": "",
+      "verifiedBy": "",
+      "scope": "vendored-upstream",
+      "vendored": "packages/vendor/upstream/minos",
+      "note": ""
+    },
+    {
+      "name": "poseidon",
+      "pkgName": "fft-ocean-claude",
+      "source": "github.com/owenyuwono/poseidon",
+      "license": "MIT",
+      "repo": "",
+      "verifiedBy": "",
+      "scope": "vendored-upstream",
+      "vendored": "packages/vendor/upstream/poseidon",
+      "note": ""
+    },
+    {
+      "name": "tiamat",
+      "pkgName": "fluid3",
+      "source": "github.com/owenyuwono/tiamat",
+      "license": "MIT",
+      "repo": "",
+      "verifiedBy": "",
+      "scope": "vendored-upstream",
+      "vendored": "packages/vendor/upstream/tiamat",
       "note": ""
     },
     {
@@ -197,7 +274,7 @@
     {
       "name": "dryad",
       "source": "github.com/owenyuwono/dryad",
-      "pinnedCommit": "main",
+      "pinnedCommit": "e85729b779708c50b7d65ddd34d524f42da88705",
       "license": "MIT",
       "licenseNote": "",
       "verifiedBy": "human",
@@ -207,7 +284,7 @@
     {
       "name": "demiurge",
       "source": "github.com/owenyuwono/demiurge",
-      "pinnedCommit": "main",
+      "pinnedCommit": "cb3e1785f7f3e6e3e9b65df76133bbbce747c0be",
       "license": "MIT",
       "licenseNote": "",
       "verifiedBy": "human",
@@ -217,7 +294,7 @@
     {
       "name": "tiamat",
       "source": "github.com/owenyuwono/tiamat",
-      "pinnedCommit": "main",
+      "pinnedCommit": "e389a99192c5158fb3b95d9df5427feaf9d97fea",
       "license": "MIT",
       "licenseNote": "LICENSE file is standard MIT; GitHub detector fails on a leading BOM. Human must flip verifiedBy before Tier A.",
       "verifiedBy": "pending",
@@ -227,7 +304,7 @@
     {
       "name": "apate",
       "source": "github.com/owenyuwono/apate",
-      "pinnedCommit": "main",
+      "pinnedCommit": "ae62cac4ad8a27209c84dedad86b55afad27170a",
       "license": "MIT",
       "licenseNote": "",
       "verifiedBy": "human",
@@ -237,7 +314,7 @@
     {
       "name": "minos",
       "source": "github.com/owenyuwono/minos",
-      "pinnedCommit": "master",
+      "pinnedCommit": "ea8f76e20534b57a9412e2a87da9be00acc7c0f5",
       "license": "MIT",
       "licenseNote": "",
       "verifiedBy": "human",
@@ -333,6 +410,83 @@
       "verifiedBy": "human",
       "scope": "vendor-registry",
       "tier": "reference"
+    },
+    {
+      "name": "2022yamahar1.glb",
+      "license": "Public domain / CC0",
+      "verifiedBy": "",
+      "scope": "base-models",
+      "note": "As declared by curator at intake (2026-08-24). Per-file provenance re-verification recommended before redistribution."
+    },
+    {
+      "name": "bajaj_avenger200.glb",
+      "license": "Public domain / CC0",
+      "verifiedBy": "",
+      "scope": "base-models",
+      "note": "As declared by curator at intake (2026-08-24). Per-file provenance re-verification recommended before redistribution."
+    },
+    {
+      "name": "bentley.glb",
+      "license": "Public domain / CC0",
+      "verifiedBy": "",
+      "scope": "base-models",
+      "note": "As declared by curator at intake (2026-08-24). Per-file provenance re-verification recommended before redistribution."
+    },
+    {
+      "name": "bmw1m.glb",
+      "license": "Public domain / CC0",
+      "verifiedBy": "",
+      "scope": "base-models",
+      "note": "As declared by curator at intake (2026-08-24). Per-file provenance re-verification recommended before redistribution."
+    },
+    {
+      "name": "dodge_challenger.glb",
+      "license": "Public domain / CC0",
+      "verifiedBy": "",
+      "scope": "base-models",
+      "note": "As declared by curator at intake (2026-08-24). Per-file provenance re-verification recommended before redistribution."
+    },
+    {
+      "name": "guntruck.glb",
+      "license": "Public domain / CC0",
+      "verifiedBy": "",
+      "scope": "base-models",
+      "note": "As declared by curator at intake (2026-08-24). Per-file provenance re-verification recommended before redistribution."
+    },
+    {
+      "name": "kawasakininjazx-6r.glb",
+      "license": "Public domain / CC0",
+      "verifiedBy": "",
+      "scope": "base-models",
+      "note": "As declared by curator at intake (2026-08-24). Per-file provenance re-verification recommended before redistribution."
+    },
+    {
+      "name": "male_tpose.glb",
+      "license": "Public domain / CC0",
+      "verifiedBy": "",
+      "scope": "base-models",
+      "note": "As declared by curator at intake (2026-08-24). Per-file provenance re-verification recommended before redistribution."
+    },
+    {
+      "name": "posed__t-pose_female.glb",
+      "license": "Public domain / CC0",
+      "verifiedBy": "",
+      "scope": "base-models",
+      "note": "As declared by curator at intake (2026-08-24). Per-file provenance re-verification recommended before redistribution."
+    },
+    {
+      "name": "twister300.glb",
+      "license": "Public domain / CC0",
+      "verifiedBy": "",
+      "scope": "base-models",
+      "note": "As declared by curator at intake (2026-08-24). Per-file provenance re-verification recommended before redistribution."
+    },
+    {
+      "name": "volvo_240.glb",
+      "license": "Public domain / CC0",
+      "verifiedBy": "",
+      "scope": "base-models",
+      "note": "As declared by curator at intake (2026-08-24). Per-file provenance re-verification recommended before redistribution."
     }
   ]
 }

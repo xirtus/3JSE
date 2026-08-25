@@ -105,6 +105,44 @@ async function main() {
     console.log(`${m.name}@${m.version}  ${m.license || "?"}  ${m.repo}`);
   }
 
+  // vendored upstream repos (packages/vendor/upstream/*) — LICENSE file read at the pin
+  const SPDX_HINTS = [
+    ["MIT License", "MIT"], ["MIT", "MIT"], ["Apache License", "Apache-2.0"],
+    ["GNU GENERAL PUBLIC LICENSE", "GPL-3.0"], ["GNU AFFERO", "AGPL-3.0"],
+    ["BSD", "BSD"], ["Zlib", "Zlib"], ["ISC", "ISC"], ["Mozilla Public", "MPL-2.0"],
+  ];
+  const upstreamRoot = join(root, "packages", "vendor", "upstream");
+  try {
+    for (const id of await readdir(upstreamRoot)) {
+      const up = join(upstreamRoot, id);
+      let license = "", note = "";
+      try {
+        const text = await readFile(join(up, "LICENSE"), "utf8");
+        for (const [needle, spdx] of SPDX_HINTS) {
+          if (text.slice(0, 400).includes(needle)) { license = spdx; break; }
+        }
+        if (!license) note = "LICENSE present but pattern unrecognized — human read required";
+      } catch { note = "no LICENSE file at pin"; }
+      let repo = "", pkgName = "";
+      try {
+        const pj = JSON.parse(await readFile(join(up, "package.json"), "utf8"));
+        pkgName = pj.name || "";
+        repo = (pj.repository?.url || "").replace(/^git\+/, "").replace(/\.git$/, "").replace(/^git:\/\/github\.com/, "https://github.com");
+      } catch { /* demo repos may lack package.json */ }
+      entries.push({
+        name: id,
+        pkgName,
+        source: `github.com/owenyuwono/${id}`,
+        license,
+        repo,
+        verifiedBy: "", // machine pattern-match; registry merge below carries the human verdict
+        scope: "vendored-upstream",
+        vendored: `packages/vendor/upstream/${id}`,
+        note,
+      });
+    }
+  } catch { /* no upstream dir */ }
+
   // merge human-verified vendor registry entries (registry.json lives in src/ now)
   try {
     const reg = JSON.parse(await readFile(join(root, "packages", "vendor", "src", "registry.json"), "utf8"));

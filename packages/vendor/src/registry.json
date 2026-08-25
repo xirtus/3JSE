@@ -9,48 +9,87 @@
       "label": "Water / Ocean",
       "unrealAnalog": "Water plugin",
       "godotAnalog": "WaterWays / ocean addon",
-      "templates": ["Surfing", "Open World", "Flight"],
-      "entries": ["poseidon", "tiamat", "webgpu-ocean-mpm"]
+      "templates": [
+        "Surfing",
+        "Open World",
+        "Flight"
+      ],
+      "entries": [
+        "poseidon",
+        "tiamat",
+        "webgpu-ocean-mpm"
+      ]
     },
     {
       "id": "foliage",
       "label": "Foliage / Grass",
       "unrealAnalog": "Foliage / PCG grass",
       "godotAnalog": "GPUTrail / multimesh grass",
-      "templates": ["Open World", "Third Person", "Walking Simulator"],
-      "entries": ["gaia"]
+      "templates": [
+        "Open World",
+        "Third Person",
+        "Walking Simulator"
+      ],
+      "entries": [
+        "gaia"
+      ]
     },
     {
       "id": "flora",
       "label": "Trees / Flora",
       "unrealAnalog": "Procedural foliage / SpeedTree-class",
       "godotAnalog": "procedural tree addon",
-      "templates": ["Open World"],
-      "entries": ["dryad"]
+      "templates": [
+        "Open World"
+      ],
+      "entries": [
+        "dryad"
+      ]
     },
     {
       "id": "terrain",
       "label": "Terrain / Planet",
       "unrealAnalog": "Landscape + World Partition",
       "godotAnalog": "Terrain3D",
-      "templates": ["Open World"],
-      "entries": ["demiurge", "minos", "hls-webgpu-terrain"]
+      "templates": [
+        "Open World"
+      ],
+      "entries": [
+        "demiurge",
+        "minos",
+        "hls-webgpu-terrain"
+      ]
     },
     {
       "id": "vfx",
       "label": "VFX / Abilities",
       "unrealAnalog": "Niagara",
       "godotAnalog": "GPUParticles + visual shader",
-      "templates": ["FPS", "RPG", "Third Person"],
-      "entries": ["chiro-elemental", "three-vfx", "quantum-core"]
+      "templates": [
+        "FPS",
+        "RPG",
+        "Third Person"
+      ],
+      "entries": [
+        "chiro-elemental",
+        "three-vfx",
+        "quantum-core"
+      ]
     },
     {
       "id": "motion-gen",
       "label": "Text-to-Motion (editor tool)",
       "unrealAnalog": "ML Deformer / motion generation plugins",
       "godotAnalog": "external DCC import",
-      "templates": ["Third Person", "RPG", "FPS"],
-      "entries": ["kimodo", "kimodo-cpp"],
+      "templates": [
+        "Third Person",
+        "RPG",
+        "FPS"
+      ],
+      "entries": [
+        "kimodo",
+        "kimodo-cpp"
+      ],
       "shipsInPublishBuild": false
     },
     {
@@ -59,210 +98,367 @@
       "unrealAnalog": "Parallax / displacement materials",
       "godotAnalog": "spatial shader depth",
       "templates": [],
-      "entries": ["apate"]
+      "entries": [
+        "apate"
+      ]
     },
     {
       "id": "fluid",
       "label": "Particle fluids",
       "unrealAnalog": "Niagara fluid / Chaos cloth-adjacent",
       "godotAnalog": "GPUParticles hydro",
-      "templates": ["Physics Sandbox"],
-      "entries": ["tiamat", "webgpu-ocean-mpm"]
+      "templates": [
+        "Physics Sandbox"
+      ],
+      "entries": [
+        "tiamat",
+        "webgpu-ocean-mpm"
+      ]
     }
   ],
   "entries": [
     {
       "id": "poseidon",
-      "title": "Poseidon — FFT ocean",
+      "title": "Poseidon \u2014 FFT ocean",
       "source": "github.com/owenyuwono/poseidon",
       "homepage": "https://github.com/owenyuwono/poseidon",
       "pinnedCommit": "671053b812fcbffe8ecc4668eaa6ab7ffeb63287",
-      "license": { "spdx": "MIT", "verifiedBy": "human", "verifiedAt": "2026-08-24", "file": "LICENSE" },
-      "stack": { "renderer": "webgpu-only", "framework": "three.js", "language": "js+tsl" },
+      "license": {
+        "spdx": "MIT",
+        "verifiedBy": "human",
+        "verifiedAt": "2026-08-24",
+        "file": "LICENSE"
+      },
+      "stack": {
+        "renderer": "webgpu-only",
+        "framework": "three.js",
+        "language": "js+tsl"
+      },
       "tier": "A",
       "package": "@3jse/water-poseidon",
       "capability": "water",
-      "projectModules": ["water"],
+      "projectModules": [
+        "water"
+      ],
       "phase": 5,
-      "notes": "Tessendorf 3-cascade IFFT as WebGPU compute + TSL optics. No WebGL2 path upstream — wrapper must ship a fallback shader (RENDERING.md / PERFORMANCE.md). Extract compute+material out of the Vite demo shell."
+      "notes": "Tessendorf 3-cascade IFFT as WebGPU compute + TSL optics. No WebGL2 path upstream \u2014 wrapper must ship a fallback shader (RENDERING.md / PERFORMANCE.md). Extract compute+material out of the Vite demo shell.",
+      "vendored": "packages/vendor/upstream/poseidon",
+      "vendoredAt": "2026-08-24"
     },
     {
       "id": "gaia",
-      "title": "Gaia — procedural grass",
+      "title": "Gaia \u2014 procedural grass",
       "source": "github.com/owenyuwono/gaia",
       "homepage": "https://github.com/owenyuwono/gaia",
       "pinnedCommit": "f23a32daca73d4d71d5b23dba3dee7e11f969f55",
-      "license": { "spdx": "MIT", "verifiedBy": "human", "verifiedAt": "2026-08-24", "file": "LICENSE" },
-      "stack": { "renderer": "webgl+webgpu", "framework": "three.js", "language": "js" },
+      "license": {
+        "spdx": "MIT",
+        "verifiedBy": "human",
+        "verifiedAt": "2026-08-24",
+        "file": "LICENSE"
+      },
+      "stack": {
+        "renderer": "webgl+webgpu",
+        "framework": "three.js",
+        "language": "js"
+      },
       "tier": "A",
       "package": "@3jse/foliage-gaia",
       "capability": "foliage",
-      "projectModules": ["foliage"],
+      "projectModules": [
+        "foliage"
+      ],
       "phase": 5,
-      "notes": "Generation half is pure ESM (genome+seed, no Three import). Rendering half becomes InstancedMesh System. Zero authored assets — Open World template content source."
+      "notes": "Generation half is pure ESM (genome+seed, no Three import). Rendering half becomes InstancedMesh System. Zero authored assets \u2014 Open World template content source.",
+      "vendored": "packages/vendor/upstream/gaia",
+      "vendoredAt": "2026-08-24"
     },
     {
       "id": "dryad",
-      "title": "Dryad — procedural trees",
+      "title": "Dryad \u2014 procedural trees",
       "source": "github.com/owenyuwono/dryad",
       "homepage": "https://github.com/owenyuwono/dryad",
-      "pinnedCommit": "main",
-      "license": { "spdx": "MIT", "verifiedBy": "human", "verifiedAt": "2026-08-24", "file": "LICENSE" },
-      "stack": { "renderer": "webgl+webgpu", "framework": "three.js", "language": "js" },
+      "pinnedCommit": "e85729b779708c50b7d65ddd34d524f42da88705",
+      "license": {
+        "spdx": "MIT",
+        "verifiedBy": "human",
+        "verifiedAt": "2026-08-24",
+        "file": "LICENSE"
+      },
+      "stack": {
+        "renderer": "webgl+webgpu",
+        "framework": "three.js",
+        "language": "js"
+      },
       "tier": "A",
       "package": "@3jse/flora-dryad",
       "capability": "flora",
-      "projectModules": ["flora"],
+      "projectModules": [
+        "flora"
+      ],
       "phase": 5,
-      "notes": "Same genome/seed split as gaia. Pin commit on next curator pass. Compatible design with gaia — wrap as sibling packages, not a merge."
+      "notes": "Same genome/seed split as gaia. Pin commit on next curator pass. Compatible design with gaia \u2014 wrap as sibling packages, not a merge.",
+      "vendored": "packages/vendor/upstream/dryad",
+      "vendoredAt": "2026-08-24"
     },
     {
       "id": "demiurge",
-      "title": "Demiurge — tectonic planet",
+      "title": "Demiurge \u2014 tectonic planet",
       "source": "github.com/owenyuwono/demiurge",
       "homepage": "https://github.com/owenyuwono/demiurge",
-      "pinnedCommit": "main",
-      "license": { "spdx": "MIT", "verifiedBy": "human", "verifiedAt": "2026-08-24", "file": "LICENSE" },
-      "stack": { "renderer": "webgpu-only", "framework": "three.js", "language": "ts" },
+      "pinnedCommit": "cb3e1785f7f3e6e3e9b65df76133bbbce747c0be",
+      "license": {
+        "spdx": "MIT",
+        "verifiedBy": "human",
+        "verifiedAt": "2026-08-24",
+        "file": "LICENSE"
+      },
+      "stack": {
+        "renderer": "webgpu-only",
+        "framework": "three.js",
+        "language": "ts"
+      },
       "tier": "A",
       "package": "@3jse/terrain-demiurge",
       "capability": "terrain",
-      "projectModules": ["terrain"],
+      "projectModules": [
+        "terrain"
+      ],
       "phase": 5,
-      "notes": "Procedural mode for @3jse/terrain beside hand-authored heightfields. WebGPU-only; same fallback obligation as poseidon. Needs World Partition before it is load-bearing."
+      "notes": "Procedural mode for @3jse/terrain beside hand-authored heightfields. WebGPU-only; same fallback obligation as poseidon. Needs World Partition before it is load-bearing.",
+      "vendored": "packages/vendor/upstream/demiurge",
+      "vendoredAt": "2026-08-24"
     },
     {
       "id": "tiamat",
-      "title": "Tiamat — SPH fluid",
+      "title": "Tiamat \u2014 SPH fluid",
       "source": "github.com/owenyuwono/tiamat",
       "homepage": "https://github.com/owenyuwono/tiamat",
-      "pinnedCommit": "main",
-      "license": { "spdx": "MIT", "verifiedBy": "pending", "verifiedAt": null, "file": "LICENSE", "apiField": "NOASSERTION", "note": "LICENSE file is standard MIT; GitHub detector fails on a leading BOM. Human must flip verifiedBy before Tier A." },
-      "stack": { "renderer": "webgpu", "framework": "three.js", "language": "ts" },
+      "pinnedCommit": "e389a99192c5158fb3b95d9df5427feaf9d97fea",
+      "license": {
+        "spdx": "MIT",
+        "verifiedBy": "pending",
+        "verifiedAt": null,
+        "file": "LICENSE",
+        "apiField": "NOASSERTION",
+        "note": "LICENSE file is standard MIT; GitHub detector fails on a leading BOM. Human must flip verifiedBy before Tier A."
+      },
+      "stack": {
+        "renderer": "webgpu",
+        "framework": "three.js",
+        "language": "ts"
+      },
       "tier": "B",
       "package": null,
       "plannedPackage": "@3jse/fluid-tiamat",
       "capability": "fluid",
-      "projectModules": ["fluid", "water"],
+      "projectModules": [
+        "fluid",
+        "water"
+      ],
       "phase": 5,
-      "notes": "100k SPH particles, raymarched surface. Stage under /plugins/_vendor/tiamat/ until license.verifiedBy=human. Then wrap as FluidVolume feeding physics-rapier."
+      "notes": "100k SPH particles, raymarched surface. Stage under /plugins/_vendor/tiamat/ until license.verifiedBy=human. Then wrap as FluidVolume feeding physics-rapier.",
+      "vendored": "packages/vendor/upstream/tiamat",
+      "vendoredAt": "2026-08-24"
     },
     {
       "id": "apate",
-      "title": "Apate — surface relief comparison",
+      "title": "Apate \u2014 surface relief comparison",
       "source": "github.com/owenyuwono/apate",
       "homepage": "https://github.com/owenyuwono/apate",
-      "pinnedCommit": "main",
-      "license": { "spdx": "MIT", "verifiedBy": "human", "verifiedAt": "2026-08-24", "file": "LICENSE" },
-      "stack": { "renderer": "webgl", "framework": "three.js", "language": "glsl" },
+      "pinnedCommit": "ae62cac4ad8a27209c84dedad86b55afad27170a",
+      "license": {
+        "spdx": "MIT",
+        "verifiedBy": "human",
+        "verifiedAt": "2026-08-24",
+        "file": "LICENSE"
+      },
+      "stack": {
+        "renderer": "webgl",
+        "framework": "three.js",
+        "language": "glsl"
+      },
       "tier": "reference",
       "package": null,
       "capability": "materials-relief",
-      "projectModules": ["materials-relief"],
+      "projectModules": [
+        "materials-relief"
+      ],
       "phase": 5,
-      "notes": "Not a plugin. Port normal-map / POM / SPOM / displacement techniques into Material Graph nodes. Credit upstream."
+      "notes": "Not a plugin. Port normal-map / POM / SPOM / displacement techniques into Material Graph nodes. Credit upstream.",
+      "vendored": "packages/vendor/upstream/apate",
+      "vendoredAt": "2026-08-24"
     },
     {
       "id": "minos",
-      "title": "Minos — native planet engine",
+      "title": "Minos \u2014 native planet engine",
       "source": "github.com/owenyuwono/minos",
       "homepage": "https://github.com/owenyuwono/minos",
-      "pinnedCommit": "master",
-      "license": { "spdx": "MIT", "verifiedBy": "human", "verifiedAt": "2026-08-24", "file": "LICENSE" },
-      "stack": { "renderer": "vulkan", "framework": "none", "language": "rust" },
+      "pinnedCommit": "ea8f76e20534b57a9412e2a87da9be00acc7c0f5",
+      "license": {
+        "spdx": "MIT",
+        "verifiedBy": "human",
+        "verifiedAt": "2026-08-24",
+        "file": "LICENSE"
+      },
+      "stack": {
+        "renderer": "vulkan",
+        "framework": "none",
+        "language": "rust"
+      },
       "tier": "reference",
       "package": null,
       "capability": "terrain",
-      "projectModules": ["terrain"],
+      "projectModules": [
+        "terrain"
+      ],
       "phase": null,
-      "notes": "Different runtime (Rust/Vulkan). Algorithm reference for terrain + dryad port only. Zero code crosses into 3JSE."
+      "notes": "Different runtime (Rust/Vulkan). Algorithm reference for terrain + dryad port only. Zero code crosses into 3JSE.",
+      "vendored": "packages/vendor/upstream/minos",
+      "vendoredAt": "2026-08-24"
     },
     {
       "id": "chiro-elemental",
-      "title": "Chiro Elemental Sandbox — procedural ability VFX",
+      "title": "Chiro Elemental Sandbox \u2014 procedural ability VFX",
       "source": "github.com/achrefelouafi/LinearAbiltyCastingThreeJS",
       "homepage": "https://github.com/achrefelouafi/LinearAbiltyCastingThreeJS",
       "demo": "https://linearabilityextthreejs.pages.dev/",
-      "author": { "name": "Chiro Visuals / mohamedachrefelouafi", "x": "https://x.com/chirovisuals" },
-      "seenIn": ["https://x.com/TokenGremlin/status/2091967294582727005"],
+      "author": {
+        "name": "Chiro Visuals / mohamedachrefelouafi",
+        "x": "https://x.com/chirovisuals"
+      },
+      "seenIn": [
+        "https://x.com/TokenGremlin/status/2091967294582727005"
+      ],
       "forks": [
-        { "source": "github.com/majidmanzarpour/threejs-vfx", "note": "Upstream-submitted expansion fork; same MIT LICENSE text." }
+        {
+          "source": "github.com/majidmanzarpour/threejs-vfx",
+          "note": "Upstream-submitted expansion fork; same MIT LICENSE text."
+        }
       ],
       "pinnedCommit": "ba61847cb6887e5ccae9cd591e6390082cac5f05",
-      "license": { "spdx": "MIT", "verifiedBy": "human", "verifiedAt": "2026-08-24", "file": "LICENSE" },
-      "stack": { "renderer": "webgl", "framework": "three.js", "language": "js+glsl" },
+      "license": {
+        "spdx": "MIT",
+        "verifiedBy": "human",
+        "verifiedAt": "2026-08-24",
+        "file": "LICENSE"
+      },
+      "stack": {
+        "renderer": "webgl",
+        "framework": "three.js",
+        "language": "js+glsl"
+      },
       "tier": "B",
       "package": null,
       "plannedPackage": "@3jse/vfx-chiro",
       "capability": "vfx",
-      "projectModules": ["vfx"],
+      "projectModules": [
+        "vfx"
+      ],
       "phase": 5,
-      "notes": "Vite demo shell: hand-written GLSL, GPU instanced particles, 10 abilities (radials, boosts, portals, linear cast). Pause-and-sculpt sliders are the interaction model the Phase 5 VFX graph should steal. Extract emitters+shaders; do not import the character controller or the 938-slider debug UI wholesale. GLSL not TSL — wrapper should retarget hot paths to TSL where PERFORMANCE.md requires a WebGPU path."
+      "notes": "Vite demo shell: hand-written GLSL, GPU instanced particles, 10 abilities (radials, boosts, portals, linear cast). Pause-and-sculpt sliders are the interaction model the Phase 5 VFX graph should steal. Extract emitters+shaders; do not import the character controller or the 938-slider debug UI wholesale. GLSL not TSL \u2014 wrapper should retarget hot paths to TSL where PERFORMANCE.md requires a WebGPU path."
     },
     {
       "id": "three-vfx",
-      "title": "Three-VFX — WebGPU particle system",
+      "title": "Three-VFX \u2014 WebGPU particle system",
       "source": "github.com/mustache-dev/Three-VFX",
       "homepage": "https://github.com/mustache-dev/Three-VFX",
       "pinnedCommit": "c5533097adbccf22b4701f2f2527fb2fec951bd1",
-      "license": { "spdx": "MIT", "verifiedBy": "pending", "verifiedAt": null, "file": "LICENSE.md" },
-      "stack": { "renderer": "webgpu", "framework": "three.js", "language": "ts" },
+      "license": {
+        "spdx": "MIT",
+        "verifiedBy": "pending",
+        "verifiedAt": null,
+        "file": "LICENSE.md"
+      },
+      "stack": {
+        "renderer": "webgpu",
+        "framework": "three.js",
+        "language": "ts"
+      },
       "tier": "B",
       "package": null,
       "plannedPackage": "@3jse/vfx-threevfx",
       "capability": "vfx",
-      "projectModules": ["vfx"],
+      "projectModules": [
+        "vfx"
+      ],
       "phase": 5,
       "notes": "GPU compute particles, curve-over-lifetime, multiple emitter shapes. Closer to an actual library than Chiro's sandbox. Read LICENSE.md on curator pass before any A promotion. Complements chiro-elemental (abilities) rather than replacing it (engine)."
     },
     {
       "id": "quantum-core",
-      "title": "Quantum Core — shader scene",
+      "title": "Quantum Core \u2014 shader scene",
       "source": "codepen.io/sabosugi/pen/01a02fca-0d14-7e50-a9b8-283d419ccaea",
       "homepage": "https://codepen.io/editor/sabosugi/pen/01a02fca-0d14-7e50-a9b8-283d419ccaea?file=%2Findex.html",
-      "author": { "name": "Sabo Sugi", "x": "https://x.com/sabosugi" },
-      "seenIn": ["https://x.com/sabosugi/status/2091589195626328506"],
+      "author": {
+        "name": "Sabo Sugi",
+        "x": "https://x.com/sabosugi"
+      },
+      "seenIn": [
+        "https://x.com/sabosugi/status/2091589195626328506"
+      ],
       "pinnedCommit": null,
-      "license": { "spdx": null, "verifiedBy": null, "verifiedAt": null, "note": "CodePen snippet. No LICENSE file, no GitHub mirror found. Treat as all-rights-reserved until the author publishes a repo+license." },
-      "stack": { "renderer": "webgl", "framework": "three.js", "language": "js+glsl" },
+      "license": {
+        "spdx": null,
+        "verifiedBy": null,
+        "verifiedAt": null,
+        "note": "CodePen snippet. No LICENSE file, no GitHub mirror found. Treat as all-rights-reserved until the author publishes a repo+license."
+      },
+      "stack": {
+        "renderer": "webgl",
+        "framework": "three.js",
+        "language": "js+glsl"
+      },
       "tier": "reference",
       "package": null,
       "capability": "vfx",
-      "projectModules": ["vfx"],
+      "projectModules": [
+        "vfx"
+      ],
       "phase": null,
       "notes": "Look-dev reference for dense volumetric/core shader scenes. No import button. If a GitHub mirror with MIT/Apache appears, reopen as Tier B. Do not paste CodePen source into the engine."
     },
     {
       "id": "kimodo",
-      "title": "Kimodo — NVIDIA text-to-motion",
+      "title": "Kimodo \u2014 NVIDIA text-to-motion",
       "source": "github.com/nv-tlabs/kimodo",
       "homepage": "https://github.com/nv-tlabs/kimodo",
       "docs": "https://research.nvidia.com/labs/sil/projects/kimodo/",
-      "seenIn": ["https://3dxdev.com/assets/kimodo-cpp-text-to-motion-animation-running-locally-in-c/"],
+      "seenIn": [
+        "https://3dxdev.com/assets/kimodo-cpp-text-to-motion-animation-running-locally-in-c/"
+      ],
       "pinnedCommit": "1aece8c124d73d255ceff5086d983b844c9f4e94",
       "license": {
         "spdx": "Apache-2.0",
         "verifiedBy": "human",
         "verifiedAt": "2026-08-24",
         "file": "LICENSE",
-        "weights": "SOMA/G1 checkpoints: NVIDIA Open Model License (commercial-friendly). Kimodo-SMPLX-RP-v1: NVIDIA R&D Model — do not redistribute weights without that gate. Llama-family text encoder has its own HF terms."
+        "weights": "SOMA/G1 checkpoints: NVIDIA Open Model License (commercial-friendly). Kimodo-SMPLX-RP-v1: NVIDIA R&D Model \u2014 do not redistribute weights without that gate. Llama-family text encoder has its own HF terms."
       },
-      "stack": { "renderer": "none", "framework": "pytorch", "language": "python" },
+      "stack": {
+        "renderer": "none",
+        "framework": "pytorch",
+        "language": "python"
+      },
       "tier": "B",
       "package": null,
       "plannedPackage": "@3jse/motion-kimodo",
       "capability": "motion-gen",
-      "projectModules": ["motion-gen"],
+      "projectModules": [
+        "motion-gen"
+      ],
       "phase": 5,
       "editorOnly": true,
       "notes": "Not a runtime plugin and not a Three.js codebase. Integration shape: editor tool that calls local or networked inference, writes an AnimationClip / VAT, retargets onto @3jse/character. Never ships weights inside a Publish build. Prefer SOMA-RP-v1.1 over SMPL-X-RP for license. C API surface is on the LocalAI port (kimodo-cpp), not this repo."
     },
     {
       "id": "kimodo-cpp",
-      "title": "kimodo.cpp — LocalAI GGML port",
+      "title": "kimodo.cpp \u2014 LocalAI GGML port",
       "source": "github.com/localai-org/kimodo.cpp",
       "homepage": "https://github.com/localai-org/kimodo.cpp",
-      "seenIn": ["https://3dxdev.com/assets/kimodo-cpp-text-to-motion-animation-running-locally-in-c/"],
+      "seenIn": [
+        "https://3dxdev.com/assets/kimodo-cpp-text-to-motion-animation-running-locally-in-c/"
+      ],
       "pinnedCommit": "e55a42aaa32da84793dc0a8d01347575a1535cd5",
       "license": {
         "spdx": null,
@@ -271,28 +467,44 @@
         "file": null,
         "note": "No LICENSE file in tree as of this pin. NOTICE present. Do not treat as Apache-2.0 by association with nv-tlabs/kimodo. Human must read NOTICE + any SPDX headers before staging."
       },
-      "stack": { "renderer": "none", "framework": "ggml", "language": "cpp" },
+      "stack": {
+        "renderer": "none",
+        "framework": "ggml",
+        "language": "cpp"
+      },
       "tier": "B",
       "package": null,
       "capability": "motion-gen",
-      "projectModules": ["motion-gen"],
+      "projectModules": [
+        "motion-gen"
+      ],
       "phase": 5,
       "editorOnly": true,
-      "notes": "CPU/Vulkan local inference, C API returns SMPL-X22 rotations + root translation, localhost demo on :8094. Future Tauri sidecar for the editor Motion panel — never in-page WASM until license is verified and a WASM build exists. Weights remain gated."
+      "notes": "CPU/Vulkan local inference, C API returns SMPL-X22 rotations + root translation, localhost demo on :8094. Future Tauri sidecar for the editor Motion panel \u2014 never in-page WASM until license is verified and a WASM build exists. Weights remain gated."
     },
     {
       "id": "webgpu-ocean-mpm",
-      "title": "WebGPU-Ocean — MLS-MPM / SPH fluid",
+      "title": "WebGPU-Ocean \u2014 MLS-MPM / SPH fluid",
       "source": "github.com/matsuoka-601/WebGPU-Ocean",
       "homepage": "https://github.com/matsuoka-601/WebGPU-Ocean",
       "pinnedCommit": "main",
-      "license": { "spdx": "MIT", "verifiedBy": "pending", "verifiedAt": null },
-      "stack": { "renderer": "webgpu", "framework": "none", "language": "ts+wgsl" },
+      "license": {
+        "spdx": "MIT",
+        "verifiedBy": "pending",
+        "verifiedAt": null
+      },
+      "stack": {
+        "renderer": "webgpu",
+        "framework": "none",
+        "language": "ts+wgsl"
+      },
       "tier": "B",
       "package": null,
       "plannedPackage": "@3jse/fluid-mpm",
       "capability": "fluid",
-      "projectModules": ["fluid"],
+      "projectModules": [
+        "fluid"
+      ],
       "phase": 5,
       "notes": "Raw WebGPU (not Three.js). Useful as compute-pass reference beside tiamat. Wrapper would own the Three interop. Confirm LICENSE file on curator pass."
     },
@@ -302,14 +514,24 @@
       "source": "github.com/hlsvortex/HLS_WebGPUPlugins",
       "homepage": "https://github.com/hlsvortex/HLS_WebGPUPlugins",
       "pinnedCommit": "main",
-      "license": { "spdx": null, "verifiedBy": null, "verifiedAt": null },
-      "stack": { "renderer": "webgpu", "framework": "three.js", "language": "ts" },
+      "license": {
+        "spdx": null,
+        "verifiedBy": null,
+        "verifiedAt": null
+      },
+      "stack": {
+        "renderer": "webgpu",
+        "framework": "three.js",
+        "language": "ts"
+      },
       "tier": "B",
       "package": null,
       "capability": "terrain",
-      "projectModules": ["terrain"],
+      "projectModules": [
+        "terrain"
+      ],
       "phase": 5,
-      "notes": "QuadTree LOD terrain + instanced grass + ocean plane on Three r184 WebGPU. License unverified — default B. Overlaps demiurge/gaia; pick one primary wrap per capability."
+      "notes": "QuadTree LOD terrain + instanced grass + ocean plane on Three r184 WebGPU. License unverified \u2014 default B. Overlaps demiurge/gaia; pick one primary wrap per capability."
     },
     {
       "id": "babylon-nme",
@@ -317,8 +539,15 @@
       "source": "github.com/BabylonJS/Babylon.js",
       "homepage": "https://github.com/BabylonJS/Babylon.js",
       "pinnedCommit": null,
-      "license": { "spdx": "Apache-2.0", "verifiedBy": "human", "verifiedAt": "2026-08-24" },
-      "stack": { "renderer": "webgl2+webgpu", "framework": "babylon.js" },
+      "license": {
+        "spdx": "Apache-2.0",
+        "verifiedBy": "human",
+        "verifiedAt": "2026-08-24"
+      },
+      "stack": {
+        "renderer": "webgl2+webgpu",
+        "framework": "babylon.js"
+      },
       "tier": "reference",
       "package": null,
       "capability": "material-graph-ux",
@@ -332,21 +561,28 @@
       "source": "github.com/BabylonJS/Babylon.js",
       "homepage": "https://github.com/BabylonJS/Babylon.js",
       "pinnedCommit": null,
-      "license": { "spdx": "Apache-2.0", "verifiedBy": "human", "verifiedAt": "2026-08-24" },
-      "stack": { "renderer": "webgl2+webgpu", "framework": "babylon.js" },
+      "license": {
+        "spdx": "Apache-2.0",
+        "verifiedBy": "human",
+        "verifiedAt": "2026-08-24"
+      },
+      "stack": {
+        "renderer": "webgl2+webgpu",
+        "framework": "babylon.js"
+      },
       "tier": "reference",
       "package": null,
       "capability": "viewport-debug",
       "projectModules": [],
       "phase": 3,
-      "notes": "Picking, property readout, draw-call stats — pattern for Viewport debug overlay. Never import."
+      "notes": "Picking, property readout, draw-call stats \u2014 pattern for Viewport debug overlay. Never import."
     }
   ],
   "rejected": [
     {
       "id": "threejs-water-pro",
       "source": "threejsroadmap.com/assets/threejs-water-pro",
-      "reason": "Commercial paid asset. 3JSE wraps permissively-licensed work or stages attributed source — it does not vendor proprietary store assets. Poseidon covers the same capability."
+      "reason": "Commercial paid asset. 3JSE wraps permissively-licensed work or stages attributed source \u2014 it does not vendor proprietary store assets. Poseidon covers the same capability."
     }
   ]
 }

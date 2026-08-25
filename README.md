@@ -84,6 +84,7 @@ The design principles that hold it together:
 | [`@3jse/animation`](packages/animation) | Animation graphs, state machines, blend trees |
 | [`@3jse/character`](packages/character) | CharacterController, camera rig |
 | [`@3jse/physics-rapier`](packages/physics-rapier) | Rapier physics integration |
+| [`@3jse/water-poseidon`](packages/water-poseidon) · [`@3jse/foliage-gaia`](packages/foliage-gaia) · [`@3jse/flora-dryad`](packages/flora-dryad) · [`@3jse/terrain-demiurge`](packages/terrain-demiurge) | Tier A wraps of the Owen pantheon, vendored at pinned commits (`packages/vendor/upstream/`) — pure cores re-exported, rendering halves next |
 | [`@3jse/save`](packages/save) | Save/load service and storage backends |
 
 ---

@@ -37,6 +37,23 @@
       },
       "count": 16,
       "note": "The only shelf 3JSE maintains itself: Third Person, FPS, Racing, RTS, Open World and friends \u2014 real Gameplay Framework systems, never demo hacks."
+    },
+    {
+      "id": "3jse-base-models",
+      "category": "asset",
+      "title": "Base models \u2014 vehicles & humans",
+      "author": "The 3JSE project (curated PD/CC0)",
+      "source": {
+        "liveDemo": "https://github.com/xirtus/3JSE/tree/main/basemodels"
+      },
+      "license": {
+        "spdx": "PD / CC0",
+        "verifiedBy": "",
+        "verifiedAt": "",
+        "note": "As declared by curator; see basemodels/manifest.json."
+      },
+      "count": 11,
+      "note": "Starter glTF models shipped with the engine \u2014 cars, bikes, and male/female T-pose characters for the rig/animation pipeline."
     }
   ],
   "entries": [

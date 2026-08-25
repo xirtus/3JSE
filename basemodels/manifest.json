@@ -1,0 +1,74 @@
+{
+  "version": 1,
+  "shelf": "3JSE Base Models",
+  "license": "Public domain / CC0 \u2014 as declared by the curator; per-file provenance tracked in packages/vendor/licenses.json",
+  "note": "Starter models shipped with the engine. glTF-Binary, ready for the editor's Content Browser. Re-verify individual provenance before commercial redistribution.",
+  "models": [
+    {
+      "file": "2022yamahar1.glb",
+      "sizeBytes": 10796372,
+      "kind": "vehicle",
+      "license": "Public domain / CC0 (as declared)"
+    },
+    {
+      "file": "bajaj_avenger200.glb",
+      "sizeBytes": 23090532,
+      "kind": "vehicle",
+      "license": "Public domain / CC0 (as declared)"
+    },
+    {
+      "file": "bentley.glb",
+      "sizeBytes": 15507392,
+      "kind": "vehicle",
+      "license": "Public domain / CC0 (as declared)"
+    },
+    {
+      "file": "bmw1m.glb",
+      "sizeBytes": 7250264,
+      "kind": "vehicle",
+      "license": "Public domain / CC0 (as declared)"
+    },
+    {
+      "file": "dodge_challenger.glb",
+      "sizeBytes": 7858744,
+      "kind": "vehicle",
+      "license": "Public domain / CC0 (as declared)"
+    },
+    {
+      "file": "guntruck.glb",
+      "sizeBytes": 6917620,
+      "kind": "vehicle",
+      "license": "Public domain / CC0 (as declared)"
+    },
+    {
+      "file": "kawasakininjazx-6r.glb",
+      "sizeBytes": 23795292,
+      "kind": "vehicle",
+      "license": "Public domain / CC0 (as declared)"
+    },
+    {
+      "file": "male_tpose.glb",
+      "sizeBytes": 971832,
+      "kind": "character",
+      "license": "Public domain / CC0 (as declared)"
+    },
+    {
+      "file": "posed__t-pose_female.glb",
+      "sizeBytes": 6643528,
+      "kind": "character",
+      "license": "Public domain / CC0 (as declared)"
+    },
+    {
+      "file": "twister300.glb",
+      "sizeBytes": 38010216,
+      "kind": "vehicle",
+      "license": "Public domain / CC0 (as declared)"
+    },
+    {
+      "file": "volvo_240.glb",
+      "sizeBytes": 6757276,
+      "kind": "vehicle",
+      "license": "Public domain / CC0 (as declared)"
+    }
+  ]
+}

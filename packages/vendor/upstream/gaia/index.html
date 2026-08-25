@@ -1,0 +1,1017 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Procedural Grass — Single Specimen Explorer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #000; overflow: hidden; font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; }
+
+  /* Fullscreen canvas */
+  #viewer-canvas {
+    position: fixed;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  /* Control panel — top-left, scrollable */
+  #ui {
+    position: fixed;
+    top: 16px;
+    left: 16px;
+    width: 240px;
+    max-height: calc(100vh - 32px);
+    overflow: hidden;
+    background: rgba(8, 10, 14, 0.88);
+    border: 1px solid rgba(80, 120, 160, 0.35);
+    border-radius: 6px;
+    color: #9ab;
+    font-size: 11px;
+    line-height: 1.7;
+    user-select: none;
+    backdrop-filter: blur(4px);
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Always-visible header */
+  #ui-header {
+    padding: 14px 14px 10px;
+    border-bottom: 1px solid rgba(80, 120, 160, 0.2);
+    flex-shrink: 0;
+  }
+
+  #ui h1 {
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    color: #cde;
+    margin-bottom: 10px;
+  }
+
+  /* Preset picker row */
+  #ui-preset-row {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    margin-bottom: 6px;
+  }
+  #ui-preset-row label {
+    flex-shrink: 0;
+    color: rgba(120, 160, 200, 0.7);
+    font-size: 11px;
+    letter-spacing: 0.01em;
+    margin-top: 0;
+  }
+
+  /* Presets button — same style as seed-row buttons */
+  #presetsBtn {
+    flex: 1;
+    padding: 4px 10px;
+    background: rgba(20, 40, 60, 0.9);
+    border: 1px solid rgba(80, 160, 220, 0.4);
+    color: #8cf;
+    border-radius: 3px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 11px;
+    letter-spacing: 0.01em;
+    transition: background 0.15s, border-color 0.15s;
+    white-space: nowrap;
+    text-align: left;
+  }
+  #presetsBtn:hover {
+    background: rgba(30, 60, 100, 0.9);
+    border-color: rgba(100, 180, 255, 0.6);
+    color: #adf;
+  }
+
+  /* Presets modal backdrop */
+  #presets-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.65);
+    backdrop-filter: blur(3px);
+    z-index: 100;
+    align-items: center;
+    justify-content: center;
+  }
+  #presets-modal.open {
+    display: flex;
+  }
+
+  /* Modal panel */
+  #presets-panel {
+    position: relative;
+    width: 480px;
+    max-width: calc(100vw - 32px);
+    max-height: calc(100vh - 64px);
+    background: rgba(8, 10, 14, 0.97);
+    border: 1px solid rgba(80, 120, 160, 0.45);
+    border-radius: 6px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  /* Modal header */
+  #presets-panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 16px 10px;
+    border-bottom: 1px solid rgba(80, 120, 160, 0.2);
+    flex-shrink: 0;
+  }
+  #presets-panel-header h2 {
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: rgba(100, 160, 210, 0.8);
+    margin: 0;
+  }
+
+  /* Close button */
+  #presets-close-btn {
+    background: none;
+    border: none;
+    color: rgba(120, 160, 200, 0.6);
+    cursor: pointer;
+    font-size: 16px;
+    line-height: 1;
+    padding: 2px 6px;
+    border-radius: 3px;
+    transition: color 0.12s, background 0.12s;
+    font-family: inherit;
+  }
+  #presets-close-btn:hover {
+    color: #cde;
+    background: rgba(80, 120, 160, 0.2);
+  }
+
+  /* Scrollable body */
+  #presets-body {
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 14px 16px 16px;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(80, 120, 160, 0.3) transparent;
+  }
+  #presets-body::-webkit-scrollbar { width: 4px; }
+  #presets-body::-webkit-scrollbar-track { background: transparent; }
+  #presets-body::-webkit-scrollbar-thumb { background: rgba(80, 120, 160, 0.3); border-radius: 2px; }
+
+  /* Category heading */
+  .preset-category-heading {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(100, 160, 210, 0.55);
+    margin: 14px 0 6px;
+    padding-bottom: 4px;
+    border-bottom: 1px solid rgba(80, 120, 160, 0.15);
+  }
+  .preset-category-heading:first-child {
+    margin-top: 0;
+  }
+
+  /* Card grid */
+  .preset-card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 6px;
+  }
+
+  /* Individual preset card */
+  .preset-card {
+    position: relative;
+    padding: 9px 10px 8px;
+    background: rgba(20, 30, 45, 0.85);
+    border: 1px solid rgba(80, 120, 160, 0.28);
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.12s, border-color 0.12s;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    user-select: none;
+  }
+  .preset-card:hover {
+    background: rgba(25, 45, 75, 0.9);
+    border-color: rgba(80, 160, 220, 0.55);
+  }
+  .preset-card:active {
+    background: rgba(20, 50, 90, 0.95);
+  }
+
+  /* Color swatch */
+  .preset-swatch {
+    flex-shrink: 0;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: 1px solid rgba(255,255,255,0.12);
+  }
+
+  /* Label */
+  .preset-card-label {
+    font-size: 11px;
+    color: #9ab;
+    letter-spacing: 0.01em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .preset-card:hover .preset-card-label {
+    color: #cde;
+  }
+
+  /* Experimental badge */
+  .preset-badge-experimental {
+    position: absolute;
+    top: 3px;
+    right: 4px;
+    font-size: 8px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: rgba(200, 160, 80, 0.8);
+    background: rgba(60, 40, 10, 0.6);
+    border: 1px solid rgba(200, 160, 80, 0.35);
+    border-radius: 2px;
+    padding: 1px 3px;
+    line-height: 1.2;
+    pointer-events: none;
+  }
+
+  /* Seed + Generate row */
+  #ui-seed-row {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+  }
+  #ui-seed-row input[type="text"] {
+    flex: 1;
+    background: rgba(20, 30, 40, 0.9);
+    border: 1px solid rgba(80, 120, 160, 0.3);
+    color: #cde;
+    padding: 4px 6px;
+    border-radius: 3px;
+    font-family: inherit;
+    font-size: 11px;
+    outline: none;
+    min-width: 0;
+  }
+  #ui-seed-row button {
+    padding: 4px 10px;
+    background: rgba(20, 40, 60, 0.9);
+    border: 1px solid rgba(80, 160, 220, 0.4);
+    color: #8cf;
+    border-radius: 3px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 11px;
+    letter-spacing: 0.01em;
+    transition: background 0.15s, border-color 0.15s;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  #ui-seed-row button:hover {
+    background: rgba(30, 60, 100, 0.9);
+    border-color: rgba(100, 180, 255, 0.6);
+    color: #adf;
+  }
+  /* Reroll-seed icon button: compact, square-ish; inherits the seed-row button
+     base style above (color/border/hover). SVG uses currentColor. */
+  #rerollSeedBtn {
+    padding: 4px 7px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 0;
+  }
+
+  /* Tab bar */
+  #ui-tabs {
+    display: flex;
+    flex-shrink: 0;
+    border-bottom: 1px solid rgba(80, 120, 160, 0.2);
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  #ui-tabs::-webkit-scrollbar { display: none; }
+
+  .tab-btn {
+    flex: 1;
+    padding: 6px 4px;
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    color: rgba(120, 160, 200, 0.45);
+    font-family: inherit;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: color 0.12s, border-color 0.12s;
+    white-space: nowrap;
+    margin-bottom: -1px;
+  }
+  .tab-btn:hover {
+    color: rgba(150, 190, 230, 0.8);
+  }
+  .tab-btn.active {
+    color: #8cf;
+    border-bottom-color: #5af;
+  }
+
+  /* Tab panels */
+  #ui-panels {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(80, 120, 160, 0.3) transparent;
+    padding: 12px 14px 14px;
+  }
+  #ui-panels::-webkit-scrollbar { width: 4px; }
+  #ui-panels::-webkit-scrollbar-track { background: transparent; }
+  #ui-panels::-webkit-scrollbar-thumb { background: rgba(80, 120, 160, 0.3); border-radius: 2px; }
+
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* Shared control styles */
+  #ui label {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-top: 6px;
+    color: #7a9;
+    font-size: 11px;
+    letter-spacing: 0.01em;
+  }
+  #ui label .lname { flex: 1; }
+  #ui input[type="text"],
+  #ui select {
+    width: 100%;
+    margin-top: 3px;
+    background: rgba(20, 30, 40, 0.9);
+    border: 1px solid rgba(80, 120, 160, 0.3);
+    color: #cde;
+    padding: 4px 6px;
+    border-radius: 3px;
+    font-family: inherit;
+    font-size: 11px;
+    outline: none;
+  }
+  #ui input[type="range"] {
+    width: 100%;
+    margin-top: 2px;
+    accent-color: #5af;
+  }
+  #ui .val { color: #5af; font-size: 11px; min-width: 34px; text-align: right; }
+  #ui .hint {
+    font-size: 10px;
+    color: rgba(120, 160, 200, 0.55);
+    margin-top: 10px;
+    line-height: 1.4;
+  }
+
+  /* ── STATS PANEL ──────────────────────────────────────── */
+  #stats-panel {
+    position: fixed;
+    top: 16px;
+    right: 16px;
+    width: 168px;
+    background: rgba(8, 10, 14, 0.88);
+    border: 1px solid rgba(80, 120, 160, 0.35);
+    border-radius: 6px;
+    padding: 12px 14px;
+    color: #9ab;
+    font-size: 11px;
+    line-height: 1.7;
+    user-select: none;
+    backdrop-filter: blur(4px);
+    z-index: 10;
+  }
+
+  #stats-panel h2 {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(100, 160, 210, 0.6);
+    margin-bottom: 8px;
+    border-bottom: 1px solid rgba(80, 120, 160, 0.2);
+    padding-bottom: 6px;
+  }
+
+  .stat-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-top: 4px;
+  }
+
+  .stat-label {
+    color: rgba(120, 160, 200, 0.7);
+    font-size: 10px;
+    letter-spacing: 0.02em;
+  }
+
+  .stat-val {
+    font-family: 'SF Mono', 'Fira Mono', 'Consolas', monospace;
+    font-size: 11px;
+    color: #8cf;
+    text-align: right;
+  }
+
+  #stat-fps {
+    font-size: 18px;
+    font-weight: 500;
+    font-family: 'SF Mono', 'Fira Mono', 'Consolas', monospace;
+    letter-spacing: -0.02em;
+  }
+
+  .fps-good  { color: #4d8; }
+  .fps-ok    { color: #ca4; }
+  .fps-bad   { color: #e54; }
+
+  .stat-fps-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 6px;
+    border-bottom: 1px solid rgba(80, 120, 160, 0.15);
+    padding-bottom: 6px;
+  }
+
+  .stat-fps-label {
+    font-size: 10px;
+    color: rgba(120, 160, 200, 0.7);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  #info {
+    position: fixed;
+    bottom: 14px;
+    left: 16px;
+    font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    font-size: 11px;
+    color: rgba(80, 120, 160, 0.6);
+    letter-spacing: 0.01em;
+    pointer-events: none;
+    z-index: 10;
+  }
+
+  /* ── RENDER MODE PANEL ─────────────────────────────────── */
+  #rendermode-panel {
+    position: fixed;
+    top: 16px;
+    left: 268px;
+    display: flex;
+    gap: 4px;
+    align-items: center;
+    background: rgba(8, 10, 14, 0.88);
+    border: 1px solid rgba(80, 120, 160, 0.35);
+    border-radius: 6px;
+    padding: 6px 8px;
+    backdrop-filter: blur(4px);
+    z-index: 10;
+    user-select: none;
+  }
+
+  .rm-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 28px;
+    background: none;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    color: rgba(120, 160, 200, 0.55);
+    font-size: 14px;
+    line-height: 1;
+    cursor: pointer;
+    transition: color 0.12s, background 0.12s, border-color 0.12s;
+    font-family: inherit;
+    padding: 0;
+    position: relative;
+  }
+
+  .rm-btn:hover {
+    color: rgba(150, 190, 230, 0.9);
+    background: rgba(30, 50, 80, 0.6);
+    border-color: rgba(80, 120, 160, 0.4);
+  }
+
+  .rm-btn.active {
+    color: #8cf;
+    background: rgba(20, 50, 90, 0.85);
+    border-color: rgba(80, 160, 220, 0.55);
+  }
+
+  .rm-btn title {
+    display: none;
+  }
+
+  /* Tooltip via data-label */
+  .rm-btn::after {
+    content: attr(data-label);
+    position: absolute;
+    bottom: calc(100% + 6px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(8, 10, 14, 0.92);
+    border: 1px solid rgba(80, 120, 160, 0.4);
+    border-radius: 3px;
+    color: #9ab;
+    font-size: 10px;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+    padding: 2px 6px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.1s;
+  }
+
+  .rm-btn:hover::after {
+    opacity: 1;
+  }
+
+  .rm-divider {
+    width: 1px;
+    height: 18px;
+    background: rgba(80, 120, 160, 0.25);
+    margin: 0 2px;
+    flex-shrink: 0;
+  }
+
+  /* Wind strength slider inside the render-mode panel */
+  #wind-strength-slider {
+    width: 56px;
+    accent-color: #5af;
+    cursor: pointer;
+    vertical-align: middle;
+    margin-left: 2px;
+  }
+
+  /* ── VIEW MODE TOGGLE ──────────────────────────────────── */
+  /* Specimen / Field two-button toggle, positioned below the render-mode panel */
+  #viewmode-panel {
+    position: fixed;
+    top: 62px;
+    left: 268px;
+    display: flex;
+    gap: 0;
+    align-items: center;
+    background: rgba(8, 10, 14, 0.88);
+    border: 1px solid rgba(80, 120, 160, 0.35);
+    border-radius: 6px;
+    padding: 4px 6px;
+    backdrop-filter: blur(4px);
+    z-index: 10;
+    user-select: none;
+  }
+
+  .vm-btn {
+    padding: 4px 10px;
+    background: none;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    color: rgba(120, 160, 200, 0.55);
+    font-family: inherit;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: color 0.12s, background 0.12s, border-color 0.12s;
+    white-space: nowrap;
+  }
+
+  .vm-btn:hover {
+    color: rgba(150, 190, 230, 0.9);
+    background: rgba(30, 50, 80, 0.6);
+    border-color: rgba(80, 120, 160, 0.4);
+  }
+
+  .vm-btn.active {
+    color: #8cf;
+    background: rgba(20, 50, 90, 0.85);
+    border-color: rgba(80, 160, 220, 0.55);
+  }
+
+  /* ── RENDER STYLE TOGGLE ──────────────────────────────── */
+  /* Geometry / Billboard two-button toggle, positioned below the view-mode panel */
+  #renderstyle-panel {
+    position: fixed;
+    top: 108px;
+    left: 268px;
+    display: flex;
+    gap: 0;
+    align-items: center;
+    background: rgba(8, 10, 14, 0.88);
+    border: 1px solid rgba(80, 120, 160, 0.35);
+    border-radius: 6px;
+    padding: 4px 6px;
+    backdrop-filter: blur(4px);
+    z-index: 10;
+    user-select: none;
+  }
+</style>
+</head>
+<body>
+
+<!-- Fullscreen raymarched canvas -->
+<canvas id="viewer-canvas"></canvas>
+
+<!-- Control panel -->
+<div id="ui">
+
+  <!-- Always-visible header: title + preset + seed + generate -->
+  <div id="ui-header">
+    <h1>Procedural Grass</h1>
+    <div id="ui-preset-row">
+      <label>Preset</label>
+      <button id="presetsBtn">Presets&#8230;</button>
+    </div>
+    <div id="ui-seed-row">
+      <input type="text" id="seedInput" value="42" />
+      <button id="rerollSeedBtn" title="New individual — reroll seed only (keeps all genes &amp; climate)" aria-label="Reroll seed">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M13.7 8a5.7 5.7 0 1 1-1.67-4.03" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          <path d="M13.5 2.3V5.2H10.6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <button id="generateBtn">Generate</button>
+    </div>
+  </div>
+
+  <!-- Tab bar: Climate / Form / Blade / Posture / Look -->
+  <div id="ui-tabs">
+    <button class="tab-btn active" data-tab="climate">Climate</button>
+    <button class="tab-btn" data-tab="form">Form</button>
+    <button class="tab-btn" data-tab="blade">Blade</button>
+    <button class="tab-btn" data-tab="posture">Posture</button>
+    <button class="tab-btn" data-tab="look">Look</button>
+  </div>
+
+  <!-- Tab panels -->
+  <div id="ui-panels">
+
+    <!-- ── CLIMATE ─────────────────────────────────────── -->
+    <div class="tab-panel active" data-panel="climate">
+
+      <label><span class="lname">Gravity (Earth=1.0)</span><span class="val" id="gravVal">1.00</span></label>
+      <input type="range" id="gravSlider" min="0.1" max="3.0" step="0.05" value="1.0">
+
+      <label><span class="lname">Medium</span></label>
+      <select id="mediumSel">
+        <option value="air">Air</option>
+        <option value="water">Water</option>
+        <option value="dense_air">Dense Air</option>
+      </select>
+
+      <label><span class="lname">Light</span><span class="val" id="lightVal">0.60</span></label>
+      <input type="range" id="lightSlider" min="0" max="1" step="0.01" value="0.6">
+
+      <label><span class="lname">Sun angle</span><span class="val" id="sunAngleVal">0.25</span></label>
+      <input type="range" id="sunAngleSlider" min="0" max="1" step="0.01" value="0.25">
+
+      <label><span class="lname">Wind</span><span class="val" id="windVal">0.20</span></label>
+      <input type="range" id="windSlider" min="0" max="1" step="0.01" value="0.2">
+
+      <label><span class="lname">Aridity</span><span class="val" id="aridityVal">0.35</span></label>
+      <input type="range" id="ariditySlider" min="0" max="1" step="0.01" value="0.35">
+
+      <label><span class="lname">Temperature</span><span class="val" id="tempVal">0.50</span></label>
+      <input type="range" id="tempSlider" min="0" max="1" step="0.01" value="0.5">
+
+      <label><span class="lname">Fertility</span><span class="val" id="fertilityVal">0.50</span></label>
+      <input type="range" id="fertilitySlider" min="0" max="1" step="0.01" value="0.5">
+
+      <label><span class="lname">Star temp</span><span class="val" id="starTempVal">0.55</span></label>
+      <input type="range" id="starTempSlider" min="0" max="1" step="0.01" value="0.55">
+
+      <div class="hint">Climate changes re-resolve the current genome live (and drive COLOR: fertility→greener, aridity/heat→gold/straw, cold+light→red/purple, aridity+sun→blue-grey wax). Star temp: 0.55=Sun (green); cooler→darker/red, hotter→yellower. Hit Generate to adapt a new specimen.</div>
+    </div>
+
+    <!-- ── FORM ───────────────────────────────────────── -->
+    <div class="tab-panel" data-panel="form">
+
+      <label><span class="lname">Tiller count</span><span class="val" id="tillerCountVal">0.45</span></label>
+      <input type="range" id="tillerCountSlider" min="0" max="1" step="0.01" value="0.45"
+             data-gene="tillerCount" data-display="tillerCountVal">
+
+      <label><span class="lname">Clump spread</span><span class="val" id="clumpSpreadVal">0.30</span></label>
+      <input type="range" id="clumpSpreadSlider" min="0" max="1" step="0.01" value="0.30"
+             data-gene="clumpSpread" data-display="clumpSpreadVal">
+
+      <label><span class="lname">Blade segments</span><span class="val" id="bladeSegmentsVal">0.40</span></label>
+      <input type="range" id="bladeSegmentsSlider" min="0" max="1" step="0.01" value="0.40"
+             data-gene="bladeSegments" data-display="bladeSegmentsVal">
+
+      <label><span class="lname">Seed head</span><span class="val" id="seedHeadVal">0.00</span></label>
+      <input type="range" id="seedHeadSlider" min="0" max="1" step="0.01" value="0.00"
+             data-gene="seedHead" data-display="seedHeadVal">
+
+      <label><span class="lname">Fan spread</span><span class="val" id="fanSpreadVal">0.50</span></label>
+      <input type="range" id="fanSpreadSlider" min="0" max="1" step="0.01" value="0.50"
+             data-gene="fanSpread" data-display="fanSpreadVal">
+
+      <label><span class="lname">Inflorescence</span><span class="val" id="inflorescenceTypeVal">0.00</span></label>
+      <input type="range" id="inflorescenceTypeSlider" min="0" max="1" step="0.01" value="0.00"
+             data-gene="inflorescenceType" data-display="inflorescenceTypeVal">
+
+      <label><span class="lname">Spikelet count</span><span class="val" id="spikeletCountVal">0.50</span></label>
+      <input type="range" id="spikeletCountSlider" min="0" max="1" step="0.01" value="0.50"
+             data-gene="spikeletCount" data-display="spikeletCountVal">
+
+      <label><span class="lname">Grains / spikelet</span><span class="val" id="grainsPerSpikeletVal">0.50</span></label>
+      <input type="range" id="grainsPerSpikeletSlider" min="0" max="1" step="0.01" value="0.50"
+             data-gene="grainsPerSpikelet" data-display="grainsPerSpikeletVal">
+
+      <label><span class="lname">Awn length</span><span class="val" id="awnLengthVal">0.00</span></label>
+      <input type="range" id="awnLengthSlider" min="0" max="1" step="0.01" value="0.00"
+             data-gene="awnLength" data-display="awnLengthVal">
+
+      <label><span class="lname">Mid-ear bulge</span><span class="val" id="midEarBulgeVal">0.50</span></label>
+      <input type="range" id="midEarBulgeSlider" min="0" max="1" step="0.01" value="0.50"
+             data-gene="midEarBulge" data-display="midEarBulgeVal">
+
+      <div class="hint">Tiller count: 0=1 blade, 1≈12 blades. Clump spread: 0=single point, 1=wide ring. Fan spread: 0=all parallel, 1=full azimuthal fan. Seed head: 0=none, 1=full head. Inflorescence: 0=none, low=open panicle, high=tight wheat spike. Spikelet count / Grains / Awn length / Mid-ear bulge shape the ear (need Seed head &gt; 0 &amp; Inflorescence &gt; 0).</div>
+    </div>
+
+    <!-- ── BLADE ──────────────────────────────────────── -->
+    <div class="tab-panel" data-panel="blade">
+
+      <label><span class="lname">Blade length</span><span class="val"><span id="bladeLengthVal">0.35</span>–<span id="bladeLengthMaxVal">0.55</span></span></label>
+      <input type="range" id="bladeLengthSlider"    min="0" max="1" step="0.01" value="0.35">
+      <input type="range" id="bladeLengthMaxSlider" min="0" max="1" step="0.01" value="0.55">
+
+      <label><span class="lname">Blade width</span><span class="val"><span id="bladeWidthVal">0.20</span>–<span id="bladeWidthMaxVal">0.28</span></span></label>
+      <input type="range" id="bladeWidthSlider"    min="0" max="1" step="0.01" value="0.20">
+      <input type="range" id="bladeWidthMaxSlider" min="0" max="1" step="0.01" value="0.28">
+
+      <label><span class="lname">Blade taper</span><span class="val"><span id="bladeTaperVal">0.95</span>–<span id="bladeTaperMaxVal">0.95</span></span></label>
+      <input type="range" id="bladeTaperSlider"    min="0" max="1" step="0.01" value="0.95">
+      <input type="range" id="bladeTaperMaxSlider" min="0" max="1" step="0.01" value="0.95">
+
+      <label><span class="lname">Blade shape</span><span class="val" id="bladeShapeVal">0.00</span></label>
+      <input type="range" id="bladeShapeSlider" min="0" max="1" step="0.01" value="0.00"
+             data-gene="bladeShape" data-display="bladeShapeVal">
+
+      <label><span class="lname">Widest pos</span><span class="val" id="widestPosVal">0.50</span></label>
+      <input type="range" id="widestPosSlider" min="0" max="1" step="0.01" value="0.50"
+             data-gene="widestPos" data-display="widestPosVal">
+
+      <label><span class="lname">Cross-section curl</span><span class="val" id="crossSectionCurlVal">0.20</span></label>
+      <input type="range" id="crossSectionCurlSlider" min="0" max="1" step="0.01" value="0.20"
+             data-gene="crossSectionCurl" data-display="crossSectionCurlVal">
+
+      <label><span class="lname">Blade twist</span><span class="val" id="bladeTwistVal">0.00</span></label>
+      <input type="range" id="bladeTwistSlider" min="0" max="1" step="0.01" value="0.00"
+             data-gene="bladeTwist" data-display="bladeTwistVal">
+
+      <label><span class="lname">Stem roundness</span><span class="val" id="stemRoundnessVal">0.00</span></label>
+      <input type="range" id="stemRoundnessSlider" min="0" max="1" step="0.01" value="0.00"
+             data-gene="stemRoundness" data-display="stemRoundnessVal">
+
+      <label><span class="lname">Midrib strength</span><span class="val" id="midribStrengthVal">0.20</span></label>
+      <input type="range" id="midribStrengthSlider" min="0" max="1" step="0.01" value="0.20"
+             data-gene="midribStrength" data-display="midribStrengthVal">
+
+      <div class="hint">Length / Width / Taper are MIN–MAX ranges (two sliders): each blade in the clump samples its own value between them → varied tillers. Length: 0=0.15 m, 1=2.2 m. Width: 0=narrow, 1=broad. Taper: 0=parallel-sided, 1=sharp acuminate tip. Blade shape: 0=straight taper, 1=lanceolate belly. Cross-section curl: 0=flat, 1=deep channel. Blade twist: 0=straight, 1=corkscrew. Stem roundness: 0=flat blade, 1=round stalk (reeds/rushes).</div>
+    </div>
+
+    <!-- ── POSTURE ────────────────────────────────────── -->
+    <div class="tab-panel" data-panel="posture">
+
+      <label><span class="lname">Arch (min–max)</span><span class="val"><span id="archVal">0.20</span>–<span id="archMaxVal">0.35</span></span></label>
+      <input type="range" id="archSlider"    min="0" max="1" step="0.01" value="0.20">
+      <input type="range" id="archMaxSlider" min="0" max="1" step="0.01" value="0.35">
+
+      <label><span class="lname">Tip droop (min–max)</span><span class="val"><span id="tipDroopVal">0.10</span>–<span id="tipDroopMaxVal">0.25</span></span></label>
+      <input type="range" id="tipDroopSlider"    min="0" max="1" step="0.01" value="0.10">
+      <input type="range" id="tipDroopMaxSlider" min="0" max="1" step="0.01" value="0.25">
+
+      <label><span class="lname">Curve</span><span class="val" id="curveVal">0.15</span></label>
+      <input type="range" id="curveSlider" min="0" max="1" step="0.01" value="0.15"
+             data-gene="curve" data-display="curveVal">
+
+      <label><span class="lname">Verticality</span><span class="val" id="verticalityVal">0.55</span></label>
+      <input type="range" id="verticalitySlider" min="0" max="1" step="0.01" value="0.55"
+             data-gene="verticality" data-display="verticalityVal">
+
+      <label><span class="lname">Stiffness</span><span class="val" id="stiffnessVal">0.60</span></label>
+      <input type="range" id="stiffnessSlider" min="0" max="1" step="0.01" value="0.60"
+             data-gene="stiffness" data-display="stiffnessVal">
+
+      <div class="hint">Arch &amp; Tip droop are MIN–MAX ranges (per-blade variation). Arch: 0=stiff upright, 1=strong droop cascade. Tip droop: extra droop in the distal third. Curve: in-plane lateral S/C arc. Verticality: 0=prostrate, 0.5=erect, 1=pendulous. Stiffness: 1=rigid, 0=floppy.</div>
+    </div>
+
+    <!-- ── LOOK ──────────────────────────────────────── -->
+    <div class="tab-panel" data-panel="look">
+
+      <label><span class="lname">Hue (species)</span><span class="val" id="pigmentVal">0.30</span></label>
+      <input type="range" id="pigmentSlider" min="0" max="1" step="0.01" value="0.30"
+             data-gene="pigment" data-display="pigmentVal">
+
+      <label><span class="lname">Chlorophyll</span><span class="val" id="chlorophyllVal">0.60</span></label>
+      <input type="range" id="chlorophyllSlider" min="0" max="1" step="0.01" value="0.60"
+             data-gene="chlorophyll" data-display="chlorophyllVal">
+
+      <label><span class="lname">Senescence</span><span class="val" id="senescenceVal">0.00</span></label>
+      <input type="range" id="senescenceSlider" min="0" max="1" step="0.01" value="0.00"
+             data-gene="senescence" data-display="senescenceVal">
+
+      <label><span class="lname">Antho propensity</span><span class="val" id="anthoPropensityVal">0.00</span></label>
+      <input type="range" id="anthoPropensitySlider" min="0" max="1" step="0.01" value="0.00"
+             data-gene="anthoPropensity" data-display="anthoPropensityVal">
+
+      <label><span class="lname">Glaucousness</span><span class="val" id="glaucousnessVal">0.00</span></label>
+      <input type="range" id="glaucousnessSlider" min="0" max="1" step="0.01" value="0.00"
+             data-gene="glaucousness" data-display="glaucousnessVal">
+
+      <label><span class="lname">Color variation</span><span class="val" id="colorVariationVal">0.20</span></label>
+      <input type="range" id="colorVariationSlider" min="0" max="1" step="0.01" value="0.20"
+             data-gene="colorVariation" data-display="colorVariationVal">
+
+      <label><span class="lname">Blade raggedness</span><span class="val" id="bladeRaggednessVal">0.10</span></label>
+      <input type="range" id="bladeRaggednessSlider" min="0" max="1" step="0.01" value="0.10"
+             data-gene="bladeRaggedness" data-display="bladeRaggednessVal">
+
+      <label><span class="lname">Jitter</span><span class="val" id="jitterVal">0.40</span></label>
+      <input type="range" id="jitterSlider" min="0" max="1.5" step="0.01" value="0.40"
+             data-gene="jitter" data-display="jitterVal">
+
+      <label><span class="lname">Veining</span><span class="val" id="veiningVal">0.45</span></label>
+      <input type="range" id="veiningSlider" min="0" max="1" step="0.01" value="0.45"
+             data-gene="veining" data-display="veiningVal">
+
+      <div class="hint">Condition-driven color: Hue = species base (green band). Chlorophyll = green darkness. Senescence = green→gold→straw. Antho propensity = how readily it reddens under cold+light. Glaucousness = waxy blue-grey. (Climate sliders also push these — see Climate tab.) Color variation = per-blade spread. Veining = striations + drying tips.<br>drag to orbit &nbsp;·&nbsp; wheel to zoom<br>shift-drag / right-drag to pan</div>
+    </div>
+
+  </div><!-- #ui-panels -->
+</div><!-- #ui -->
+
+<!-- Stats panel — top-right -->
+<div id="stats-panel">
+  <h2>Render Stats</h2>
+  <div class="stat-fps-row">
+    <span class="stat-fps-label">FPS</span>
+    <span id="stat-fps" class="fps-good">--</span>
+  </div>
+  <div class="stat-row">
+    <span class="stat-label">Triangles</span>
+    <span class="stat-val" id="stat-triangles">--</span>
+  </div>
+  <div class="stat-row">
+    <span class="stat-label">Draw calls</span>
+    <span class="stat-val" id="stat-drawcalls">--</span>
+  </div>
+  <div class="stat-row">
+    <span class="stat-label">Blades</span>
+    <span class="stat-val" id="stat-blades">--</span>
+  </div>
+  <div class="stat-row">
+    <span class="stat-label">Bones</span>
+    <span class="stat-val" id="stat-bones">--</span>
+  </div>
+  <div class="stat-row">
+    <span class="stat-label">Resolution</span>
+    <span class="stat-val" id="stat-resolution">--</span>
+  </div>
+</div>
+
+<!-- Render-mode panel — top, left of stats panel -->
+<div id="rendermode-panel">
+  <button class="rm-btn" data-mode="lit" data-label="Lit (PBR)">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <circle cx="8" cy="8" r="3.5" fill="currentColor"/>
+      <line x1="8" y1="1" x2="8" y2="3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+      <line x1="8" y1="13" x2="8" y2="15" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+      <line x1="1" y1="8" x2="3" y2="8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+      <line x1="13" y1="8" x2="15" y2="8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+      <line x1="2.93" y1="2.93" x2="4.34" y2="4.34" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+      <line x1="11.66" y1="11.66" x2="13.07" y2="13.07" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+      <line x1="13.07" y1="2.93" x2="11.66" y2="4.34" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+      <line x1="4.34" y1="11.66" x2="2.93" y2="13.07" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+    </svg>
+  </button>
+  <button class="rm-btn" data-mode="unlit" data-label="Unlit">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M8 2 A6 6 0 0 1 8 14 Z" fill="currentColor"/>
+      <path d="M8 2 A6 6 0 0 0 8 14 Z" fill="currentColor" opacity="0.35"/>
+      <circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.2" fill="none"/>
+    </svg>
+  </button>
+  <div class="rm-divider"></div>
+  <button class="rm-btn" data-mode="wireframe" data-label="Wireframe">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <rect x="2" y="2" width="12" height="12" rx="1" stroke="currentColor" stroke-width="1.2" fill="none"/>
+      <line x1="2" y1="2" x2="14" y2="14" stroke="currentColor" stroke-width="1.0"/>
+      <line x1="14" y1="2" x2="2" y2="14" stroke="currentColor" stroke-width="1.0"/>
+      <line x1="8" y1="2" x2="8" y2="14" stroke="currentColor" stroke-width="1.0"/>
+      <line x1="2" y1="8" x2="14" y2="8" stroke="currentColor" stroke-width="1.0"/>
+    </svg>
+  </button>
+  <button class="rm-btn" data-mode="normals" data-label="Normals">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <polygon points="8,2 14,13 2,13" stroke="currentColor" stroke-width="1.2" fill="none"/>
+      <line x1="8" y1="9" x2="8" y2="4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+      <line x1="8" y1="4" x2="6" y2="6.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+      <line x1="8" y1="4" x2="10" y2="6.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+    </svg>
+  </button>
+  <button class="rm-btn" data-mode="ao" data-label="AO">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <rect x="2" y="2" width="5" height="5" fill="currentColor" opacity="0.9"/>
+      <rect x="9" y="2" width="5" height="5" fill="currentColor" opacity="0.6"/>
+      <rect x="2" y="9" width="5" height="5" fill="currentColor" opacity="0.35"/>
+      <rect x="9" y="9" width="5" height="5" fill="currentColor" opacity="0.15"/>
+    </svg>
+  </button>
+  <div class="rm-divider"></div>
+  <button class="rm-btn" id="wind-toggle-btn" data-label="Toggle wind" title="Toggle wind">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M2 6 Q5 4 8 6 Q11 8 14 6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" fill="none"/>
+      <path d="M2 9.5 Q5 7.5 9 9.5 Q11.5 11 13 9.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" fill="none"/>
+      <path d="M2 12.5 Q4 11 7 12.5" stroke="currentColor" stroke-width="1.0" stroke-linecap="round" fill="none" opacity="0.65"/>
+    </svg>
+  </button>
+  <input type="range" id="wind-strength-slider"
+         min="0" max="1.5" step="0.05" value="0.6"
+         title="Wind strength">
+</div>
+
+<!-- View-mode toggle — Specimen / Field -->
+<div id="viewmode-panel">
+  <button class="vm-btn active" id="view-specimen-btn" title="Specimen view — single clump">Specimen</button>
+  <button class="vm-btn" id="view-field-btn" title="Field view — instanced scatter">Field</button>
+</div>
+
+<!-- Render-style toggle — Geometry / Billboard (meaningful in Field view) -->
+<div id="renderstyle-panel">
+  <button class="vm-btn active" id="rs-geometry-btn" title="Geometry — full blade mesh">Geometry</button>
+  <button class="vm-btn" id="rs-billboard-btn" title="Billboard — cross-quad imposters (field view)">Billboard</button>
+</div>
+
+<div id="info">procedural grass · single specimen explorer</div>
+
+<script type="module" src="/src/main.js"></script>
+
+<script>
+// ── TAB SWITCHING ─────────────────────────────────────────────────────────────
+(function () {
+  const STORAGE_KEY = 'grass-active-tab';
+  const tabBtns   = document.querySelectorAll('.tab-btn');
+  const tabPanels = document.querySelectorAll('.tab-panel');
+
+  function activateTab(name) {
+    tabBtns.forEach(btn => btn.classList.toggle('active', btn.dataset.tab === name));
+    tabPanels.forEach(panel => panel.classList.toggle('active', panel.dataset.panel === name));
+    try { sessionStorage.setItem(STORAGE_KEY, name); } catch (_) {}
+  }
+
+  // Restore previously active tab (sessionStorage so it survives hot-reload)
+  const saved = (() => { try { return sessionStorage.getItem(STORAGE_KEY); } catch (_) { return null; } })();
+  if (saved && document.querySelector(`.tab-btn[data-tab="${saved}"]`)) {
+    activateTab(saved);
+  }
+
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', () => activateTab(btn.dataset.tab));
+  });
+})();
+</script>
+
+<!-- Presets modal — hidden by default, opened by #presetsBtn -->
+<div id="presets-modal" role="dialog" aria-modal="true" aria-label="Presets">
+  <div id="presets-panel">
+    <div id="presets-panel-header">
+      <h2>Presets</h2>
+      <button id="presets-close-btn" aria-label="Close presets">&#x2715;</button>
+    </div>
+    <div id="presets-body">
+      <!-- Cards are injected by main.js -->
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
