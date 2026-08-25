@@ -4,7 +4,9 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
-const docsDir = join(root, "docs");
+// DOCS_DIR lets CI/tooling bake the manual from a specific set of docs
+// (e.g. committed HEAD versions only) without touching the working tree.
+const docsDir = process.env.DOCS_DIR || join(root, "docs");
 
 const GROUPS = [
   ["Core", ["VISION","ARCHITECTURE","RUNTIME","ENTITY_COMPONENT_MODEL","WORLD_SYSTEM","GAMEPLAY_IR","VISUAL_SCRIPTING","EDITOR","GAMEPLAY_FRAMEWORK"]],
@@ -12,6 +14,7 @@ const GROUPS = [
   ["Pipeline & Distribution", ["ASSET_PIPELINE","PROJECT_FORMAT","BUILD_DEPLOYMENT","TEMPLATES"]],
   ["Platform", ["AI_AGENT_API","PLUGIN_ARCHITECTURE","VENDOR_INTEGRATIONS","VERSE_COMPATIBILITY"]],
   ["Planning", ["ROADMAP"]],
+  ["Project", ["WEBSITE"]],
 ];
 
 const anchor = (file) => file.toLowerCase().replace(/_/g, "-");
@@ -198,7 +201,7 @@ async function main() {
 
 <footer class="site-footer">
   <div class="foot-inner">
-    <p><strong>3JSE</strong> — the WebGPU-native game engine. GPL-3.0. © 2026 the 3JSE project.</p>
+    <p><strong>3JSE</strong> — the WebGPU-native game engine. The official website of the 3JSE project · GPL-3.0 · © 2026.</p>
     <nav><a href="index.html">Back to the site</a> · <a href="https://github.com/xirtus/3JSE" target="_blank" rel="noopener">GitHub</a></nav>
   </div>
 </footer>

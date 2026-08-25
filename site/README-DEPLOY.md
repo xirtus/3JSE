@@ -1,6 +1,6 @@
 # Deploying 3jse.com
 
-This folder is a fully static site — no build step, no server code.
+**3jse.com is the official website of the 3JSE project** — the domain is owned by the project and this folder *is* the site. It is maintained as part of the repository (policy in `../docs/WEBSITE.md`): every change to `docs/` or to the landing page ships through this repo and gets uploaded from here. This folder is a fully static site — no build step, no server code.
 
 ## Upload with Cyberduck
 1. Open Cyberduck → connect to your 3jse.com host (SFTP).

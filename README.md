@@ -155,8 +155,17 @@ Full details in [`docs/ROADMAP.md`](docs/ROADMAP.md).
 | ⚙️ **Systems** | [Physics](docs/PHYSICS.md) · [Animation](docs/ANIMATION.md) · [Audio](docs/AUDIO.md) · [Rendering](docs/RENDERING.md) · [Networking](docs/NETWORKING.md) · [Performance](docs/PERFORMANCE.md) |
 | 📦 **Pipeline** | [Asset Pipeline](docs/ASSET_PIPELINE.md) · [Project Format](docs/PROJECT_FORMAT.md) · [Build & Deployment](docs/BUILD_DEPLOYMENT.md) · [Templates](docs/TEMPLATES.md) |
 | 🤖 **Platform** | [AI Agent API](docs/AI_AGENT_API.md) · [Plugin Architecture](docs/PLUGIN_ARCHITECTURE.md) · [Vendor Integrations](docs/VENDOR_INTEGRATIONS.md) · [Verse Compatibility](docs/VERSE_COMPATIBILITY.md) |
+| 🌐 **Project** | [Website](docs/WEBSITE.md) |
 
 ---
+
+## Website
+
+**[3jse.com](https://3jse.com) is the official website of the 3JSE project** — owned by the project, live now, and maintained as part of this repository (`site/`). It carries the promotional landing page and the full design manual, baked from `docs/` so it can never drift from the engine itself. Keeping it current is part of the project: docs changes ship with a regenerated manual, positioning changes update the landing page in the same PR. See [`docs/WEBSITE.md`](docs/WEBSITE.md) and the deploy runbook in [`site/README-DEPLOY.md`](site/README-DEPLOY.md).
+
+```bash
+node site/build-manual.mjs   # regenerate site/manual.html from docs/
+```
 
 ## Contributing
 
