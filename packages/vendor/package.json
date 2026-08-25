@@ -1,0 +1,8 @@
+{
+  "name": "@3jse/vendor",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Open-source registry + fetch-on-demand importer. Manifest lives in registry.json.",
+  "type": "module",
+  "license": "GPL-3.0-only"
+}
