@@ -155,7 +155,7 @@ Full details in [`docs/ROADMAP.md`](docs/ROADMAP.md).
 | ⚙️ **Systems** | [Physics](docs/PHYSICS.md) · [Animation](docs/ANIMATION.md) · [Audio](docs/AUDIO.md) · [Rendering](docs/RENDERING.md) · [Networking](docs/NETWORKING.md) · [Performance](docs/PERFORMANCE.md) |
 | 📦 **Pipeline** | [Asset Pipeline](docs/ASSET_PIPELINE.md) · [Project Format](docs/PROJECT_FORMAT.md) · [Build & Deployment](docs/BUILD_DEPLOYMENT.md) · [Templates](docs/TEMPLATES.md) |
 | 🤖 **Platform** | [AI Agent API](docs/AI_AGENT_API.md) · [Plugin Architecture](docs/PLUGIN_ARCHITECTURE.md) · [Vendor Integrations](docs/VENDOR_INTEGRATIONS.md) · [Verse Compatibility](docs/VERSE_COMPATIBILITY.md) |
-| 🌐 **Project** | [Website](docs/WEBSITE.md) |
+| 🌐 **Project** | [Website](docs/WEBSITE.md) · [Shop](docs/SHOP.md) |
 
 ---
 

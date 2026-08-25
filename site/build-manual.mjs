@@ -14,7 +14,7 @@ const GROUPS = [
   ["Pipeline & Distribution", ["ASSET_PIPELINE","PROJECT_FORMAT","BUILD_DEPLOYMENT","TEMPLATES"]],
   ["Platform", ["AI_AGENT_API","PLUGIN_ARCHITECTURE","VENDOR_INTEGRATIONS","VENDOR_PROJECT_MODULES","VERSE_COMPATIBILITY"]],
   ["Planning", ["ROADMAP"]],
-  ["Project", ["WEBSITE"]],
+  ["Project", ["WEBSITE","SHOP"]],
 ];
 
 const anchor = (file) => file.toLowerCase().replace(/_/g, "-");
@@ -181,6 +181,7 @@ async function main() {
       <a href="#editor">Editor</a>
       <a href="#ai-agent-api">AI Agent API</a>
       <a href="#roadmap">Roadmap</a>
+      <a href="shop.html">Shop</a>
       <a class="nav-cta" href="https://github.com/xirtus/3JSE" target="_blank" rel="noopener">GitHub ↗</a>
     </nav>
   </div>
@@ -202,7 +203,7 @@ async function main() {
 <footer class="site-footer">
   <div class="foot-inner">
     <p><strong>3JSE</strong> — the WebGPU-native game engine. The official website of the 3JSE project · GPL-3.0 · © 2026.</p>
-    <nav><a href="index.html">Back to the site</a> · <a href="https://github.com/xirtus/3JSE" target="_blank" rel="noopener">GitHub</a></nav>
+    <nav><a href="index.html">Back to the site</a> · <a href="shop.html">Shop</a> · <a href="terms.html">Terms</a> · <a href="https://github.com/xirtus/3JSE" target="_blank" rel="noopener">GitHub</a></nav>
   </div>
 </footer>
 

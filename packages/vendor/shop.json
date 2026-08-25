@@ -1,0 +1,596 @@
+{
+  "version": 1,
+  "updatedAt": "2026-08-24",
+  "policy": "docs/SHOP.md",
+  "notes": "Link-first content marketplace. Licenses are as declared by creators; verifiedBy:human is the registry gate. Link-only entries may carry verifiedBy:'' and render with an 'as declared' badge. Candidates live in shop-candidates.json.",
+  "shelves": [
+    {
+      "id": "threejs-official-examples",
+      "category": "example",
+      "title": "Three.js official examples",
+      "author": "Three.js project",
+      "source": {
+        "liveDemo": "https://threejs.org/examples/"
+      },
+      "license": {
+        "spdx": "MIT",
+        "verifiedBy": "human",
+        "verifiedAt": "2026-08-24",
+        "note": "three.js repo is MIT (repo LICENSE)."
+      },
+      "count": 588,
+      "note": "Every official example, indexed from threejs.org/examples/files.json \u2014 candidates file holds the full list; the editor's Shop panel renders them all."
+    },
+    {
+      "id": "3jse-official-templates",
+      "category": "template",
+      "title": "3JSE official templates",
+      "author": "The 3JSE project",
+      "source": {
+        "liveDemo": "manual.html#templates"
+      },
+      "license": {
+        "spdx": "GPL-3.0",
+        "verifiedBy": "human",
+        "verifiedAt": "2026-08-24",
+        "note": "First-party shelf \u2014 TEMPLATES.md catalog."
+      },
+      "count": 16,
+      "note": "The only shelf 3JSE maintains itself: Third Person, FPS, Racing, RTS, Open World and friends \u2014 real Gameplay Framework systems, never demo hacks."
+    }
+  ],
+  "entries": [
+    {
+      "id": "threejs-webgl-animation-keyframes",
+      "category": "example",
+      "title": "Animation \u2014 keyframes",
+      "author": "Three.js project",
+      "source": {
+        "repo": "github.com/mrdoob/three.js",
+        "pinnedCommit": "r185",
+        "liveDemo": "https://threejs.org/examples/#webgl_animation_keyframes"
+      },
+      "license": {
+        "spdx": "MIT",
+        "verifiedBy": "human",
+        "verifiedAt": "2026-08-24",
+        "note": "three.js repo is MIT."
+      },
+      "tags": [
+        "official",
+        "animation"
+      ],
+      "aiGenerated": false,
+      "registryId": "",
+      "notes": ""
+    },
+    {
+      "id": "threejs-webgpu-particles",
+      "category": "example",
+      "title": "WebGPU \u2014 GPU particles",
+      "author": "Three.js project",
+      "source": {
+        "repo": "github.com/mrdoob/three.js",
+        "pinnedCommit": "r185",
+        "liveDemo": "https://threejs.org/examples/#webgpu_compute_particles"
+      },
+      "license": {
+        "spdx": "MIT",
+        "verifiedBy": "human",
+        "verifiedAt": "2026-08-24",
+        "note": "three.js repo is MIT."
+      },
+      "tags": [
+        "official",
+        "webgpu",
+        "vfx"
+      ],
+      "aiGenerated": false,
+      "registryId": "",
+      "notes": "The architecture reference for Phase 5's VFX graph (see VENDOR_INTEGRATIONS.md, Babylon GPU particles row)."
+    },
+    {
+      "id": "poseidon",
+      "category": "kit",
+      "title": "Poseidon \u2014 FFT ocean",
+      "author": "",
+      "source": {
+        "repo": "github.com/owenyuwono/poseidon",
+        "homepage": "https://github.com/owenyuwono/poseidon",
+        "liveDemo": ""
+      },
+      "license": {
+        "spdx": "MIT",
+        "verifiedBy": "human",
+        "verifiedAt": "2026-08-24",
+        "note": ""
+      },
+      "tags": [
+        "water",
+        "webgpu"
+      ],
+      "aiGenerated": false,
+      "registryId": "poseidon",
+      "notes": "Tier A \u2014 wraps into @3jse/water-poseidon."
+    },
+    {
+      "id": "gaia",
+      "category": "kit",
+      "title": "Gaia \u2014 procedural grass",
+      "author": "",
+      "source": {
+        "repo": "github.com/owenyuwono/gaia",
+        "homepage": "https://github.com/owenyuwono/gaia",
+        "liveDemo": ""
+      },
+      "license": {
+        "spdx": "MIT",
+        "verifiedBy": "human",
+        "verifiedAt": "2026-08-24",
+        "note": ""
+      },
+      "tags": [
+        "foliage"
+      ],
+      "aiGenerated": false,
+      "registryId": "gaia",
+      "notes": "Tier A \u2014 wraps into @3jse/foliage-gaia."
+    },
+    {
+      "id": "dryad",
+      "category": "kit",
+      "title": "Dryad \u2014 procedural trees",
+      "author": "",
+      "source": {
+        "repo": "github.com/owenyuwono/dryad",
+        "homepage": "https://github.com/owenyuwono/dryad",
+        "liveDemo": ""
+      },
+      "license": {
+        "spdx": "MIT",
+        "verifiedBy": "human",
+        "verifiedAt": "2026-08-24",
+        "note": ""
+      },
+      "tags": [
+        "flora"
+      ],
+      "aiGenerated": false,
+      "registryId": "dryad",
+      "notes": "Tier A \u2014 wraps into @3jse/flora-dryad."
+    },
+    {
+      "id": "demiurge",
+      "category": "kit",
+      "title": "Demiurge \u2014 tectonic planet",
+      "author": "",
+      "source": {
+        "repo": "github.com/owenyuwono/demiurge",
+        "homepage": "https://github.com/owenyuwono/demiurge",
+        "liveDemo": ""
+      },
+      "license": {
+        "spdx": "MIT",
+        "verifiedBy": "human",
+        "verifiedAt": "2026-08-24",
+        "note": ""
+      },
+      "tags": [
+        "terrain",
+        "webgpu"
+      ],
+      "aiGenerated": false,
+      "registryId": "demiurge",
+      "notes": "Tier A \u2014 wraps into @3jse/terrain-demiurge (Phase 5+)."
+    },
+    {
+      "id": "tiamat",
+      "category": "kit",
+      "title": "Tiamat \u2014 SPH fluid",
+      "author": "",
+      "source": {
+        "repo": "github.com/owenyuwono/tiamat",
+        "homepage": "https://github.com/owenyuwono/tiamat",
+        "liveDemo": ""
+      },
+      "license": {
+        "spdx": "MIT",
+        "verifiedBy": "pending",
+        "verifiedAt": "",
+        "note": "LICENSE file is standard MIT; GitHub detector fails on a leading BOM. Human must flip verifiedBy before Tier A."
+      },
+      "tags": [
+        "fluid"
+      ],
+      "aiGenerated": false,
+      "registryId": "tiamat",
+      "notes": "Tier B \u2014 MIT text confirmed; human flip pending (BOM case)."
+    },
+    {
+      "id": "apate",
+      "category": "kit",
+      "title": "Apate \u2014 surface relief comparison",
+      "author": "",
+      "source": {
+        "repo": "github.com/owenyuwono/apate",
+        "homepage": "https://github.com/owenyuwono/apate",
+        "liveDemo": ""
+      },
+      "license": {
+        "spdx": "MIT",
+        "verifiedBy": "human",
+        "verifiedAt": "2026-08-24",
+        "note": ""
+      },
+      "tags": [
+        "materials"
+      ],
+      "aiGenerated": false,
+      "registryId": "apate",
+      "notes": "Reference \u2014 four relief techniques feeding the Material Graph node library."
+    },
+    {
+      "id": "minos",
+      "category": "kit",
+      "title": "Minos \u2014 native planet engine",
+      "author": "",
+      "source": {
+        "repo": "github.com/owenyuwono/minos",
+        "homepage": "https://github.com/owenyuwono/minos",
+        "liveDemo": ""
+      },
+      "license": {
+        "spdx": "MIT",
+        "verifiedBy": "human",
+        "verifiedAt": "2026-08-24",
+        "note": ""
+      },
+      "tags": [
+        "terrain",
+        "reference"
+      ],
+      "aiGenerated": false,
+      "registryId": "minos",
+      "notes": "Reference only \u2014 Rust/Vulkan runtime; algorithm reference for @3jse/terrain."
+    },
+    {
+      "id": "chiro-elemental",
+      "category": "kit",
+      "title": "Chiro Elemental Sandbox \u2014 procedural ability VFX",
+      "author": {
+        "name": "Chiro Visuals / mohamedachrefelouafi",
+        "x": "https://x.com/chirovisuals"
+      },
+      "source": {
+        "repo": "github.com/achrefelouafi/LinearAbiltyCastingThreeJS",
+        "homepage": "https://github.com/achrefelouafi/LinearAbiltyCastingThreeJS",
+        "liveDemo": "",
+        "signal": {
+          "platform": "x.com",
+          "url": "https://x.com/TokenGremlin/status/2091967294582727005",
+          "author": "x.com/chirovisuals"
+        }
+      },
+      "license": {
+        "spdx": "MIT",
+        "verifiedBy": "human",
+        "verifiedAt": "2026-08-24",
+        "note": ""
+      },
+      "tags": [
+        "vfx",
+        "ability"
+      ],
+      "aiGenerated": false,
+      "registryId": "chiro-elemental",
+      "notes": "Ten procedural ability effects, pause-and-sculpt interaction model. Planned wrap: @3jse/vfx-chiro."
+    },
+    {
+      "id": "three-vfx",
+      "category": "kit",
+      "title": "Three-VFX \u2014 WebGPU particle system",
+      "author": "",
+      "source": {
+        "repo": "github.com/mustache-dev/Three-VFX",
+        "homepage": "https://github.com/mustache-dev/Three-VFX",
+        "liveDemo": ""
+      },
+      "license": {
+        "spdx": "MIT",
+        "verifiedBy": "pending",
+        "verifiedAt": "",
+        "note": ""
+      },
+      "tags": [
+        "vfx",
+        "webgpu"
+      ],
+      "aiGenerated": false,
+      "registryId": "three-vfx",
+      "notes": "Particle backend candidate for the VFX graph; MIT file present, human flip pending."
+    },
+    {
+      "id": "quantum-core",
+      "category": "kit",
+      "title": "Quantum Core \u2014 shader scene",
+      "author": {
+        "name": "Sabo Sugi",
+        "x": "https://x.com/sabosugi"
+      },
+      "source": {
+        "repo": "codepen.io/sabosugi/pen/01a02fca-0d14-7e50-a9b8-283d419ccaea",
+        "homepage": "https://codepen.io/editor/sabosugi/pen/01a02fca-0d14-7e50-a9b8-283d419ccaea?file=%2Findex.html",
+        "liveDemo": ""
+      },
+      "license": {
+        "spdx": null,
+        "verifiedBy": "",
+        "verifiedAt": "",
+        "note": "CodePen snippet. No LICENSE file, no GitHub mirror found. Treat as all-rights-reserved until the author publishes a repo+license."
+      },
+      "tags": [
+        "shader",
+        "codepen"
+      ],
+      "aiGenerated": false,
+      "registryId": "quantum-core",
+      "notes": "No license declared anywhere \u2014 rendered as all-rights-reserved until the author publishes one."
+    },
+    {
+      "id": "webgpu-ocean-mpm",
+      "category": "kit",
+      "title": "WebGPU-Ocean \u2014 MLS-MPM / SPH fluid",
+      "author": "",
+      "source": {
+        "repo": "github.com/matsuoka-601/WebGPU-Ocean",
+        "homepage": "https://github.com/matsuoka-601/WebGPU-Ocean",
+        "liveDemo": ""
+      },
+      "license": {
+        "spdx": "MIT",
+        "verifiedBy": "pending",
+        "verifiedAt": "",
+        "note": ""
+      },
+      "tags": [
+        "water",
+        "webgpu"
+      ],
+      "aiGenerated": false,
+      "registryId": "webgpu-ocean-mpm",
+      "notes": "MLS-MPM / SPH fluid on WebGPU."
+    },
+    {
+      "id": "hls-webgpu-terrain",
+      "category": "kit",
+      "title": "HLS WebGPU terrain plugins",
+      "author": "",
+      "source": {
+        "repo": "github.com/hlsvortex/HLS_WebGPUPlugins",
+        "homepage": "https://github.com/hlsvortex/HLS_WebGPUPlugins",
+        "liveDemo": ""
+      },
+      "license": {
+        "spdx": null,
+        "verifiedBy": "",
+        "verifiedAt": "",
+        "note": ""
+      },
+      "tags": [
+        "terrain",
+        "webgpu"
+      ],
+      "aiGenerated": false,
+      "registryId": "hls-webgpu-terrain",
+      "notes": "No license declared \u2014 review required before any import."
+    },
+    {
+      "id": "kimodo",
+      "category": "kit",
+      "title": "Kimodo \u2014 NVIDIA text-to-motion",
+      "author": "",
+      "source": {
+        "repo": "github.com/nv-tlabs/kimodo",
+        "homepage": "https://github.com/nv-tlabs/kimodo",
+        "liveDemo": ""
+      },
+      "license": {
+        "spdx": "Apache-2.0",
+        "verifiedBy": "human",
+        "verifiedAt": "2026-08-24",
+        "note": "SOMA/G1 checkpoints: NVIDIA Open Model License (commercial-friendly). Kimodo-SMPLX-RP-v1: NVIDIA R&D Model \u2014 do not redistribute weights without that gate. Llama-family text encoder has its own HF terms."
+      },
+      "tags": [
+        "animation",
+        "ai",
+        "editor-tool"
+      ],
+      "aiGenerated": false,
+      "registryId": "kimodo",
+      "notes": "Editor-side text-to-motion. Code Apache-2.0; checkpoint licenses differ per model \u2014 see VENDOR_PROJECT_MODULES.md."
+    },
+    {
+      "id": "react-three-fiber",
+      "category": "kit",
+      "title": "react-three-fiber",
+      "author": "pmndrs",
+      "source": {
+        "repo": "pmndrs/react-three-fiber",
+        "homepage": "https://r3f.docs.pmnd.rs"
+      },
+      "stars": 31787,
+      "license": {
+        "spdx": "MIT",
+        "verifiedBy": "",
+        "verifiedAt": "",
+        "note": "GitHub API field \u2014 hint, pending human review."
+      },
+      "tags": [
+        "react",
+        "framework"
+      ],
+      "aiGenerated": false,
+      "registryId": "",
+      "notes": "The React renderer for Three.js \u2014 a different authoring philosophy worth studying (VENDOR_INTEGRATIONS.md's editor-bolt-on caution applies to how we consume, not what we learn)."
+    },
+    {
+      "id": "drei",
+      "category": "kit",
+      "title": "drei",
+      "author": "pmndrs",
+      "source": {
+        "repo": "pmndrs/drei",
+        "homepage": "https://drei.docs.pmnd.rs"
+      },
+      "stars": 9817,
+      "license": {
+        "spdx": "MIT",
+        "verifiedBy": "",
+        "verifiedAt": "",
+        "note": "GitHub API field \u2014 hint, pending human review."
+      },
+      "tags": [
+        "react",
+        "helpers"
+      ],
+      "aiGenerated": false,
+      "registryId": "",
+      "notes": "A catalog of reusable scene helpers \u2014 a useful checklist of what a gameplay framework should offer out of the box."
+    },
+    {
+      "id": "three-meshline",
+      "category": "kit",
+      "title": "THREE.MeshLine",
+      "author": "spite",
+      "source": {
+        "repo": "spite/THREE.MeshLine"
+      },
+      "stars": 2339,
+      "license": {
+        "spdx": "MIT",
+        "verifiedBy": "",
+        "verifiedAt": "",
+        "note": "GitHub API field \u2014 hint, pending human review."
+      },
+      "tags": [
+        "lines",
+        "rendering"
+      ],
+      "aiGenerated": false,
+      "registryId": "",
+      "notes": "Fat lines done right \u2014 a candidate pattern for @3jse/rendering primitives."
+    },
+    {
+      "id": "gpu-io",
+      "category": "kit",
+      "title": "gpu-io",
+      "author": "amandaghassaei",
+      "source": {
+        "repo": "amandaghassaei/gpu-io",
+        "homepage": "https://apps.amandaghassaei.com/gpu-io"
+      },
+      "stars": 1481,
+      "license": {
+        "spdx": "MIT",
+        "verifiedBy": "",
+        "verifiedAt": "",
+        "note": "GitHub API field \u2014 hint, pending human review."
+      },
+      "tags": [
+        "webgpu",
+        "simulation"
+      ],
+      "aiGenerated": false,
+      "registryId": "",
+      "notes": "GPU compute simulation library \u2014 reference architecture for the compute-heavy plugins (water, fluid, VFX)."
+    },
+    {
+      "id": "vite-plugin-glsl",
+      "category": "kit",
+      "title": "vite-plugin-glsl",
+      "author": "UstymUkhman",
+      "source": {
+        "repo": "UstymUkhman/vite-plugin-glsl"
+      },
+      "stars": 422,
+      "license": {
+        "spdx": "MIT",
+        "verifiedBy": "",
+        "verifiedAt": "",
+        "note": "GitHub API field \u2014 hint, pending human review."
+      },
+      "tags": [
+        "glsl",
+        "tooling"
+      ],
+      "aiGenerated": false,
+      "registryId": "",
+      "notes": "Shader tooling pattern for the Asset Pipeline's shader import story."
+    },
+    {
+      "id": "astral3d",
+      "category": "game",
+      "title": "Astral3D",
+      "author": "mlt131220",
+      "source": {
+        "repo": "mlt131220/Astral3D"
+      },
+      "stars": 2462,
+      "license": {
+        "spdx": "Apache-2.0",
+        "verifiedBy": "",
+        "verifiedAt": "",
+        "note": "GitHub API field \u2014 hint, pending human review."
+      },
+      "tags": [
+        "ai-wave",
+        "generative"
+      ],
+      "aiGenerated": true,
+      "registryId": "",
+      "notes": "Generative 3D worlds \u2014 exactly the class of AI-assisted work the Shop indexes by link. Flagged aiGenerated; verify terms with the creator before commercial use."
+    },
+    {
+      "id": "vestige",
+      "category": "game",
+      "title": "vestige",
+      "author": "samvallad33",
+      "source": {
+        "repo": "samvallad33/vestige"
+      },
+      "stars": 608,
+      "license": {
+        "spdx": "AGPL-3.0",
+        "verifiedBy": "",
+        "verifiedAt": "",
+        "note": "GitHub API field \u2014 hint; AGPL has network-use obligations \u2014 read it before touching the code."
+      },
+      "tags": [
+        "ai-wave"
+      ],
+      "aiGenerated": true,
+      "registryId": "",
+      "notes": ""
+    }
+  ],
+  "portals": [
+    {
+      "id": "portal-codepen",
+      "label": "CodePen \u2014 three.js tag",
+      "url": "https://codepen.io/tag/three-js",
+      "note": "Discovery feed; entries here become candidates, never direct imports."
+    },
+    {
+      "id": "portal-itch",
+      "label": "itch.io \u2014 webgl games",
+      "url": "https://itch.io/games/tag-webgl",
+      "note": "Discovery feed for playable web games."
+    },
+    {
+      "id": "portal-x-wave",
+      "label": "X \u2014 the AI-game wave",
+      "url": "https://x.com/search?q=three.js%20AI%20game",
+      "note": "Live discovery feed. The freshest and riskiest signal class \u2014 captured manually into candidates with post id + author (the chiro-entry pattern)."
+    }
+  ]
+}

@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>3JSE Shop — examples, kits, templates &amp; community games</title>
+<meta name="description" content="The 3JSE Shop — a link-first marketplace of examples, kits, templates, and community games for the WebGPU-native game engine. Licensed as declared; curated by humans.">
+<link rel="icon" type="image/svg+xml" href="assets/img/3jse-logo.svg">
+<link rel="stylesheet" href="assets/css/site.css">
+</head>
+<body>
+<header class="site-header">
+  <div class="hdr">
+    <a class="brand" href="index.html">
+      <span class="brand-mark"><svg viewBox="0 0 512 512" width="26" height="26" aria-hidden="true"><polygon points="256,134 142,200 256,266 370,200" fill="#22d3ee"/><polygon points="142,200 256,266 256,398 142,332" fill="#818cf8"/><polygon points="370,200 256,266 256,398 370,332" fill="#e879f9"/></svg></span>
+      <span class="brand-name">3JSE</span>
+      <span class="brand-tag">the shop</span>
+    </a>
+    <nav class="nav">
+      <a href="index.html">Site</a>
+      <a href="manual.html">Manual</a>
+      <a class="active" href="shop.html">Shop</a>
+      <a class="nav-cta" href="https://github.com/xirtus/3JSE" target="_blank" rel="noopener">GitHub ↗</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+<section class="section shop-hero" id="top">
+  <div class="section-head">
+    <div class="section-kicker">The Shop</div>
+    <h2>Examples. Kits. Templates. <span class="grad-text">The games people are dropping every day.</span></h2>
+    <p><strong>Link-first:</strong> the Shop ships pointers, never content — the editor stays lightweight and pulls what you choose, when you choose it. Every entry states the license <em>as declared by its creator</em>. 624 candidates are in the curation queue, including the entire official Three.js examples shelf.</p>
+  </div>
+</section>
+
+<div class="shop-toolbar">
+  <div class="cat-tabs" id="cat-tabs">
+    <button class="tab-btn active" data-cat="all">All</button>
+    <button class="tab-btn" data-cat="example">🧪 Examples</button>
+    <button class="tab-btn" data-cat="kit">🧰 Kits</button>
+    <button class="tab-btn" data-cat="template">📐 Templates</button>
+    <button class="tab-btn" data-cat="game">🎮 Games</button>
+  </div>
+  <input id="shop-search" class="doc-search shop-search" type="search" placeholder="Search the shop…" aria-label="Search the shop">
+</div>
+
+<div class="shop-grid" id="shop-grid">
+  <article class="shop-card shelf" data-cat="example" data-search="three.js official examples">
+    <div class="shop-card-head"><span class="cat-icon">📚</span><span class="shop-title">Three.js official examples</span><span class="stars">588 items</span></div>
+    <div class="shop-meta">Three.js project <span class="chip lic-ok">MIT ✓ verified</span></div>
+    <p class="note">Every official example, indexed from threejs.org/examples/files.json — candidates file holds the full list; the editor's Shop panel renders them all.</p>
+    <div class="shop-actions"><a class="shop-link live" href="https://threejs.org/examples/" target="_blank" rel="noopener">▶ Browse shelf</a></div>
+  </article>
+      <article class="shop-card shelf" data-cat="template" data-search="3jse official templates">
+    <div class="shop-card-head"><span class="cat-icon">📚</span><span class="shop-title">3JSE official templates</span><span class="stars">16 items</span></div>
+    <div class="shop-meta">The 3JSE project <span class="chip lic-ok">GPL-3.0 ✓ verified</span></div>
+    <p class="note">The only shelf 3JSE maintains itself: Third Person, FPS, Racing, RTS, Open World and friends — real Gameplay Framework systems, never demo hacks.</p>
+    <div class="shop-actions"><a class="shop-link live" href="manual.html#templates" target="_blank" rel="noopener">▶ Browse shelf</a></div>
+  </article>
+  <article class="shop-card" data-cat="example" data-search="animation — keyframes three.js project official animation">
+    <div class="shop-card-head"><span class="cat-icon">example</span><span class="shop-title">Animation — keyframes</span></div>
+    <div class="shop-meta">Three.js project <span class="chip lic-ok">MIT ✓ verified</span></div>
+    <div class="shop-tags"><span class="tag">official</span><span class="tag">animation</span></div>
+    <p class="lic-note">three.js repo is MIT.</p>
+    <div class="shop-actions"><a class="shop-link live" href="https://threejs.org/examples/#webgl_animation_keyframes" target="_blank" rel="noopener">▶ Live demo</a><a class="shop-link" href="https://github.com/github.com/mrdoob/three.js" target="_blank" rel="noopener">Source ↗</a><a class="shop-link open" href="3jse://open?entry=threejs-webgl-animation-keyframes" title="Opens in the 3JSE editor once the protocol is live (docs/SHOP.md)">Open in 3JSE</a></div>
+  </article>
+      <article class="shop-card" data-cat="example" data-search="webgpu — gpu particles three.js project official webgpu vfx">
+    <div class="shop-card-head"><span class="cat-icon">example</span><span class="shop-title">WebGPU — GPU particles</span></div>
+    <div class="shop-meta">Three.js project <span class="chip lic-ok">MIT ✓ verified</span></div>
+    <div class="shop-tags"><span class="tag">official</span><span class="tag">webgpu</span><span class="tag">vfx</span></div>
+    <p class="note">The architecture reference for Phase 5's VFX graph (see VENDOR_INTEGRATIONS.md, Babylon GPU particles row).</p><p class="lic-note">three.js repo is MIT.</p>
+    <div class="shop-actions"><a class="shop-link live" href="https://threejs.org/examples/#webgpu_compute_particles" target="_blank" rel="noopener">▶ Live demo</a><a class="shop-link" href="https://github.com/github.com/mrdoob/three.js" target="_blank" rel="noopener">Source ↗</a><a class="shop-link open" href="3jse://open?entry=threejs-webgpu-particles" title="Opens in the 3JSE editor once the protocol is live (docs/SHOP.md)">Open in 3JSE</a></div>
+  </article>
+      <article class="shop-card" data-cat="kit" data-search="poseidon — fft ocean  water webgpu">
+    <div class="shop-card-head"><span class="cat-icon">kit</span><span class="shop-title">Poseidon — FFT ocean</span></div>
+    <div class="shop-meta"> <span class="chip lic-ok">MIT ✓ verified</span></div>
+    <div class="shop-tags"><span class="tag">water</span><span class="tag">webgpu</span></div>
+    <p class="note">Tier A — wraps into @3jse/water-poseidon.</p>
+    <div class="shop-actions"><a class="shop-link" href="https://github.com/owenyuwono/poseidon" target="_blank" rel="noopener">Homepage ↗</a><span class="shop-link reg" title="Installable in the editor via the Open Source panel">⬇ Registry</span></div>
+  </article>
+      <article class="shop-card" data-cat="kit" data-search="gaia — procedural grass  foliage">
+    <div class="shop-card-head"><span class="cat-icon">kit</span><span class="shop-title">Gaia — procedural grass</span></div>
+    <div class="shop-meta"> <span class="chip lic-ok">MIT ✓ verified</span></div>
+    <div class="shop-tags"><span class="tag">foliage</span></div>
+    <p class="note">Tier A — wraps into @3jse/foliage-gaia.</p>
+    <div class="shop-actions"><a class="shop-link" href="https://github.com/owenyuwono/gaia" target="_blank" rel="noopener">Homepage ↗</a><span class="shop-link reg" title="Installable in the editor via the Open Source panel">⬇ Registry</span></div>
+  </article>
+      <article class="shop-card" data-cat="kit" data-search="dryad — procedural trees  flora">
+    <div class="shop-card-head"><span class="cat-icon">kit</span><span class="shop-title">Dryad — procedural trees</span></div>
+    <div class="shop-meta"> <span class="chip lic-ok">MIT ✓ verified</span></div>
+    <div class="shop-tags"><span class="tag">flora</span></div>
+    <p class="note">Tier A — wraps into @3jse/flora-dryad.</p>
+    <div class="shop-actions"><a class="shop-link" href="https://github.com/owenyuwono/dryad" target="_blank" rel="noopener">Homepage ↗</a><span class="shop-link reg" title="Installable in the editor via the Open Source panel">⬇ Registry</span></div>
+  </article>
+      <article class="shop-card" data-cat="kit" data-search="demiurge — tectonic planet  terrain webgpu">
+    <div class="shop-card-head"><span class="cat-icon">kit</span><span class="shop-title">Demiurge — tectonic planet</span></div>
+    <div class="shop-meta"> <span class="chip lic-ok">MIT ✓ verified</span></div>
+    <div class="shop-tags"><span class="tag">terrain</span><span class="tag">webgpu</span></div>
+    <p class="note">Tier A — wraps into @3jse/terrain-demiurge (Phase 5+).</p>
+    <div class="shop-actions"><a class="shop-link" href="https://github.com/owenyuwono/demiurge" target="_blank" rel="noopener">Homepage ↗</a><span class="shop-link reg" title="Installable in the editor via the Open Source panel">⬇ Registry</span></div>
+  </article>
+      <article class="shop-card" data-cat="kit" data-search="tiamat — sph fluid  fluid">
+    <div class="shop-card-head"><span class="cat-icon">kit</span><span class="shop-title">Tiamat — SPH fluid</span></div>
+    <div class="shop-meta"> <span class="chip lic-decl">MIT — as declared</span></div>
+    <div class="shop-tags"><span class="tag">fluid</span></div>
+    <p class="note">Tier B — MIT text confirmed; human flip pending (BOM case).</p><p class="lic-note">LICENSE file is standard MIT; GitHub detector fails on a leading BOM. Human must flip verifiedBy before Tier A.</p>
+    <div class="shop-actions"><a class="shop-link" href="https://github.com/owenyuwono/tiamat" target="_blank" rel="noopener">Homepage ↗</a><span class="shop-link reg" title="Installable in the editor via the Open Source panel">⬇ Registry</span></div>
+  </article>
+      <article class="shop-card" data-cat="kit" data-search="apate — surface relief comparison  materials">
+    <div class="shop-card-head"><span class="cat-icon">kit</span><span class="shop-title">Apate — surface relief comparison</span></div>
+    <div class="shop-meta"> <span class="chip lic-ok">MIT ✓ verified</span></div>
+    <div class="shop-tags"><span class="tag">materials</span></div>
+    <p class="note">Reference — four relief techniques feeding the Material Graph node library.</p>
+    <div class="shop-actions"><a class="shop-link" href="https://github.com/owenyuwono/apate" target="_blank" rel="noopener">Homepage ↗</a><span class="shop-link reg" title="Installable in the editor via the Open Source panel">⬇ Registry</span></div>
+  </article>
+      <article class="shop-card" data-cat="kit" data-search="minos — native planet engine  terrain reference">
+    <div class="shop-card-head"><span class="cat-icon">kit</span><span class="shop-title">Minos — native planet engine</span></div>
+    <div class="shop-meta"> <span class="chip lic-ok">MIT ✓ verified</span></div>
+    <div class="shop-tags"><span class="tag">terrain</span><span class="tag">reference</span></div>
+    <p class="note">Reference only — Rust/Vulkan runtime; algorithm reference for @3jse/terrain.</p>
+    <div class="shop-actions"><a class="shop-link" href="https://github.com/owenyuwono/minos" target="_blank" rel="noopener">Homepage ↗</a><span class="shop-link reg" title="Installable in the editor via the Open Source panel">⬇ Registry</span></div>
+  </article>
+      <article class="shop-card" data-cat="kit" data-search="chiro elemental sandbox — procedural ability vfx [object object] vfx ability">
+    <div class="shop-card-head"><span class="cat-icon">kit</span><span class="shop-title">Chiro Elemental Sandbox — procedural ability VFX</span></div>
+    <div class="shop-meta">[object Object] <span class="chip lic-ok">MIT ✓ verified</span></div>
+    <div class="shop-tags"><span class="tag">vfx</span><span class="tag">ability</span></div>
+    <p class="note">Ten procedural ability effects, pause-and-sculpt interaction model. Planned wrap: @3jse/vfx-chiro.</p>
+    <div class="shop-actions"><a class="shop-link" href="https://github.com/achrefelouafi/LinearAbiltyCastingThreeJS" target="_blank" rel="noopener">Homepage ↗</a><a class="shop-link sig" href="https://x.com/TokenGremlin/status/2091967294582727005" target="_blank" rel="noopener">✕ chirovisuals</a><span class="shop-link reg" title="Installable in the editor via the Open Source panel">⬇ Registry</span></div>
+  </article>
+      <article class="shop-card" data-cat="kit" data-search="three-vfx — webgpu particle system  vfx webgpu">
+    <div class="shop-card-head"><span class="cat-icon">kit</span><span class="shop-title">Three-VFX — WebGPU particle system</span></div>
+    <div class="shop-meta"> <span class="chip lic-decl">MIT — as declared</span></div>
+    <div class="shop-tags"><span class="tag">vfx</span><span class="tag">webgpu</span></div>
+    <p class="note">Particle backend candidate for the VFX graph; MIT file present, human flip pending.</p>
+    <div class="shop-actions"><a class="shop-link" href="https://github.com/mustache-dev/Three-VFX" target="_blank" rel="noopener">Homepage ↗</a><span class="shop-link reg" title="Installable in the editor via the Open Source panel">⬇ Registry</span></div>
+  </article>
+      <article class="shop-card" data-cat="kit" data-search="quantum core — shader scene [object object] shader codepen">
+    <div class="shop-card-head"><span class="cat-icon">kit</span><span class="shop-title">Quantum Core — shader scene</span></div>
+    <div class="shop-meta">[object Object] <span class="chip lic-none">No license declared</span></div>
+    <div class="shop-tags"><span class="tag">shader</span><span class="tag">codepen</span></div>
+    <p class="note">No license declared anywhere — rendered as all-rights-reserved until the author publishes one.</p><p class="lic-note">CodePen snippet. No LICENSE file, no GitHub mirror found. Treat as all-rights-reserved until the author publishes a repo+license.</p>
+    <div class="shop-actions"><a class="shop-link" href="https://codepen.io/editor/sabosugi/pen/01a02fca-0d14-7e50-a9b8-283d419ccaea?file=%2Findex.html" target="_blank" rel="noopener">Homepage ↗</a><span class="shop-link reg" title="Installable in the editor via the Open Source panel">⬇ Registry</span></div>
+  </article>
+      <article class="shop-card" data-cat="kit" data-search="webgpu-ocean — mls-mpm / sph fluid  water webgpu">
+    <div class="shop-card-head"><span class="cat-icon">kit</span><span class="shop-title">WebGPU-Ocean — MLS-MPM / SPH fluid</span></div>
+    <div class="shop-meta"> <span class="chip lic-decl">MIT — as declared</span></div>
+    <div class="shop-tags"><span class="tag">water</span><span class="tag">webgpu</span></div>
+    <p class="note">MLS-MPM / SPH fluid on WebGPU.</p>
+    <div class="shop-actions"><a class="shop-link" href="https://github.com/matsuoka-601/WebGPU-Ocean" target="_blank" rel="noopener">Homepage ↗</a><span class="shop-link reg" title="Installable in the editor via the Open Source panel">⬇ Registry</span></div>
+  </article>
+      <article class="shop-card" data-cat="kit" data-search="hls webgpu terrain plugins  terrain webgpu">
+    <div class="shop-card-head"><span class="cat-icon">kit</span><span class="shop-title">HLS WebGPU terrain plugins</span></div>
+    <div class="shop-meta"> <span class="chip lic-none">No license declared</span></div>
+    <div class="shop-tags"><span class="tag">terrain</span><span class="tag">webgpu</span></div>
+    <p class="note">No license declared — review required before any import.</p>
+    <div class="shop-actions"><a class="shop-link" href="https://github.com/hlsvortex/HLS_WebGPUPlugins" target="_blank" rel="noopener">Homepage ↗</a><span class="shop-link reg" title="Installable in the editor via the Open Source panel">⬇ Registry</span></div>
+  </article>
+      <article class="shop-card" data-cat="kit" data-search="kimodo — nvidia text-to-motion  animation ai editor-tool">
+    <div class="shop-card-head"><span class="cat-icon">kit</span><span class="shop-title">Kimodo — NVIDIA text-to-motion</span></div>
+    <div class="shop-meta"> <span class="chip lic-ok">Apache-2.0 ✓ verified</span></div>
+    <div class="shop-tags"><span class="tag">animation</span><span class="tag">ai</span><span class="tag">editor-tool</span></div>
+    <p class="note">Editor-side text-to-motion. Code Apache-2.0; checkpoint licenses differ per model — see VENDOR_PROJECT_MODULES.md.</p><p class="lic-note">SOMA/G1 checkpoints: NVIDIA Open Model License (commercial-friendly). Kimodo-SMPLX-RP-v1: NVIDIA R&amp;D Model — do not redistribute weights without that gate. Llama-family text encoder has its own HF terms.</p>
+    <div class="shop-actions"><a class="shop-link" href="https://github.com/nv-tlabs/kimodo" target="_blank" rel="noopener">Homepage ↗</a><span class="shop-link reg" title="Installable in the editor via the Open Source panel">⬇ Registry</span></div>
+  </article>
+      <article class="shop-card" data-cat="kit" data-search="react-three-fiber pmndrs react framework">
+    <div class="shop-card-head"><span class="cat-icon">kit</span><span class="shop-title">react-three-fiber</span><span class="stars">★ 31,787</span></div>
+    <div class="shop-meta">pmndrs <span class="chip lic-decl">MIT — as declared</span></div>
+    <div class="shop-tags"><span class="tag">react</span><span class="tag">framework</span></div>
+    <p class="note">The React renderer for Three.js — a different authoring philosophy worth studying (VENDOR_INTEGRATIONS.md's editor-bolt-on caution applies to how we consume, not what we learn).</p><p class="lic-note">GitHub API field — hint, pending human review.</p>
+    <div class="shop-actions"><a class="shop-link" href="https://r3f.docs.pmnd.rs" target="_blank" rel="noopener">Homepage ↗</a><a class="shop-link open" href="3jse://open?entry=react-three-fiber" title="Opens in the 3JSE editor once the protocol is live (docs/SHOP.md)">Open in 3JSE</a></div>
+  </article>
+      <article class="shop-card" data-cat="kit" data-search="drei pmndrs react helpers">
+    <div class="shop-card-head"><span class="cat-icon">kit</span><span class="shop-title">drei</span><span class="stars">★ 9,817</span></div>
+    <div class="shop-meta">pmndrs <span class="chip lic-decl">MIT — as declared</span></div>
+    <div class="shop-tags"><span class="tag">react</span><span class="tag">helpers</span></div>
+    <p class="note">A catalog of reusable scene helpers — a useful checklist of what a gameplay framework should offer out of the box.</p><p class="lic-note">GitHub API field — hint, pending human review.</p>
+    <div class="shop-actions"><a class="shop-link" href="https://drei.docs.pmnd.rs" target="_blank" rel="noopener">Homepage ↗</a><a class="shop-link open" href="3jse://open?entry=drei" title="Opens in the 3JSE editor once the protocol is live (docs/SHOP.md)">Open in 3JSE</a></div>
+  </article>
+      <article class="shop-card" data-cat="kit" data-search="three.meshline spite lines rendering">
+    <div class="shop-card-head"><span class="cat-icon">kit</span><span class="shop-title">THREE.MeshLine</span><span class="stars">★ 2,339</span></div>
+    <div class="shop-meta">spite <span class="chip lic-decl">MIT — as declared</span></div>
+    <div class="shop-tags"><span class="tag">lines</span><span class="tag">rendering</span></div>
+    <p class="note">Fat lines done right — a candidate pattern for @3jse/rendering primitives.</p><p class="lic-note">GitHub API field — hint, pending human review.</p>
+    <div class="shop-actions"><a class="shop-link" href="https://github.com/spite/THREE.MeshLine" target="_blank" rel="noopener">Source ↗</a><a class="shop-link open" href="3jse://open?entry=three-meshline" title="Opens in the 3JSE editor once the protocol is live (docs/SHOP.md)">Open in 3JSE</a></div>
+  </article>
+      <article class="shop-card" data-cat="kit" data-search="gpu-io amandaghassaei webgpu simulation">
+    <div class="shop-card-head"><span class="cat-icon">kit</span><span class="shop-title">gpu-io</span><span class="stars">★ 1,481</span></div>
+    <div class="shop-meta">amandaghassaei <span class="chip lic-decl">MIT — as declared</span></div>
+    <div class="shop-tags"><span class="tag">webgpu</span><span class="tag">simulation</span></div>
+    <p class="note">GPU compute simulation library — reference architecture for the compute-heavy plugins (water, fluid, VFX).</p><p class="lic-note">GitHub API field — hint, pending human review.</p>
+    <div class="shop-actions"><a class="shop-link" href="https://apps.amandaghassaei.com/gpu-io" target="_blank" rel="noopener">Homepage ↗</a><a class="shop-link open" href="3jse://open?entry=gpu-io" title="Opens in the 3JSE editor once the protocol is live (docs/SHOP.md)">Open in 3JSE</a></div>
+  </article>
+      <article class="shop-card" data-cat="kit" data-search="vite-plugin-glsl ustymukhman glsl tooling">
+    <div class="shop-card-head"><span class="cat-icon">kit</span><span class="shop-title">vite-plugin-glsl</span><span class="stars">★ 422</span></div>
+    <div class="shop-meta">UstymUkhman <span class="chip lic-decl">MIT — as declared</span></div>
+    <div class="shop-tags"><span class="tag">glsl</span><span class="tag">tooling</span></div>
+    <p class="note">Shader tooling pattern for the Asset Pipeline's shader import story.</p><p class="lic-note">GitHub API field — hint, pending human review.</p>
+    <div class="shop-actions"><a class="shop-link" href="https://github.com/UstymUkhman/vite-plugin-glsl" target="_blank" rel="noopener">Source ↗</a><a class="shop-link open" href="3jse://open?entry=vite-plugin-glsl" title="Opens in the 3JSE editor once the protocol is live (docs/SHOP.md)">Open in 3JSE</a></div>
+  </article>
+      <article class="shop-card" data-cat="game" data-search="astral3d mlt131220 ai-wave generative">
+    <div class="shop-card-head"><span class="cat-icon">game</span><span class="shop-title">Astral3D</span><span class="stars">★ 2,462</span></div>
+    <div class="shop-meta">mlt131220 <span class="chip lic-decl">Apache-2.0 — as declared</span><span class="chip chip-ai">AI</span></div>
+    <div class="shop-tags"><span class="tag">ai-wave</span><span class="tag">generative</span></div>
+    <p class="note">Generative 3D worlds — exactly the class of AI-assisted work the Shop indexes by link. Flagged aiGenerated; verify terms with the creator before commercial use.</p><p class="lic-note">GitHub API field — hint, pending human review.</p>
+    <div class="shop-actions"><a class="shop-link" href="https://github.com/mlt131220/Astral3D" target="_blank" rel="noopener">Source ↗</a><a class="shop-link open" href="3jse://open?entry=astral3d" title="Opens in the 3JSE editor once the protocol is live (docs/SHOP.md)">Open in 3JSE</a></div>
+  </article>
+      <article class="shop-card" data-cat="game" data-search="vestige samvallad33 ai-wave">
+    <div class="shop-card-head"><span class="cat-icon">game</span><span class="shop-title">vestige</span><span class="stars">★ 608</span></div>
+    <div class="shop-meta">samvallad33 <span class="chip lic-decl">AGPL-3.0 — as declared</span><span class="chip chip-ai">AI</span></div>
+    <div class="shop-tags"><span class="tag">ai-wave</span></div>
+    <p class="lic-note">GitHub API field — hint; AGPL has network-use obligations — read it before touching the code.</p>
+    <div class="shop-actions"><a class="shop-link" href="https://github.com/samvallad33/vestige" target="_blank" rel="noopener">Source ↗</a><a class="shop-link open" href="3jse://open?entry=vestige" title="Opens in the 3JSE editor once the protocol is live (docs/SHOP.md)">Open in 3JSE</a></div>
+  </article>
+  <article class="shop-card empty" id="shop-empty" style="display:none"><p>Nothing matches — try another search.</p></article>
+</div>
+
+<section class="section">
+  <div class="panel">
+    <div class="panel-head"><span class="dot"></span><span class="pname">Console — shop.log</span><span class="pchip">3 portals</span></div>
+    <div class="panel-body portals">
+      <a class="portal" href="https://codepen.io/tag/three-js" target="_blank" rel="noopener"><strong>CodePen — three.js tag</strong><span>Discovery feed; entries here become candidates, never direct imports.</span></a>
+      <a class="portal" href="https://itch.io/games/tag-webgl" target="_blank" rel="noopener"><strong>itch.io — webgl games</strong><span>Discovery feed for playable web games.</span></a>
+      <a class="portal" href="https://x.com/search?q=three.js%20AI%20game" target="_blank" rel="noopener"><strong>X — the AI-game wave</strong><span>Live discovery feed. The freshest and riskiest signal class — captured manually into candidates with post id + author (the chiro-entry pattern).</span></a>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="cta-band">
+    <h3>Licenses are stated, never judged.</h3>
+    <p>The Shop discloses what each creator declared. What you build with their work is <strong>your responsibility</strong> — read each entry's license before you ship, credit the humans, and be ethical. That's the deal: we make great software, you use it well. The full terms live in our <a href="terms.html">Terms of Use</a>.</p>
+    <p style="font-size:13.5px;color:#6d7686">Creators: your work is linked, never re-hosted. To have anything removed from the Shop, open an issue or email — taken down promptly, no questions asked.</p>
+    <a class="btn btn-ghost" href="terms.html">Read the Terms of Use</a>
+  </div>
+</section>
+</div>
+
+<footer class="site-footer">
+  <div class="foot-inner">
+    <p><strong>3JSE</strong> — the WebGPU-native game engine. The official website of the 3JSE project · GPL-3.0 · © 2026</p>
+    <nav>
+      <a href="manual.html">Manual</a>
+      <a href="shop.html">Shop</a>
+      <a href="terms.html">Terms</a>
+      <a href="https://github.com/xirtus/3JSE" target="_blank" rel="noopener">GitHub</a>
+    </nav>
+  </div>
+</footer>
+
+<script>
+  const grid = document.getElementById("shop-grid");
+  const search = document.getElementById("shop-search");
+  let cat = "all";
+  const apply = () => {
+    const q = search.value.trim().toLowerCase();
+    let visible = 0;
+    grid.querySelectorAll(".shop-card:not(.empty)").forEach((c) => {
+      const okCat = cat === "all" || c.dataset.cat === cat;
+      const okQ = !q || c.dataset.search.includes(q);
+      const show = okCat && okQ;
+      c.style.display = show ? "" : "none";
+      if (show) visible++;
+    });
+    grid.querySelector(".empty").style.display = visible ? "none" : "";
+  };
+  document.querySelectorAll(".tab-btn").forEach((b) => b.addEventListener("click", () => {
+    document.querySelectorAll(".tab-btn").forEach((x) => x.classList.remove("active"));
+    b.classList.add("active");
+    cat = b.dataset.cat;
+    apply();
+  }));
+  search.addEventListener("input", apply);
+</script>
+</body>
+</html>
