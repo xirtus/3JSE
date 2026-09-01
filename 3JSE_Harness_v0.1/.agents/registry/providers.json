@@ -1,0 +1,19 @@
+{
+  "version": "0.1",
+  "providers": [
+    {"id":"poseidon","repo":"owenyuwono/poseidon","tier":"A","mode":"provider","capabilities":["ocean","waves","underwater","surf_environment"],"notes":"Preferred large outdoor ocean provider; WebGPU spectral ocean."},
+    {"id":"gaia","repo":"owenyuwono/gaia","tier":"A","mode":"provider","capabilities":["grass","lawn","meadow","wetland_grass","field_vegetation"],"notes":"Procedural deterministic grass; prefer over authored grass assets."},
+    {"id":"dryad","repo":"owenyuwono/dryad","tier":"A","mode":"provider","capabilities":["trees","shrubs","forest","procedural_flora","plant_wind"],"notes":"Procedural flora and foliage generation."},
+    {"id":"tiamat","repo":"owenyuwono/tiamat","tier":"A/B","mode":"provider_reference","capabilities":["fluid_volume","splashing","flooding","gpu_fluid"],"notes":"Use for bounded/dynamic fluids, not open ocean."},
+    {"id":"demiurge","repo":"owenyuwono/demiurge","tier":"B","mode":"reference_implementation","capabilities":["terrain","erosion","climate","weather","clouds","atmosphere","planet_lod"],"notes":"Study/adapt relevant world-generation subsystems."},
+    {"id":"apate","repo":"owenyuwono/apate","tier":"B","mode":"reference_implementation","capabilities":["surface_relief","pom","spom","displacement","architectural_material_depth"],"notes":"Use before increasing geometry for surface relief."},
+    {"id":"minos","repo":"owenyuwono/minos","tier":"B","mode":"reference_implementation","capabilities":["terrain_lod","voxel_terrain","floating_origin","procedural_humanoid","planet_rendering"],"notes":"Rust/Vulkan reference; port algorithms, do not import blindly."},
+    {"id":"map3d","repo":"cartesiancs/map3d","tier":"A/B","mode":"provider","capabilities":["real_city","osm_buildings","osm_roads","city_glb"],"notes":"Preferred OSM-to-3D city route."},
+    {"id":"react-three-map","repo":"wendylabsinc/react-three-map","tier":"A/B","mode":"provider","capabilities":["geospatial_r3f","maplibre_three_bridge","mapbox_three_bridge"],"notes":"Use when R3F objects must live in GIS coordinates."},
+    {"id":"3dtilesrendererjs","repo":"NASA-AMMOS/3DTilesRendererJS","tier":"A","mode":"provider","capabilities":["3d_tiles","streamed_geospatial_3d","terrain_tiles"],"notes":"Mature 3D Tiles renderer for Three/R3F."},
+    {"id":"agentmaps","repo":"noncomputable/AgentMaps","tier":"B","mode":"reference_implementation","capabilities":["agents_on_real_maps","contagion","geospatial_agents"],"notes":"Study social/agent simulation patterns; renderer choice is project-dependent."},
+    {"id":"jollypixel-editor","repo":"JollyPixel/editor","tier":"B","mode":"reference_implementation","capabilities":["ecs_patterns","event_store","collab_scene_editing","voxel_editor"],"notes":"Study selected internals; do not adopt as 3JSE editor shell."},
+    {"id":"gamestudio-harness","repo":"bullish0x/GameStudio","tier":"D","mode":"harness_reference","capabilities":["provider_neutral_adapters","agent_pack_layout","gate_naming"],"notes":"Study canonical .agents + adapters; avoid persona/skill zoo."},
+    {"id":"majid-threejs-game-skills","repo":"majidmanzarpour/threejs-game-skills","tier":"D","mode":"harness_reference","capabilities":["director_loop","visual_gate","canvas_inspection","completion_gates"],"notes":"Study gates/director patterns; 3JSE uses reuse-first asset ordering."}
+  ]
+}

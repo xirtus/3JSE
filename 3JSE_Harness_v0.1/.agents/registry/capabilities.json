@@ -1,0 +1,19 @@
+{
+  "version": "0.1",
+  "capabilities": {
+    "ocean": ["poseidon"],
+    "grass": ["gaia"],
+    "trees": ["dryad"],
+    "fluid_volume": ["tiamat"],
+    "terrain": ["demiurge","minos"],
+    "weather": ["demiurge"],
+    "surface_relief": ["apate"],
+    "real_city": ["map3d"],
+    "geospatial_r3f": ["react-three-map"],
+    "3d_tiles": ["3dtilesrendererjs"],
+    "agents_on_real_maps": ["agentmaps"],
+    "collab_scene_editing": ["jollypixel-editor"],
+    "director_loop": ["majid-threejs-game-skills"],
+    "provider_neutral_adapters": ["gamestudio-harness"]
+  }
+}

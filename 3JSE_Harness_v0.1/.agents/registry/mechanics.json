@@ -1,0 +1,102 @@
+{
+  "version": "0.1",
+  "mechanics": [
+    {
+      "id": "third_person_platforming",
+      "status": "recipe",
+      "references": [
+        "Crash-style platforming",
+        "Mario-style camera/grounding"
+      ],
+      "note": "Capture feel as tests/state diagrams; do not copy proprietary code."
+    },
+    {
+      "id": "trick_combo",
+      "status": "recipe",
+      "references": [
+        "Tony Hawk-style chaining",
+        "SSX-style aerial trick readability"
+      ],
+      "note": "Model combo windows, landing quality, balance, multipliers, and failure states."
+    },
+    {
+      "id": "surfing",
+      "status": "recipe",
+      "references": [
+        "surf/wakeboard game feel"
+      ],
+      "note": "Combine water provider with board, wave, camera, trick and traversal contracts."
+    },
+    {
+      "id": "social_contagion",
+      "status": "recipe",
+      "references": [
+        "AgentMaps contagion patterns",
+        "pandemic simulation patterns"
+      ],
+      "note": "Use deterministic graph propagation and explicit lineage."
+    },
+    {
+      "id": "tactics",
+      "status": "recipe",
+      "references": [
+        "isometric tactics camera/input patterns"
+      ],
+      "note": "Keep camera/grid/input reusable and renderer-agnostic where possible."
+    },
+    {
+      "id": "surf_feel",
+      "status": "recipe",
+      "references": [
+        "3JSURF (../3jsurf)",
+        "TUBULAR mechanics on Poseidon FFT ocean"
+      ],
+      "note": "Canonical reference implementation. Headless mechcheck + per-frame invariants + feel measured as numbers (tools/feel.mjs). Scaling laws: stations not metres, sqrt(K) authority, quadratic drag, swept pickup tests, attach-by-construction."
+    },
+    {
+      "id": "arcade_racing",
+      "status": "recipe",
+      "references": [
+        "ZENDRIVE (../zendrive)",
+        "Pole Position-style arcade feel"
+      ],
+      "note": "Canonical reference implementation. Track-space (distance,lateral) physics on a self-closing spline; demand-vs-capacity corner model (curv*v^2 vs steer authority) drives slide/drift; seeded rival AI; generative music reacts to driving state."
+    },
+    {
+      "id": "hop_grammar",
+      "status": "recipe",
+      "references": [
+        "UBURT/PULSEHOP (../uburt)",
+        "Q*bert spatial grammar"
+      ],
+      "note": "Canonical reference implementation. Intent-relative input on diagonal boards (screen directions, not board directions); ledge guard; every hop quantized to a musical grid; MIDI/OSC out; pooled particles, zero per-frame allocation."
+    },
+    {
+      "id": "systemic_sim",
+      "status": "recipe",
+      "references": [
+        "DAMN BEAVERS (../dambeavers)",
+        "Dwarf Fortress-class emergence"
+      ],
+      "note": "Canonical reference implementation. Laws: simulation is authoritative (renderer/audio/UI observe sim state; headless always makes sense); systems not scripted outcomes (implement causes, never DamFloodEvent); stable persistent IDs; seeded determinism; counterfactual replay; per-phase gate sentences."
+    },
+    {
+      "id": "first_person_surf",
+      "status": "recipe",
+      "references": [
+        "BREAKING WAVES (../breaking-waves-demo-main)",
+        "finalsurf parametric surf tech"
+      ],
+      "note": "Canonical reference implementation. Parametric breaking wave painted by shader onto an FFT ocean: storage-buffer wave slots, winner-take-all compositor, lip rotation + barrel cavity; Tweakpane live knobs (FeelSpec direct-tuning tier); 2D live profile plot as witness; explicit WebGPU requiredLimits (8 storage textures)."
+    },
+    {
+      "id": "endless_hopper",
+      "status": "recipe",
+      "references": [
+        "MANDELHOP (../mendalhop)",
+        "endless frogger + temporal platforming"
+      ],
+      "note": "Canonical reference implementation. Deterministic unfairness-free core: constant-velocity lanes, seeded generation, render-only visuals, grid-math collision on the same numbers you see. Time powers through one clock (worldDt=dt*scale). 12Hz ghost replay. Heuristic player agents classify unfair deaths. Model LICENSES.md for adapted techniques."
+    }
+  ]
+}

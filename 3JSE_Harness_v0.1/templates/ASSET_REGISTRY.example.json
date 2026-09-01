@@ -1,0 +1,18 @@
+{
+  "assets": [
+    {
+      "id": "example_asset",
+      "path": "assets/example.glb",
+      "source": "project|sketchfab|polyhaven|other",
+      "sourceUrl": "",
+      "creator": "",
+      "license": "",
+      "attributionRequired": false,
+      "commercialUse": "unknown",
+      "modified": false,
+      "rigged": false,
+      "animations": [],
+      "tags": []
+    }
+  ]
+}

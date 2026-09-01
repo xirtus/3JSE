@@ -1,0 +1,8 @@
+{
+  "version":"0.1",
+  "blocked":[
+    {"id":"Oliyflemishspeaking560/threejs-game-skills","status":"blocked_pending_manual_review","reason":"User-supplied triage reports executable/archive distribution and antivirus-whitelisting instructions. Do not clone, download releases, or execute binaries."},
+    {"id":"markoll457/bloople-html-forge","status":"ignore","reason":"User-supplied triage indicates repository contents do not substantiate claimed engine architecture; do not treat as implementation source."},
+    {"id":"Rasmipun/rasmi-3D-portfolio","status":"ignore_as_provider","reason":"Portfolio/consumer example, not a reusable engine/mechanics provider."}
+  ]
+}
