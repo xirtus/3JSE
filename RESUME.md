@@ -1,42 +1,51 @@
-# RESUME — pick-up point after 2026-09-01 sessions
+# RESUME — pick-up point after 2026-09-01d (harness integration)
 
-Everything below is **on disk, verified green, uncommitted**. Safe to reboot.
+Branch **`harness-integration`** (off `main` @ `2fc24e8`). 7 commits, working tree clean,
+all gates green. **Not pushed** — `git push -u origin harness-integration` then open a PR.
 
 ## State: all gates green
 
 ```
-node 3JSE_Harness_v0.1/scripts/verify-harness.mjs   # PASS
-pnpm -r typecheck                                    # clean (17 projects incl. apps/editor)
-pnpm -r test                                         # PASS, exit 0 (22 packages)
-pnpm --filter @3jse/editor build                     # OK
+pnpm verify:harness                         # PASS (now also gates the repo-root .claude/skills mirror)
+pnpm gate                                   # verify:harness + typecheck + test + editor build — all green
+pnpm -r typecheck                           # clean (24 projects)
+pnpm -r test                                # PASS (22 packages; runtime now 29 tests, agent 36)
 ```
 
-If any of these is NOT green after reboot, something external changed — re-run `pnpm install` first.
+If any is NOT green after reboot, run `pnpm install` first.
 
-## What was done (3 sessions, 2026-09-01)
+## What this session did (full detail: `evidence/SESSION_REPORT-2026-09-01d.md`)
 
-Full detail in `evidence/SESSION_REPORT-2026-09-01{,b,c}.md` and `BUILD_TASKS.md`. Summary:
+- **Harness is now connected to the repo**, not a sidecar:
+  - repo-root `CLAUDE.md` loads the harness constitution for every session (not just edits
+    under `3JSE_Harness_v0.1/`).
+  - repo-root `.claude/skills/` — a 3rd generated mirror (`sync-claude-skills.mjs`), gated by
+    `verify-harness.mjs` (negative-tested).
+  - `.claude/settings.json` hooks: `Stop` → `verify:harness`; `PostToolUse` → asset-provenance
+    reminder (`tools/hook-asset-provenance.mjs`).
+  - `pnpm` scripts `verify:harness` / `sync:harness` / `gate`; `.github/workflows/ci.yml`.
+  - The harness + last session's 6 packages + Phase 0 evidence are **committed** (were untracked).
+- **Runtime API bridge** (`@3jse/agent`): `runtime.getPerf` (measured CPU/sim timing + scene
+  census), `runtime.captureState` (deterministic state snapshot — honest `captureFrame` stand-in),
+  `buildEvidenceReport()`. Registered on the MCP server. `Scheduler.describe()` added.
+- **Phase 1/2 exit gates met (browser)**: `apps/editor/src/sampleScene.ts` now *is*
+  `buildThirdPersonTemplate({ world, clips, decorate })`. Verified in Chrome/WebGPU — Play
+  loop + follow camera, Inspector edit drives the live sim, `systems/builtins.ts` hot-swaps
+  during Play with no reload. Evidence: `evidence/phase1-2-exit-gate-2026-09-01.md`.
+- **Phase 1.1 (query half)**: archetype index behind `Level.query` — API identical, 29 runtime
+  tests as the gate, 2.8× faster than the full scan at 20k entities.
+  Evidence: `evidence/phase1.1-runtime-archetype-index-2026-09-01.md`.
 
-- **Phase 0 spikes** — all 4 closed with evidence memos (`evidence/phase0-*.md`): 3IR round-trip GO, ECS-over-Object3D GO (`spikes/phase0/ecs-object3d/`, 0.6 ms/frame @ 10k), Verse Level-3 NO-GO, editor shell = Tauri v2. **Phase 0 closed.**
-- **6 new engine packages** (all headless, tested): `@3jse/project` (PROJECT_FORMAT save/load, byte-identical round-trip), `@3jse/spawning` (spawn points + ObjectPool), `@3jse/templates` (`buildThirdPersonTemplate`), `@3jse/playground` (shareable snippets), `@3jse/networking` (replication/authority/prediction/RPC), `@3jse/cinematics` (timeline/sequencer runtime).
-- **Runtime:** `Entity`/`Level`/`World` take optional `id` for stable-id project load. No regressions.
-- **Harness track completed** (bootstrap self-improvement): new `engine-package` skill; `verify-harness.mjs` hardened (FILE_INDEX sync check + cross-registry integrity + bidirectional mirror check) with `build-file-index.mjs`; `docs/FILE_INDEX.txt` de-drifted; `@3jse/vendor` vitest scoped so `pnpm -r test` is green again.
+## Next work (dependency order)
 
-## Uncommitted — nothing committed this session
-
-- `3JSE_Harness_v0.1/` is **git-untracked entirely** (was already). Harness edits are inside it.
-- Mine (untracked): `packages/{project,spawning,templates,playground,networking,cinematics}/`, `packages/vendor/vitest.config.ts`, `BUILD_TASKS.md`, `evidence/`, `spikes/`, `RESUME.md`.
-- Mine (tracked, modified): `packages/runtime/src/{Entity,Level,World}.ts`.
-- Mine (edit to an untracked file): `docs/HARNESS.md`.
-- **Not mine** — pre-existing uncommitted work: the `M docs/*.md` set, `packages/vendor/{licenses.json,src/registry.json}`, ~288 staged `A packages/vendor/upstream/**` (chiro, hls-webgpu-terrain, three-vfx, webgpu-ocean-mpm), `site/manual.html`.
-
-**Recommended first action after reboot:** commit the harness + this session's work (branch off `main` first).
-
-## Next work (dependency order) — from BUILD_TASKS.md
-
-1. **Phase 1/2 exit gates** — not met. Wire `apps/editor/src/sampleScene.ts` → `buildThirdPersonTemplate({ world, decorate })`; run the editor; screenshot the playable slice; verify Inspector-tuning + on-screen hot-reload.
-2. **Phase 1.1** — promote `spikes/phase0/ecs-object3d/` archetype layout into `@3jse/runtime` (add an archetype index behind `Level.query`, keep the API identical, full test suite as the gate). Deliberately deferred — risky to rush; runtime is what everything depends on.
-3. **Phase 0 open items** — mid-range-laptop ECS re-measure; Tauri confirmation checklist; `apps/editor` `shell/` native-call adapter + keep the browser build in CI.
-4. **Phase 5 depth** — terrain/water/foliage runtime Systems (need the WebGPU viewport to verify — not headless work); Sequencer/VFX/Profiler editor panels.
-5. **Phase 6** — package registry/discovery surface; more templates (Top-Down, First-Person — needs camera presets in `@3jse/character`); third-party plugin path.
-6. **Phase 7** — written gap analysis vs. Unreal/Unity/Godot.
+1. **Push the branch + PR.** Live remote, other work merges via `main` — rebase if needed.
+2. **Phase 1.1 remainder** — SoA column storage, `EntityId` stable-identity registry,
+   `snapshot/restore`. The query index is in; storage is still per-`Entity` `Map`.
+3. **Phase 0 open items 1–3** — mid-range-laptop ECS re-measure; Tauri confirmation checklist;
+   `apps/editor` `shell/` native-call adapter + keep the browser build in CI.
+4. **Phase 1.x / 2.x** — re-verify the exit gates in the Tauri shell and with a non-programmer.
+5. **Phase 5 depth** — terrain/water/foliage runtime Systems (need the WebGPU viewport);
+   Sequencer/VFX/Profiler editor panels (Profiler can now surface `runtime.getPerf`).
+6. **Phase 6** — package registry/discovery; more templates (Top-Down, First-Person — need
+   camera presets in `@3jse/character`); third-party plugin path.
+7. **Phase 7** — written gap analysis vs. Unreal/Unity/Godot.
