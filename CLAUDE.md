@@ -57,9 +57,13 @@ direct you to. Say a skill was *loaded/read* — never that it was "invoked".
 ## Gates — completion is evidence, not compilation
 
 ```
-pnpm gate          # verify:harness + typecheck + test + editor build (CI runs this)
+pnpm gate          # verify:harness + typecheck + test + editor build
 pnpm verify:harness # deterministic harness self-check only
 ```
+
+CI: `tools/ci/github-ci.yml` runs `pnpm gate` on push/PR. It lives outside
+`.github/workflows/` until pushed with a `workflow`-scoped credential — see the
+header of that file to activate it.
 
 Every broad task ends with an evidence report
 (`3JSE_Harness_v0.1/templates/EVIDENCE_REPORT.example.md` → `evidence/`):

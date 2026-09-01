@@ -1,3 +1,15 @@
+# 3JSE CI workflow.
+#
+# Kept here (not in .github/workflows/) because the credential this branch was pushed with
+# lacks the GitHub `workflow` OAuth scope. To activate:
+#
+#   mkdir -p .github/workflows
+#   git mv tools/ci/github-ci.yml .github/workflows/ci.yml
+#   git commit -m "Activate CI workflow" && git push
+#
+# ...using a token/login that has `workflow` scope (the normal `gh auth login` does).
+# `pnpm gate` runs the same checks locally.
+
 name: CI
 
 on:
