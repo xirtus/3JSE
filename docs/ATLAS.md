@@ -40,14 +40,22 @@ editor log + clipboard; no live LLM is wired, same honesty as the Agent Panel).
 Model content = `sampleAtlas.ts`, the semantic declarations of the Third Person template
 (`@3jse/templates`) — §63 "apply it to one existing 3JSE game".
 
+## Implemented — v0.2
+
+| Piece | Module | Notes |
+|---|---|---|
+| Additional lenses | `lenses.ts` | `eventLens` (§5.4 — event names as nodes, emit/listen edges), `performanceLens` (§5.9 — measured systems ranked by `cpuMs`), `providerLens` (§5.7), `assetLens` (§5.6). Each a pure transform of the `AtlasModel`; the panel's lens switcher swaps which one feeds the map. |
+| A/B FeelSpec | `feelAB.ts` | `feelABTable` (both values + delta per dimension, sorted by \|Δ\|), `mergeFeel` (per-dimension A/B pick → merged intent, §16), `feelABSummary` (§12 preview line). |
+| `atlas/` project manifest | `manifest.ts` | `parseAtlasManifest(files)` over a virtual filesystem — loads `atlas/systems/*.json` → `AtlasSystemSpec[]` and `atlas/feelspec/*.json` → `FeelSpec[]`, reports malformed files instead of throwing, feeds `compileAtlas` directly (§44). JSON now; a YAML front-end is a swappable parse step. |
+
 ## Not built yet
 
-- Atlas v0.2+ lenses: Gameplay Flow, State Machine, Event, Runtime Trace, Asset/Provider/Style/
-  World/Rig graphs (§5.2–5.11); runtime event pulses + time scrubber (§26–27).
+- Gameplay Flow / State Machine / Runtime Trace / Style / World / Rig lenses (§5.2, §5.3, §5.5,
+  §5.8, §5.10, §5.11); runtime event pulses + time scrubber (§26–27).
 - 2.5D / Three.js Atlas navigation (§18–19, §45–51) — deliberately deferred until the 2D core's
   pain points justify it (§63).
-- A/B FeelSpec auditioning (§16), Feel Lab (§17), personal feel libraries (§15).
+- Feel Lab (§17), personal feel libraries (§15).
 - Live LLM planning behind "Ask agent" — the scoped-context export is real; the planning loop
   is the same future work as `AI_AGENT_API.md`'s PLAN stage.
-- FeelSpec YAML on disk + `atlas/` project manifest (§44) — the parser takes JS objects today.
+- FeelSpec YAML on disk (the manifest loader takes JSON today).
 - Provider swap workflow UI (§34) and git/history integration (§33).

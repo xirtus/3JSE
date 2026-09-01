@@ -52,6 +52,7 @@ export {
   type AtlasLayout,
   type NodeBox,
   type LayoutOptions,
+  type LayoutInput,
 } from "./layout.js";
 
 export {
@@ -65,3 +66,19 @@ export {
 export { searchAtlas, type SearchResult, type SearchKind } from "./search.js";
 
 export { DOMAIN_COLOR, HEALTH_COLOR, HEALTH_GLYPH } from "./colors.js";
+
+// v0.2 — additional lenses (§5), A/B FeelSpec (§16), atlas/ manifest (§44)
+export {
+  eventLens,
+  performanceLens,
+  providerLens,
+  assetLens,
+  type LensGraph,
+} from "./lenses.js";
+export {
+  feelABTable,
+  mergeFeel,
+  feelABSummary,
+  type FeelABRow,
+} from "./feelAB.js";
+export { parseAtlasManifest, type AtlasManifest } from "./manifest.js";

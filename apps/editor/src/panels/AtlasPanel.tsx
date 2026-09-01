@@ -6,12 +6,17 @@ import {
   searchAtlas,
   exportAgentContext,
   previewChange,
+  eventLens,
+  performanceLens,
+  providerLens,
+  assetLens,
   DOMAIN_COLOR,
   HEALTH_COLOR,
   HEALTH_GLYPH,
   type AtlasEdge,
   type AtlasNode,
   type AgentAction,
+  type LensGraph,
 } from "@3jse/atlas";
 import { buildSampleAtlas, SAMPLE_EVIDENCE, applyAtlasKnob, readAtlasKnob } from "../sampleAtlas.js";
 import type { EditorContext } from "./types.js";
@@ -25,6 +30,15 @@ const EDGE_STYLE: Record<AtlasEdge["kind"], { stroke: string; dash?: string }> =
 };
 
 const ACTIONS: AgentAction[] = ["explain", "modify", "tune", "optimize", "repair", "compare"];
+
+type LensId = "system" | "events" | "performance" | "providers" | "assets";
+const LENSES: { id: LensId; label: string }[] = [
+  { id: "system", label: "System Map" },
+  { id: "events", label: "Events" },
+  { id: "performance", label: "Performance" },
+  { id: "providers", label: "Providers" },
+  { id: "assets", label: "Assets" },
+];
 
 /**
  * docs/3JSE_ATLAS_FULL_PLAN.md §53/§54/§63 — the Atlas Semantic Core, rendered. Left: the System
@@ -44,6 +58,7 @@ export function AtlasPanel({ ctx }: { ctx: EditorContext }) {
   const [query, setQuery] = useState("");
   const [action, setAction] = useState<AgentAction>("modify");
   const [intent, setIntent] = useState("");
+  const [lens, setLens] = useState<LensId>("system");
   // bump to recompile after a knob edit so the inspector reflects live values
   const [rev, setRev] = useState(0);
 
@@ -51,7 +66,16 @@ export function AtlasPanel({ ctx }: { ctx: EditorContext }) {
     () => compileAtlas({ systems: registry.list(), evidence: SAMPLE_EVIDENCE }),
     [registry, rev],
   );
-  const layout = useMemo(() => layoutAtlas(model), [model]);
+  const view: LensGraph = useMemo(() => {
+    switch (lens) {
+      case "events": return eventLens(model);
+      case "performance": return performanceLens(model);
+      case "providers": return providerLens(model);
+      case "assets": return assetLens(model);
+      default: return { nodes: model.nodes, edges: model.edges };
+    }
+  }, [model, lens]);
+  const layout = useMemo(() => layoutAtlas(view), [view]);
   const results = useMemo(() => (query ? searchAtlas(model, query, 12) : []), [model, query]);
   const selected = model.nodes.find((n) => n.id === selectedId) ?? null;
 
@@ -83,6 +107,25 @@ export function AtlasPanel({ ctx }: { ctx: EditorContext }) {
       {/* ---- System Map ---- */}
       <div style={{ flex: "1 1 60%", display: "flex", flexDirection: "column", minWidth: 0 }}>
         <div style={{ padding: "6px 8px", borderBottom: "1px solid var(--panel-border, #333)" }}>
+          <div style={{ display: "flex", gap: 4, marginBottom: 4 }}>
+            {LENSES.map((l) => (
+              <button
+                key={l.id}
+                onClick={() => setLens(l.id)}
+                style={{
+                  fontSize: 11,
+                  padding: "2px 8px",
+                  borderRadius: 4,
+                  border: "1px solid #3a3a3c",
+                  background: lens === l.id ? "#3a3a3c" : "#1c1c1e",
+                  color: lens === l.id ? "#fff" : "#aaa",
+                  cursor: "pointer",
+                }}
+              >
+                {l.label}
+              </button>
+            ))}
+          </div>
           <input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
@@ -107,7 +150,7 @@ export function AtlasPanel({ ctx }: { ctx: EditorContext }) {
         </div>
         <div style={{ flex: 1, overflow: "auto", background: "#161618" }}>
           <SystemMap
-            model={model}
+            model={view}
             layout={layout}
             selectedId={selectedId}
             onSelect={setSelectedId}
@@ -146,7 +189,7 @@ function SystemMap({
   selectedId,
   onSelect,
 }: {
-  model: ReturnType<typeof compileAtlas>;
+  model: LensGraph;
   layout: ReturnType<typeof layoutAtlas>;
   selectedId: string | null;
   onSelect: (id: string) => void;
@@ -208,7 +251,7 @@ function SystemMap({
   );
 }
 
-function isNeighbor(model: ReturnType<typeof compileAtlas>, a: string, b: string): boolean {
+function isNeighbor(model: LensGraph, a: string, b: string): boolean {
   return model.edges.some((e) => (e.source === a && e.target === b) || (e.source === b && e.target === a));
 }
 

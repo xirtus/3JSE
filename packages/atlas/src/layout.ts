@@ -6,7 +6,13 @@
 // "labels stay horizontal", "dependency direction is consistent"). Not a force graph (§19.1,
 // §48.5 forbid that as default).
 
-import type { AtlasModel, AtlasNode } from "./compile.js";
+import type { AtlasNode, AtlasEdge } from "./compile.js";
+
+/** layoutAtlas only needs nodes + edges — an AtlasModel or any lens graph (lenses.ts). */
+export interface LayoutInput {
+  nodes: AtlasNode[];
+  edges: AtlasEdge[];
+}
 
 export interface NodeBox {
   id: string;
@@ -46,7 +52,7 @@ const DOMAIN_ORDER = [
   "assets",
 ];
 
-export function layoutAtlas(model: AtlasModel, opts: LayoutOptions = {}): AtlasLayout {
+export function layoutAtlas(model: LayoutInput, opts: LayoutOptions = {}): AtlasLayout {
   const NODE_W = opts.nodeWidth ?? 200;
   const NODE_H = opts.nodeHeight ?? 84;
   const LAYER_GAP = opts.layerGap ?? 120;
