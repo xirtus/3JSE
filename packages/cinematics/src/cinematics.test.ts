@@ -126,4 +126,25 @@ describe("@3jse/cinematics — CinematicSystem", () => {
     expect(director.getComponent<Record<string, unknown>>("Cinematic")!.playing).toBe(false);
     expect(director.getComponent<Record<string, number>>("Cinematic")!.time).toBeCloseTo(2, 1);
   });
+
+  it("an external write to `time` scrubs the player instead of drifting forward normally (the Sequencer panel's seek)", () => {
+    const { world, level, cam, seq } = scene();
+    world.scheduler.register(createCinematicSystem({ intro: seq }));
+    const director = level.createEntity("Director", { spatial: false });
+    director.addComponent("Cinematic", { sequence: "intro", playing: false });
+
+    world.step(1 / 30); // establish lastEmittedTime at 0, still paused
+    expect(cam.object3D!.position.z).toBeCloseTo(0, 5);
+
+    // Panel-driven scrub: jump straight to the midpoint while paused.
+    director.getComponent<Record<string, unknown>>("Cinematic")!.time = 1;
+    world.step(1 / 30);
+    expect(cam.object3D!.position.z).toBeCloseTo(-10, 1); // halfway through the -20 move
+    expect(director.getComponent<Record<string, unknown>>("Cinematic")!.playing).toBe(false); // still paused
+
+    // Resuming play continues from the scrubbed time, not from 0.
+    director.getComponent<Record<string, unknown>>("Cinematic")!.playing = true;
+    world.step(1 / 30);
+    expect(director.getComponent<Record<string, number>>("Cinematic")!.time).toBeGreaterThan(1);
+  });
 });

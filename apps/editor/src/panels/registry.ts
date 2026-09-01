@@ -9,6 +9,8 @@ import { CodeEditorPanel } from "./CodeEditorPanel.js";
 import { DebuggerPanel } from "./DebuggerPanel.js";
 import { OpenSourcePanel } from "./OpenSourcePanel.js";
 import { PackagesPanel } from "./PackagesPanel.js";
+import { SequencerPanel } from "./SequencerPanel.js";
+import { ProfilerPanel } from "./ProfilerPanel.js";
 import { AgentPanel } from "./AgentPanel.js";
 import { ContentBrowserPanel } from "./ContentBrowserPanel.js";
 import { planned } from "./planned.js";
@@ -121,13 +123,12 @@ export const panels: PanelDef[] = [
   { id: "console", title: "Console", region: "bottom", status: "active", component: ConsolePanel },
   { id: "content-browser", title: "Content Browser", region: "bottom", status: "active", component: ContentBrowserPanel },
   { id: "debugger", title: "Debugger", region: "bottom", status: "active", component: DebuggerPanel },
-  {
-    id: "profiler",
-    title: "Profiler",
-    region: "bottom",
-    status: "planned",
-    component: planned("Profiler", "PERFORMANCE.md"),
-  },
+  // docs/GAMEPLAY_FRAMEWORK.md Cinematics row / docs/EDITOR.md Phase 5 — over the real
+  // @3jse/cinematics runtime (sequences.ts), not a mock authoring model.
+  { id: "sequencer", title: "Sequencer", region: "bottom", status: "active", component: SequencerPanel },
+  // docs/PERFORMANCE.md's Profiler — real runtime.getPerf (@3jse/agent) fed by the actual
+  // render loop's World.step() calls (perf.ts), not a synthetic probe.
+  { id: "profiler", title: "Profiler", region: "bottom", status: "active", component: ProfilerPanel },
   {
     id: "packaging",
     title: "Packaging",

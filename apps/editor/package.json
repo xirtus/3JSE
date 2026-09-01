@@ -15,6 +15,7 @@
     "@3jse/assets": "workspace:*",
     "@3jse/atlas": "workspace:*",
     "@3jse/character": "workspace:*",
+    "@3jse/cinematics": "workspace:*",
     "@3jse/graph": "workspace:*",
     "@3jse/ir": "workspace:*",
     "@3jse/physics-rapier": "workspace:*",

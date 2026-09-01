@@ -5,6 +5,7 @@ import { TransformControls } from "three/addons/controls/TransformControls.js";
 import { INPUT_RESOURCE, type InputManager, type Level, type World } from "@3jse/runtime";
 import { CAMERA_FOLLOW_RESOURCE, type CameraPose } from "@3jse/character";
 import type { ColliderData } from "@3jse/physics-rapier";
+import { getPerfRecorder } from "./perf.js";
 
 interface ViewportProps {
   world: World;
@@ -142,7 +143,14 @@ export function Viewport({ world, level, selectedId, onSelect, playing }: Viewpo
       const dt = Math.min((now - lastTime) / 1000, 0.1);
       lastTime = now;
 
-      if (playingRef.current) world.step(dt);
+      if (playingRef.current) {
+        // The Profiler panel's numbers (docs/PERFORMANCE.md) are this exact step's real cost —
+        // see perf.ts's doc comment on why it's fed here instead of a separate simulated run.
+        const perf = getPerfRecorder(world);
+        const stepStart = perf ? performance.now() : 0;
+        world.step(dt);
+        if (perf) perf.record(performance.now() - stepStart);
+      }
       input?.endFrame();
 
       // A CameraRig-carrying Entity (docs/GAMEPLAY_FRAMEWORK.md's CameraRig, @3jse/character)

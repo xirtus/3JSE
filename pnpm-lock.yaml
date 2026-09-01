@@ -32,6 +32,9 @@ importers:
       '@3jse/character':
         specifier: workspace:*
         version: link:../../packages/character
+      '@3jse/cinematics':
+        specifier: workspace:*
+        version: link:../../packages/cinematics
       '@3jse/graph':
         specifier: workspace:*
         version: link:../../packages/graph

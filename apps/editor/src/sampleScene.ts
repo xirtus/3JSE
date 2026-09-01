@@ -8,8 +8,15 @@ import { World, type Level } from "@3jse/runtime";
 // throw "already registered" on the next edit, forcing a full page reload instead of a swap.
 import { registerBuiltinSystems } from "@3jse/runtime/systems/builtins";
 import { buildThirdPersonTemplate } from "@3jse/templates";
+import { createCinematicSystem } from "@3jse/cinematics";
 import { buildCharacterRig, buildLocomotionClips } from "./proceduralCharacter.js";
 import { pluginHost } from "./plugins.js";
+import { sequences } from "./sequences.js";
+import { installPerfRecorder } from "./perf.js";
+
+/** Most-recent-first log of Cinematic event markers as CinematicSystem crosses them — read by
+ *  the Sequencer panel, which has no rAF loop of its own to observe World.step ticks directly. */
+export const cinematicEventLog: { name: string; time: number; at: number }[] = [];
 
 /**
  * The editor's starting content is now the **shipped Third Person template**
@@ -30,11 +37,24 @@ export async function buildSampleWorld(): Promise<{ world: World; level: Level }
   // below has a live target. See installHotReload's doc comment.
   registerBuiltinSystems(world.scheduler);
   installHotReload(world);
+  installPerfRecorder(world); // Viewport.tsx's animate() times each World.step() into this
 
   // docs/PLUGIN_ARCHITECTURE.md: activate registered plugins (official + community) against the
   // same live World every panel edits. Registers the community/orbit-marker plugin's Component
   // schema + System — see plugins.ts.
   pluginHost.activate({ world });
+
+  // docs/EDITOR.md Phase 5 Sequencer: one CinematicSystem driving the editor's sequence
+  // registry (sequences.ts). onEvent pushes into cinematicEventLog so the Sequencer panel can
+  // show event markers as they're crossed, without a React-side rAF loop of its own.
+  world.scheduler.register(
+    createCinematicSystem(sequences, {
+      onEvent: (name, _payload, time) => {
+        cinematicEventLog.unshift({ name, time, at: Date.now() });
+        cinematicEventLog.length = Math.min(cinematicEventLog.length, 20);
+      },
+    }),
+  );
 
   const { level } = await buildThirdPersonTemplate({
     world,
@@ -46,6 +66,14 @@ export async function buildSampleWorld(): Promise<{ world: World; level: Level }
       // Template already adds a DirectionalLight "Sun"; add fill light so shadowed sides read.
       const ambient = level.createEntity("Ambient");
       ambient.object3D!.add(new THREE.HemisphereLight(0x8899aa, 0x223322, 1.2));
+
+      // docs/EDITOR.md Phase 5 Sequencer demo content: the Sun's position track needs the real
+      // Sun entity's id, which only exists once the template has created it.
+      const sun = level.allEntities.find((e) => e.name === "Sun");
+      const sunTrack = sequences.sunSweep!.tracks[0];
+      if (sun && sunTrack?.kind === "property") sunTrack.entity = sun.id;
+      const director = level.createEntity("Cinematics Director", { spatial: false });
+      director.addComponent("Cinematic", { sequence: "sunSweep", playing: false });
 
       // Mesh for the template's ground-collider entity (40×40, matching its Collider).
       const groundMesh = new THREE.Mesh(

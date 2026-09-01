@@ -19,8 +19,13 @@ registerComponent({
 /**
  * Drives every entity carrying a `Cinematic` whose `sequence` resolves in `sequences`. One
  * SequencePlayer is kept per entity id; the component's `playing`/`time` fields are the
- * authored control surface (an Inspector or a Graph node toggles `playing`), and `time` is
- * mirrored back each tick so it's visible/seekable.
+ * authored control surface — an Inspector, a Graph node, or the editor's Sequencer panel
+ * toggles `playing` or writes `time` directly to scrub, and `time` is mirrored back each tick
+ * so it stays visible/seekable either way.
+ *
+ * External scrubbing (docs/EDITOR.md's Sequencer panel): if `data.time` doesn't match what this
+ * System itself last wrote, something else moved the playhead — seek the player there (seek is
+ * event-free, per SequencePlayer's own doc comment) before resuming normal update/play.
  */
 export function createCinematicSystem(
   sequences: Record<string, Sequence>,
@@ -28,6 +33,7 @@ export function createCinematicSystem(
 ): SystemDef {
   const players = new Map<string, SequencePlayer>();
   const lastPlaying = new Map<string, boolean>();
+  const lastEmittedTime = new Map<string, number>();
 
   return {
     name: "CinematicSystem",
@@ -48,6 +54,11 @@ export function createCinematicSystem(
           players.set(e.id, player);
         }
 
+        const lastTime = lastEmittedTime.get(e.id);
+        if (lastTime !== undefined && Math.abs(data.time - lastTime) > 1e-6) {
+          player.seek(data.time); // external write since our last tick -> scrub, not drift
+        }
+
         const was = lastPlaying.get(e.id) ?? false;
         if (data.playing && !was) player.play();
         if (!data.playing && was) player.pause();
@@ -56,10 +67,12 @@ export function createCinematicSystem(
         player.update(dt);
         data.time = player.currentTime;
         data.playing = player.isPlaying; // a finished non-looping sequence flips this back off
+        lastEmittedTime.set(e.id, data.time);
       }
       for (const id of [...players.keys()]) if (!seen.has(id)) {
         players.delete(id);
         lastPlaying.delete(id);
+        lastEmittedTime.delete(id);
       }
     },
   };
