@@ -23,9 +23,16 @@ All of it is ordinary Entities/Components/Graphs sitting in a normal project (`P
 
 ## Catalog
 
+**Shipped** (`@3jse/templates`, `TEMPLATE_CATALOG`): **Third Person** (`buildThirdPersonTemplate`),
+**Top-Down** (`buildTopDownTemplate`), **First Person** (`buildFirstPersonTemplate`). All three
+are the *same* wiring — input → CharacterController → physics → CameraRig → Animation → Save —
+differing only by the `@3jse/character` **CameraRig preset** (`thirdPerson` / `topDown` /
+`firstPerson` / `orbit`), so a new genre camera is a preset, not a new System.
+
 | Template | Distinguishing systems on top of the shared base |
 |---|---|
-| **First Person** | `@3jse/character` FPS variant (head-bob, weapon-viewmodel mount point), `@3jse/combat` |
+| **First Person** (shipped) | CameraRig `firstPerson` preset (eye-height, look-along-facing). Head-bob / weapon-viewmodel mount / `@3jse/combat` are follow-ups. |
+| **Top-Down** (shipped) | CameraRig `topDown` preset (overhead, `pitchDegrees` tilt). Click-to-move / twin-stick input variant is a follow-up. |
 | **Platformer** | Precision-jump tuning (coyote time, jump buffering), side-view or 3D-platformer camera preset |
 | **Racing** | `@3jse/vehicle`, checkpoint/lap-timer objectives (`@3jse/match`) |
 | **Surfing** | Buoyancy/water-interaction (`@3jse/water`), momentum-based movement variant of `@3jse/character` |

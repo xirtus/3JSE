@@ -22,8 +22,14 @@ registerComponent({
 });
 
 const cameraRigFields: ComponentField[] = [
+  // "thirdPerson" | "topDown" | "firstPerson" | "orbit" — see CameraRig.ts's CameraRigMode.
+  { name: "mode", type: "string", default: "thirdPerson" },
   { name: "distance", type: "number", default: 6, min: 0.5, max: 50, step: 0.5 },
   { name: "height", type: "number", default: 2.2, min: 0, max: 20, step: 0.1 },
+  { name: "pitchDegrees", type: "number", default: 55, min: 0, max: 89, step: 1 }, // topDown / orbit tilt
+  { name: "eyeHeight", type: "number", default: 1.6, min: 0, max: 3, step: 0.05 }, // firstPerson
+  { name: "forwardOffset", type: "number", default: 0.2, min: 0, max: 2, step: 0.05 }, // firstPerson near-clip guard
+  { name: "orbitYawDegrees", type: "number", default: 45, min: 0, max: 360, step: 5 }, // orbit compass angle
 ];
 
 registerComponent({
@@ -44,6 +50,11 @@ export type CharacterControllerData = {
 };
 
 export type CameraRigData = {
+  mode: "thirdPerson" | "topDown" | "firstPerson" | "orbit";
   distance: number;
   height: number;
+  pitchDegrees: number;
+  eyeHeight: number;
+  forwardOffset: number;
+  orbitYawDegrees: number;
 };

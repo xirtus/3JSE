@@ -44,3 +44,101 @@ export function computeThirdPersonCameraPose(
     },
   };
 }
+
+const DEG2RAD = Math.PI / 180;
+
+/** Camera directly above the target, tilted forward by `pitchDegrees` (0 = straight down).
+ *  The overhead rig for Top-Down / twin-stick templates (docs/TEMPLATES.md). */
+export function computeTopDownCameraPose(
+  targetPosition: Vec3Like,
+  targetYawRadians: number,
+  distance: number,
+  pitchDegrees: number,
+): CameraPose {
+  const pitch = pitchDegrees * DEG2RAD;
+  // pull the camera back along the target's facing as it tilts away from straight-down
+  const backX = Math.sin(targetYawRadians) * Math.sin(pitch) * distance;
+  const backZ = Math.cos(targetYawRadians) * Math.sin(pitch) * distance;
+  return {
+    position: {
+      x: targetPosition.x + backX,
+      y: targetPosition.y + Math.cos(pitch) * distance,
+      z: targetPosition.z + backZ,
+    },
+    lookAt: { ...targetPosition },
+  };
+}
+
+/** Camera at the target's eye, looking where it faces. `eyeHeight` above the origin,
+ *  `forwardOffset` in front so the body mesh doesn't clip the near plane. */
+export function computeFirstPersonCameraPose(
+  targetPosition: Vec3Like,
+  targetYawRadians: number,
+  eyeHeight: number,
+  forwardOffset: number,
+): CameraPose {
+  const fwdX = -Math.sin(targetYawRadians);
+  const fwdZ = -Math.cos(targetYawRadians);
+  const eye = {
+    x: targetPosition.x + fwdX * forwardOffset,
+    y: targetPosition.y + eyeHeight,
+    z: targetPosition.z + fwdZ * forwardOffset,
+  };
+  return {
+    position: eye,
+    lookAt: { x: eye.x + fwdX, y: eye.y, z: eye.z + fwdZ },
+  };
+}
+
+/** Fixed world-space orbit around the target — ignores the target's facing. The isometric /
+ *  tactics rig: `orbitYawDegrees` sets the compass angle, `pitchDegrees` the tilt. */
+export function computeOrbitCameraPose(
+  targetPosition: Vec3Like,
+  distance: number,
+  orbitYawDegrees: number,
+  pitchDegrees: number,
+): CameraPose {
+  const yaw = orbitYawDegrees * DEG2RAD;
+  const pitch = pitchDegrees * DEG2RAD;
+  const horizontal = Math.cos(pitch) * distance;
+  return {
+    position: {
+      x: targetPosition.x + Math.sin(yaw) * horizontal,
+      y: targetPosition.y + Math.sin(pitch) * distance,
+      z: targetPosition.z + Math.cos(yaw) * horizontal,
+    },
+    lookAt: { ...targetPosition },
+  };
+}
+
+export type CameraRigMode = "thirdPerson" | "topDown" | "firstPerson" | "orbit";
+
+export interface CameraRigParams {
+  mode: CameraRigMode;
+  distance: number;
+  height: number;
+  pitchDegrees: number;
+  eyeHeight: number;
+  forwardOffset: number;
+  orbitYawDegrees: number;
+}
+
+/** One entry point the CameraRigSystem calls — dispatches on `params.mode`. Camera *presets*
+ *  (docs/ROADMAP.md Phase 6), so Top-Down and First-Person templates need no new System. */
+export function computeCameraPose(
+  targetPosition: Vec3Like,
+  targetYawRadians: number,
+  params: CameraRigParams,
+): CameraPose {
+  switch (params.mode) {
+    case "topDown":
+      return computeTopDownCameraPose(targetPosition, targetYawRadians, params.distance, params.pitchDegrees);
+    case "firstPerson":
+      return computeFirstPersonCameraPose(targetPosition, targetYawRadians, params.eyeHeight, params.forwardOffset);
+    case "orbit":
+      return computeOrbitCameraPose(targetPosition, params.distance, params.orbitYawDegrees, params.pitchDegrees);
+    case "thirdPerson":
+    default:
+      return computeThirdPersonCameraPose(targetPosition, targetYawRadians, params.distance, params.height);
+  }
+}

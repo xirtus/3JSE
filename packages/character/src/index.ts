@@ -1,6 +1,12 @@
 export { CharacterControllerManager } from "./CharacterControllerManager.js";
-export { computeThirdPersonCameraPose } from "./CameraRig.js";
-export type { CameraPose, Vec3Like } from "./CameraRig.js";
+export {
+  computeThirdPersonCameraPose,
+  computeTopDownCameraPose,
+  computeFirstPersonCameraPose,
+  computeOrbitCameraPose,
+  computeCameraPose,
+} from "./CameraRig.js";
+export type { CameraPose, Vec3Like, CameraRigMode, CameraRigParams } from "./CameraRig.js";
 export { createCharacterControllerSystem, createCameraRigSystem, CAMERA_FOLLOW_RESOURCE } from "./systems.js";
 export type { CharacterControllerData, CameraRigData } from "./components.js";
 

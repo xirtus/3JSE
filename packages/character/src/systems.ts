@@ -1,7 +1,7 @@
 import { INPUT_RESOURCE, type InputManager, type SystemDef } from "@3jse/runtime";
 import type { PhysicsWorld } from "@3jse/physics-rapier";
 import { CharacterControllerManager } from "./CharacterControllerManager.js";
-import { computeThirdPersonCameraPose, type CameraPose } from "./CameraRig.js";
+import { computeCameraPose, type CameraPose } from "./CameraRig.js";
 import type { CameraRigData, CharacterControllerData } from "./components.js";
 
 /** The Resource key the Viewport (or any renderer) reads to drive the camera in follow mode —
@@ -58,12 +58,15 @@ export function createCameraRigSystem(): SystemDef {
       for (const entity of entities) {
         const data = entity.getComponent<CameraRigData>("CameraRig");
         if (!data || !entity.object3D) continue;
-        const pose: CameraPose = computeThirdPersonCameraPose(
-          entity.object3D.position,
-          entity.object3D.rotation.y,
-          data.distance,
-          data.height,
-        );
+        const pose: CameraPose = computeCameraPose(entity.object3D.position, entity.object3D.rotation.y, {
+          mode: data.mode ?? "thirdPerson",
+          distance: data.distance,
+          height: data.height,
+          pitchDegrees: data.pitchDegrees ?? 55,
+          eyeHeight: data.eyeHeight ?? 1.6,
+          forwardOffset: data.forwardOffset ?? 0.2,
+          orbitYawDegrees: data.orbitYawDegrees ?? 45,
+        });
         world.setResource(CAMERA_FOLLOW_RESOURCE, pose);
       }
     },

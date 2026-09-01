@@ -38,6 +38,18 @@ export interface ThirdPersonOptions {
   /** real baked clips for the locomotion graph; must include tracks named Idle/Walk/Run/Jump.
    *  Omit for a headless build — trivial empty-track stand-ins are used. */
   clips?: THREE.AnimationClip[];
+  /** CameraRig component overrides — the camera *preset* the shared character template uses
+   *  (docs/ROADMAP.md Phase 6). `buildTopDownTemplate` / `buildFirstPersonTemplate` are thin
+   *  wrappers that set `{ mode: ... }` here. */
+  camera?: Partial<{
+    mode: "thirdPerson" | "topDown" | "firstPerson" | "orbit";
+    distance: number;
+    height: number;
+    pitchDegrees: number;
+    eyeHeight: number;
+    forwardOffset: number;
+    orbitYawDegrees: number;
+  }>;
 }
 
 const LOCOMOTION_GRAPH: AnimationGraphDef = {
@@ -115,7 +127,7 @@ export async function buildThirdPersonTemplate(
   const player = level.createEntity("Player");
   player.object3D!.position.set(0, 2, 0);
   player.addComponent("CharacterController");
-  player.addComponent("CameraRig");
+  player.addComponent("CameraRig", opts.camera);
   player.addComponent("AnimationController");
   player.addComponent("Saveable");
 
