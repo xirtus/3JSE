@@ -134,4 +134,6 @@ Dependency-ordered, not calendar-ordered — each phase specifies what it needs 
 
 **Deliverables**: a written gap analysis against Unreal/Unity/Godot for the genres 3JSE's real users are actually shipping in (not a hypothetical full-parity checklist); a decision, per deferred item, to build, continue deferring, or explicitly declare out of scope for the engine's identity as defined in `VISION.md`.
 
+**Status**: first pass of the gap analysis written — `ENGINE_GAP_ANALYSIS.md` (grounded in the repo's actual state: Phase 1–2 core tested, Phase 3–6 partial, the AI-native differentiators ahead; genre-readiness table; a recommended sequencing that puts packaging → audio → UI first). Per-deferred-item build/defer/out-of-scope decisions still owed as Phases 4–6 produce real usage data.
+
 **Exit criteria**: not "feature parity with Unreal" — parity with a twenty-years-deep engine is not a real target and chasing it would betray `VISION.md`'s own framing. The exit criterion is a credible, evidence-backed answer to the question this entire design package exists to answer: for the genres and teams 3JSE actually serves, is it a better choice than Unreal, Unity, Godot, or a custom web stack — and if not yet, precisely what's missing.
