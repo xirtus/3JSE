@@ -4,6 +4,7 @@ import { ProjectSettingsPanel } from "./ProjectSettingsPanel.js";
 import { InputMappingPanel } from "./InputMappingPanel.js";
 import { PhysicsPanel } from "./PhysicsPanel.js";
 import { GraphPanel } from "./GraphPanel.js";
+import { AtlasPanel } from "./AtlasPanel.js";
 import { CodeEditorPanel } from "./CodeEditorPanel.js";
 import { DebuggerPanel } from "./DebuggerPanel.js";
 import { OpenSourcePanel } from "./OpenSourcePanel.js";
@@ -23,6 +24,10 @@ import type { PanelDef } from "./types.js";
 export const panels: PanelDef[] = [
   // center — full-tab editors, one visible at a time (docs/EDITOR.md: "Full-tab node canvas")
   { id: "viewport", title: "Viewport", region: "center", status: "active", component: ViewportPanel },
+  // docs/ARCHITECTURE.md layer 5: Atlas is the primary visual authoring surface (semantic
+  // navigation + FeelSpec tuning + agent scoping over the 3IR), docs/3JSE_ATLAS_FULL_PLAN.md.
+  { id: "atlas", title: "Atlas", region: "center", status: "active", component: AtlasPanel },
+  // The node-graph machinery stays available underneath as the execution architecture / one lens.
   { id: "graph", title: "3JSE Graph", region: "center", status: "active", component: GraphPanel },
   {
     id: "material-graph",

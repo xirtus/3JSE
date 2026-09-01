@@ -118,8 +118,11 @@ Note: `3JSE_Harness_v0.1/` is still untracked in git (whole directory `??`) — 
 
 ---
 
-## Atlas track  (Atlas Semantic Core, `3JSE_ATLAS_FULL_PLAN.md` §63; apply to 3jsurf first)  — not started
+## Atlas track  (Atlas Semantic Core, `3JSE_ATLAS_FULL_PLAN.md` §54/§63)
 
 | # | Task | Status | Evidence | Commit |
 |---|---|---|---|---|
-| A.1 | Atlas Semantic Core spec read + scope against 3jsurf's systems/`tools/` | todo | — | — |
+| A.1 | Atlas Semantic Core spec read + scope | done — full plan read; §63 scope confirmed; applied to the Third Person template (only real 3JSE game in this repo; 3jsurf is a separate repo) | `docs/ATLAS.md` | (uncommitted) |
+| A.2 | `@3jse/atlas` headless core — `defineSystem`, compiler, FeelSpec (parse/inherit/blend/protected), layered layout, agent-context exporter (§28) + change preview (§30), evidence-derived health (§32), universal search (§38), semantic colors (§20) | **done** — 31 tests, typecheck clean | `evidence/atlas-semantic-core-2026-09-01.md`; `packages/atlas` | (uncommitted) |
+| A.3 | Editor **Atlas** panel — SVG system map (deterministic layered layout, domain colors, typed edges, health badges, focus dimming), node inspector, live knob editing (writes through to `CharacterController`/`CameraRig`/`Spin`/`Movable`), search, §28/§30 agent-scoping section | **done** — rendered + verified in Chrome/WebGPU, zero console errors; `apps/editor` gains vitest + `sampleAtlas.test.ts` (4) | `evidence/atlas-semantic-core-2026-09-01.md` | (uncommitted) |
+| A.4 | Atlas v0.2+ — Flow/State/Event/Trace/Asset/Provider/Style/World/Rig lenses, runtime pulses, time scrubber, A/B FeelSpec, Feel Lab, `atlas/` manifest + FeelSpec YAML, live LLM planning behind "Ask agent", 2.5D/Three.js layer | todo — deferred per §63 until the 2D core's pain points justify each piece | `docs/ATLAS.md` "Not built yet" | — |

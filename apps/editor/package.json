@@ -6,12 +6,14 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "typecheck": "tsc --noEmit -p tsconfig.json"
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test": "vitest run"
   },
   "dependencies": {
     "@3jse/agent": "workspace:*",
     "@3jse/animation": "workspace:*",
     "@3jse/assets": "workspace:*",
+    "@3jse/atlas": "workspace:*",
     "@3jse/character": "workspace:*",
     "@3jse/graph": "workspace:*",
     "@3jse/ir": "workspace:*",
@@ -33,6 +35,7 @@
     "@types/three": "^0.185.0",
     "@vitejs/plugin-react": "^4.3.4",
     "typescript": "^5.7.0",
-    "vite": "^6.3.5"
+    "vite": "^6.3.5",
+    "vitest": "^2.1.0"
   }
 }

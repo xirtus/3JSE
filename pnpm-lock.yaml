@@ -26,6 +26,9 @@ importers:
       '@3jse/assets':
         specifier: workspace:*
         version: link:../../packages/assets
+      '@3jse/atlas':
+        specifier: workspace:*
+        version: link:../../packages/atlas
       '@3jse/character':
         specifier: workspace:*
         version: link:../../packages/character
@@ -87,6 +90,9 @@ importers:
       vite:
         specifier: ^6.3.5
         version: 6.4.3(@types/node@22.20.1)(lightningcss@1.33.0)
+      vitest:
+        specifier: ^2.1.0
+        version: 2.1.9(@types/node@22.20.1)(lightningcss@1.33.0)
 
   packages/agent:
     dependencies:
