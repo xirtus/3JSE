@@ -1,5 +1,7 @@
 # 3JSE Graph
 
+> **Superseded as the authoring UI by 3JSE Atlas** (`3JSE_ATLAS_FULL_PLAN.md`). Atlas replaces the Blueprint-style node-wiring canvas with semantic navigation, FeelSpec tuning, and agent-scoped editing — the graph becomes one of Atlas's lenses rather than the primary authoring surface. Everything in this document about the *machinery* — the 3IR compiler, the JS/TS backend, bidirectional graph↔code, the debugger — remains the execution architecture underneath Atlas. A human rarely wires nodes by hand anymore: they navigate meaning, tune feel, and let the agent (or a direct edit) produce the graph.
+
 3JSE Graph is 3JSE's visual scripting system — a node-graph authoring frontend for **3JSE Gameplay IR** (`GAMEPLAY_IR.md`), not a separate execution engine. Every capability below exists because it's expressible in 3IR; there is no 3JSE Graph feature that hand-written TypeScript can't also express, and no TypeScript-callable engine API that a graph node can't also call. That symmetry is deliberate — it's what keeps this from becoming "its own isolated universe," which the design brief calls out as the one thing to avoid above all else.
 
 ## Node families

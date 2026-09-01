@@ -163,6 +163,19 @@ importers:
         specifier: ^2.1.0
         version: 2.1.9(@types/node@22.20.1)(lightningcss@1.33.0)
 
+  packages/cinematics:
+    dependencies:
+      '@3jse/runtime':
+        specifier: workspace:*
+        version: link:../runtime
+    devDependencies:
+      typescript:
+        specifier: ^5.7.0
+        version: 5.9.3
+      vitest:
+        specifier: ^2.1.0
+        version: 2.1.9(@types/node@22.20.1)(lightningcss@1.33.0)
+
   packages/extras:
     dependencies:
       maath:
@@ -258,6 +271,19 @@ importers:
         specifier: ^2.1.0
         version: 2.1.9(@types/node@22.20.1)(lightningcss@1.33.0)
 
+  packages/networking:
+    dependencies:
+      '@3jse/runtime':
+        specifier: workspace:*
+        version: link:../runtime
+    devDependencies:
+      typescript:
+        specifier: ^5.7.0
+        version: 5.9.3
+      vitest:
+        specifier: ^2.1.0
+        version: 2.1.9(@types/node@22.20.1)(lightningcss@1.33.0)
+
   packages/physics-rapier:
     dependencies:
       '@3jse/runtime':
@@ -266,6 +292,44 @@ importers:
       '@dimforge/rapier3d-compat':
         specifier: ^0.20.0
         version: 0.20.0
+      three:
+        specifier: ^0.185.1
+        version: 0.185.1
+    devDependencies:
+      '@types/three':
+        specifier: ^0.185.0
+        version: 0.185.4
+      typescript:
+        specifier: ^5.7.0
+        version: 5.9.3
+      vitest:
+        specifier: ^2.1.0
+        version: 2.1.9(@types/node@22.20.1)(lightningcss@1.33.0)
+
+  packages/playground:
+    dependencies:
+      '@3jse/ir':
+        specifier: workspace:*
+        version: link:../ir
+      '@3jse/project':
+        specifier: workspace:*
+        version: link:../project
+    devDependencies:
+      '@3jse/runtime':
+        specifier: workspace:*
+        version: link:../runtime
+      typescript:
+        specifier: ^5.7.0
+        version: 5.9.3
+      vitest:
+        specifier: ^2.1.0
+        version: 2.1.9(@types/node@22.20.1)(lightningcss@1.33.0)
+
+  packages/project:
+    dependencies:
+      '@3jse/runtime':
+        specifier: workspace:*
+        version: link:../runtime
       three:
         specifier: ^0.185.1
         version: 0.185.1
@@ -320,6 +384,56 @@ importers:
       '@3jse/runtime':
         specifier: workspace:*
         version: link:../runtime
+      three:
+        specifier: ^0.185.1
+        version: 0.185.1
+    devDependencies:
+      '@types/three':
+        specifier: ^0.185.0
+        version: 0.185.4
+      typescript:
+        specifier: ^5.7.0
+        version: 5.9.3
+      vitest:
+        specifier: ^2.1.0
+        version: 2.1.9(@types/node@22.20.1)(lightningcss@1.33.0)
+
+  packages/spawning:
+    dependencies:
+      '@3jse/runtime':
+        specifier: workspace:*
+        version: link:../runtime
+      three:
+        specifier: ^0.185.1
+        version: 0.185.1
+    devDependencies:
+      '@types/three':
+        specifier: ^0.185.0
+        version: 0.185.4
+      typescript:
+        specifier: ^5.7.0
+        version: 5.9.3
+      vitest:
+        specifier: ^2.1.0
+        version: 2.1.9(@types/node@22.20.1)(lightningcss@1.33.0)
+
+  packages/templates:
+    dependencies:
+      '@3jse/animation':
+        specifier: workspace:*
+        version: link:../animation
+      '@3jse/character':
+        specifier: workspace:*
+        version: link:../character
+      '@3jse/physics-rapier':
+        specifier: workspace:*
+        version: link:../physics-rapier
+      '@3jse/runtime':
+        specifier: workspace:*
+        version: link:../runtime
+      '@3jse/save':
+        specifier: workspace:*
+        version: link:../save
       three:
         specifier: ^0.185.1
         version: 0.185.1

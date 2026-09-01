@@ -4,6 +4,8 @@
 
 3JSE is built in the era where a meaningful share of its own use — and a meaningful share of its own future development — will be done by an AI agent, not a human moving a mouse. That means the Agent API cannot be a bolted-on chat feature with its own bespoke access path into the engine. It has to be **the same command surface the editor itself is built on** (`ARCHITECTURE.md` principle 3: "everything the editor can do, code can do"). An agent that can only act by simulating mouse coordinates is fragile, unauditable, and slow. An agent that calls `scene.mutate` is doing exactly what a human dragging a slider in the Inspector caused to happen, through the identical code path, landing in the identical undo history.
 
+> **Tandem note:** the **3JSE Harness** (`HARNESS.md`) is the first working slice of this layer — the observe → plan → act → verify loop, evidence gates, and structured routing already run today as agent instructions, registries, and deterministic scripts. The Agent API generalizes what the harness does by *convention* into what the engine does by *construction*: the same loop, backed by a typed command surface instead of disciplined prompting.
+
 ## Tool surface
 
 Exposed as an MCP-shaped local tool server (`@3jse/agent`), so any MCP-capable agent — not just a bespoke in-editor chatbot — can drive a 3JSE project.

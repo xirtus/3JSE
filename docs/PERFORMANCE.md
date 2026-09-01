@@ -43,6 +43,10 @@ The Profiler's draw-call view is backed by a Spector.js-style capture: a single 
 
 TSL's node-graph materials compile to WGSL/GLSL ahead-of-time at build (`RENDERING.md`, `BUILD_DEPLOYMENT.md`) wherever the material's inputs are static; runtime shader variant compilation (from dynamic material parameter combinations) is minimized by the Material Graph editor warning when a graph structure implies runtime branching that will produce shader-compile stalls — surfaced as a build-time lint, not discovered as a hitch during play.
 
+## Proven precedents
+
+The budget-shaped choices above are not hypothetical — five reference games (`REFERENCE_GAMES.md`) already exercise them: PULSEHOP pools every particle/ring/text sprite for **zero per-frame allocation** in the hot loop with half-resolution bloom and a DPR cap of 2; ZENDRIVE renders thousands of grass tufts and hundreds of instanced trees in single draw calls with a self-intersection-tested terrain ribbon; 3JSURF holds a 300 m wave at frame with GPU particles rendered as instanced billboards (including the discovered 26-pixel fine-mist cap, reproduced in world units) and a face-space UV parameterisation that keeps a near-vertical surface detail from smearing; MANDELHOP streams an infinite track at ~120 fps by pooling rows 45-ahead/25-behind, chunking vegetation by biome genome, and masking one world-anchored water plane with a sliding 128-row DataTexture; BREAKING WAVES documents the WebGPU adapter-limit requirement its compositor needs explicitly (`requiredLimits: { maxStorageTexturesPerShaderStage: 8 }` — 4 cascades × 2 layers), so adapters that default lower don't fail to compile the assemble pass.
+
 ## Large worlds
 
 World Partition-style streaming (`WORLD_SYSTEM.md`) plus asset streaming together are what let a large open-world project stay within a bounded per-frame and per-memory budget regardless of total world size — the budget is a function of streaming radius and quality tier, not total authored content, which is the property that makes "large worlds" and "runs on a mid-range laptop" compatible goals rather than a tradeoff a developer has to negotiate manually per project.

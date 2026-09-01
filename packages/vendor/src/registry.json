@@ -356,7 +356,9 @@
         "vfx"
       ],
       "phase": 5,
-      "notes": "Vite demo shell: hand-written GLSL, GPU instanced particles, 10 abilities (radials, boosts, portals, linear cast). Pause-and-sculpt sliders are the interaction model the Phase 5 VFX graph should steal. Extract emitters+shaders; do not import the character controller or the 938-slider debug UI wholesale. GLSL not TSL \u2014 wrapper should retarget hot paths to TSL where PERFORMANCE.md requires a WebGPU path."
+      "notes": "Vite demo shell: hand-written GLSL, GPU instanced particles, 10 abilities (radials, boosts, portals, linear cast). Pause-and-sculpt sliders are the interaction model the Phase 5 VFX graph should steal. Extract emitters+shaders; do not import the character controller or the 938-slider debug UI wholesale. GLSL not TSL \u2014 wrapper should retarget hot paths to TSL where PERFORMANCE.md requires a WebGPU path.",
+      "vendored": "packages/vendor/upstream/chiro-elemental",
+      "vendoredAt": "2026-08-24"
     },
     {
       "id": "three-vfx",
@@ -383,7 +385,9 @@
         "vfx"
       ],
       "phase": 5,
-      "notes": "GPU compute particles, curve-over-lifetime, multiple emitter shapes. Closer to an actual library than Chiro's sandbox. Read LICENSE.md on curator pass before any A promotion. Complements chiro-elemental (abilities) rather than replacing it (engine)."
+      "notes": "GPU compute particles, curve-over-lifetime, multiple emitter shapes. Closer to an actual library than Chiro's sandbox. Read LICENSE.md on curator pass before any A promotion. Complements chiro-elemental (abilities) rather than replacing it (engine).",
+      "vendored": "packages/vendor/upstream/three-vfx",
+      "vendoredAt": "2026-08-24"
     },
     {
       "id": "quantum-core",
@@ -487,7 +491,7 @@
       "title": "WebGPU-Ocean \u2014 MLS-MPM / SPH fluid",
       "source": "github.com/matsuoka-601/WebGPU-Ocean",
       "homepage": "https://github.com/matsuoka-601/WebGPU-Ocean",
-      "pinnedCommit": "main",
+      "pinnedCommit": "3bd932778650b5e756ba2590969ed618313843ad",
       "license": {
         "spdx": "MIT",
         "verifiedBy": "pending",
@@ -506,14 +510,16 @@
         "fluid"
       ],
       "phase": 5,
-      "notes": "Raw WebGPU (not Three.js). Useful as compute-pass reference beside tiamat. Wrapper would own the Three interop. Confirm LICENSE file on curator pass."
+      "notes": "Raw WebGPU (not Three.js). Useful as compute-pass reference beside tiamat. Wrapper would own the Three interop. Confirm LICENSE file on curator pass.",
+      "vendored": "packages/vendor/upstream/webgpu-ocean-mpm",
+      "vendoredAt": "2026-08-24"
     },
     {
       "id": "hls-webgpu-terrain",
       "title": "HLS WebGPU terrain plugins",
       "source": "github.com/hlsvortex/HLS_WebGPUPlugins",
       "homepage": "https://github.com/hlsvortex/HLS_WebGPUPlugins",
-      "pinnedCommit": "main",
+      "pinnedCommit": "5e96256fde258faa41d5b1fc8275481093824519",
       "license": {
         "spdx": null,
         "verifiedBy": null,
@@ -531,7 +537,9 @@
         "terrain"
       ],
       "phase": 5,
-      "notes": "QuadTree LOD terrain + instanced grass + ocean plane on Three r184 WebGPU. License unverified \u2014 default B. Overlaps demiurge/gaia; pick one primary wrap per capability."
+      "notes": "QuadTree LOD terrain + instanced grass + ocean plane on Three r184 WebGPU. License unverified \u2014 default B. Overlaps demiurge/gaia; pick one primary wrap per capability.",
+      "vendored": "packages/vendor/upstream/hls-webgpu-terrain",
+      "vendoredAt": "2026-08-24"
     },
     {
       "id": "babylon-nme",

@@ -47,6 +47,18 @@ Take `Health` as the minimal example. It is:
 
 Every other catalog entry follows the same five-part shape. This uniformity is what lets a new Gameplay Framework package — official or third-party — plug into the editor, the graph, and the Agent API automatically instead of needing bespoke integration work each time.
 
+## Reference implementations
+
+Three catalog entries already have shipping reference implementations (`REFERENCE_GAMES.md`), which the official packages should mine before designing:
+
+- **VehicleController / arcade mode** ← ZENDRIVE's track-space physics: `(distance, lateral)` coordinates on a self-closing spline, pure-pursuit homing, and a demand-vs-capacity corner model (`curv · v²` vs. steer authority) that produces slide and drift as emergent behavior — the same axes Atlas's driving FeelSpec names.
+- **InputManager / intent-relative input** ← PULSEHOP's hop grammar: screen-relative directions on diagonal boards, momentum-maintained zigzag, ledge-guard double-press, floating key hints over exact target tiles — and MANDELHOP's unfairness-free rule (every kill must be reactable; complications unlock progressively with banners).
+- **Water / breaking waves** ← BREAKING WAVES' parametric compositor: shader-painted breaking waves on an FFT ocean (storage-buffer slots, winner-take-all, lip rotation, barrel cavity) with live tuning — the upstream for `@3jse/water`'s breaking-wave authoring.
+- **Time control & replay** ← MANDELHOP's one-clock time powers (`worldDt = dt · scale` — slow/freeze/phase/reverse/accelerate through a single timescale) and 12 Hz ghost replay: recorded state is enough for speedrun ghosts and time-travel debugging.
+- **Systemic simulation (hydrology/economy)** ← DAMN BEAVERS' `sim/` tree: simulation-authoritative with a projection seam, seeded determinism, counterfactual replay, and per-phase gate-sentence tests — the closest working instance of this framework's own five-part composable-system shape.
+
+The reference games also donate the **headless mechanics harness** pattern (headless mech checks, feel-as-numbers tables, per-frame invariant soaks, single-term debug isolation) now standard in the harness's `mechanics-harness` skill — every Gameplay Framework package should ship one.
+
 ## Configuration over code, but never opaque
 
 Most of these systems are usable by tuning exposed Component fields and wiring a few graph events — a designer building a third-person game should rarely need to open a TypeScript file for `CharacterController`. But every default is a real, readable value on a real Component, not a hidden constant inside a compiled black box: `maxSpeed`, `jumpHeight`, and `coyoteTimeMs` are inspector fields today, not "someday." Templates (`TEMPLATES.md`) pre-wire these systems together into a working starting point; the Gameplay Framework is what they're built from.

@@ -6,6 +6,10 @@
 
 The answer is not "Unreal's UI redrawn in a browser tab." Unreal's strengths — a real editor, a visual scripting system expressive enough for shipped games, a deep library of reusable gameplay systems, and (increasingly) AI-assisted iteration — are not tied to C++ or a desktop process model. They are tied to having **all of those layers exist and agree on the same underlying representation of a game.** Three.js has never had that. It has a renderer. 3JSE is everything a renderer needs around it to become a platform: an editor, an object model, a scripting system, an asset pipeline, an AI-native command surface, and a deployment story that a desktop engine cannot match.
 
+## Tandem with the Harness
+
+This design package is one half of a tandem project. The other half — **3JSE Harness v0.1** — already exists and works today: an agent-native development system that turns a general coding agent into a reference-first Three.js/WebGPU game-development agent (`HARNESS.md`, source in `3JSE_Harness_v0.1/`). The harness is where the AI-native bet on this page is tested against reality first; the engine this document describes is where those practices become first-class machinery. The harness's governing idea — *the coding agent is the editor; visual tools are added only when repeated work proves them necessary* — is the through-line for every "AI-native" claim made here.
+
 ## The core bet
 
 Three.js already won the "does the web have a real renderer" argument. Nobody chooses Unity or Unreal over Three.js because Three.js renders badly — they choose it because Three.js stops being productive the moment you need a scene hierarchy you can *see*, gameplay logic you don't have to hand-wire, an asset pipeline that isn't a shell script, or a way for a non-programmer (or an AI agent) to safely change how the game plays. That gap — not rendering quality — is what 3JSE closes.
@@ -18,10 +22,14 @@ The second bet is about *when* this is being built. 3JSE is designed in the era 
 
 - **Humans edit visually** — dragging assets, placing entities, adjusting values in an inspector, wiring nodes in a graph.
 - **Programmers write TypeScript** — the same components, the same systems, the same APIs the editor and the graph compiler use, with no separate "scripting language."
-- **Designers connect graphs** — 3JSE Graph, which is not a toy or a materials-only tool but a full authoring frontend for gameplay logic, compiling to the same intermediate representation as hand-written TypeScript.
+- **Designers navigate meaning and tune feel** — 3JSE Atlas (`3JSE_ATLAS_FULL_PLAN.md`), the semantic navigation and FeelSpec tuning layer over the same intermediate representation: eleven lenses over the project, direct tuning knobs, and agent-scoped structural changes. The human edits intent and feel; the agent edits implementation; the viewport is a witness. Graphs remain one lens among many, not the primary authoring surface.
 - **AI agents manipulate structured primitives** — entities, components, graphs, and assets through the same programmatic command surface the editor calls internally, never through opaque code generation or simulated mouse clicks.
 
 This only works if there is one canonical, typed, serializable representation of "what the game does" underneath all four — the **3JSE Gameplay IR** (see `GAMEPLAY_IR.md`). That single decision is the architectural spine the rest of this design hangs from.
+
+## Assemble first
+
+3JSE does not reinvent wheels. The Three.js ecosystem is full of brilliant wheel engineers — dreaming, building, and maintaining wheels for generations — and every wheel we bolt on instead of re-forging is one less thing *we* update forever. The operating rule: **adopt → wrap → build**, in that order, and build only when nothing good exists. Three.js itself is the renderer wheel. The Owen pantheon is the water/foliage/flora/terrain wheels, vendored at pinned commits and wrapped as `@3jse/*` packages. The license notebook (`packages/vendor/licenses.json`) records every adopted part, and the update tracker (`tools/vendor-update.mjs`) tells us which wheels have rolled forward — bumping a pin is a deliberate adoption decision, never an accident. What 3JSE builds itself is the part nobody else is building: the editor, the Gameplay IR, the AI command surface, and the glue that makes all those wheels one machine. This is the strategy, not a phase — see `VENDOR_INTEGRATIONS.md`.
 
 ## Non-goals
 

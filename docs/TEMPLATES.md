@@ -41,6 +41,13 @@ All of it is ordinary Entities/Components/Graphs sitting in a normal project (`P
 | **Walking Simulator** | Interaction + Dialogue systems foregrounded, no combat, environmental-storytelling trigger patterns |
 | **Open World** | World Partition-configured base Level (`WORLD_SYSTEM.md`), streaming-aware spawn/objective systems |
 | **Physics Sandbox** | `@3jse/physics-rapier` exposed directly — grab/throw interaction, constraint-building tools, minimal scripted logic by design |
+| **Musical Hopper** | Hop-grammar input (`@3jse/character` variant) + the audio sequencer/quantizer and MIDI/OSC bridge (`AUDIO.md`) — reference: PULSEHOP (`REFERENCE_GAMES.md`) |
+| **Endless Hopper** | Unfairness-free deterministic core (constant-velocity lanes, seeded generation, grid-math collision), one-clock time powers, 12 Hz ghost replay, player-agent QA — reference: MANDELHOP (`REFERENCE_GAMES.md`) |
+| **Colony Sim** | Simulation-authoritative architecture: pure sim + projection seam, seeded determinism, counterfactual replay, gate-sentence test discipline — reference: DAMN BEAVERS (`REFERENCE_GAMES.md`) |
+
+## Reference implementations
+
+Several templates already have shipping reference games (`REFERENCE_GAMES.md`) whose systems are donation candidates: **Surfing** ← 3JSURF (headless mechanics harness, feel anchors, rigged riders + baked clip library; first-person variant ← BREAKING WAVES' parametric compositor with live Tweakpane knobs), **Racing** ← ZENDRIVE (track-space demand-capacity vehicle model, procedural road/terrain, generative music), **Musical Hopper** ← PULSEHOP, **Endless Hopper** ← MANDELHOP (unfairness-free core, time powers, ghost replay, player-agent QA), **Colony Sim** ← DAMN BEAVERS. The test for a template remains the same — an agent can transform it from a one-sentence request — but for these six the starting point no longer has to be invented.
 
 ## What ships in a template package
 

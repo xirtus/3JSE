@@ -1,0 +1,40 @@
+{
+  "name": "debug-vfx",
+  "version": "0.5.0",
+  "license": "MIT",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mustache-dev/r3f-vfx.git"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "dev": "tsup --watch",
+    "build": "tsup",
+    "typecheck": "tsc"
+  },
+  "dependencies": {
+    "core-vfx": "0.5.0"
+  },
+  "devDependencies": {
+    "@types/react": "19.2.10",
+    "@types/three": "0.182.0",
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
+    "three": "0.182.0",
+    "tsup": "8.5.1",
+    "typescript": "5.9.3",
+    "zustand": "5.0.10"
+  },
+  "peerDependencies": {
+    "three": ">=0.182.0"
+  }
+}

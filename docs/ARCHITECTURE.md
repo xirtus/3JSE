@@ -17,7 +17,7 @@
 │ 8  Build + Deployment             play → publish, web/desktop/XR  │
 │ 7  Plugin / Package System        @3jse/* registry & sandboxing   │
 │ 6  AI Development Layer           Agent API, agentic loop         │
-│ 5  Visual Scripting (3JSE Graph)  node authoring → 3IR            │
+│ 5  Visual Authoring (Atlas)       node authoring → 3IR            │
 │ 4  Gameplay Framework             CharacterController, Inventory… │
 │ 3  Asset Pipeline                 import, analyze, optimize       │
 │ 2  Editor                         viewport, panels, PIE           │
@@ -43,8 +43,8 @@ Import, analysis, and optimization for meshes, textures, audio, animation. Runs 
 ### 4 — Gameplay Framework
 The standard library of composable gameplay systems (`CharacterController`, `Inventory`, `SaveGame`, `BehaviorTree`, …) that every non-trivial game rebuilds from scratch otherwise. Ships as independent `@3jse/*` plugin packages on top of the Entity/Component model. Detailed in `GAMEPLAY_FRAMEWORK.md`.
 
-### 5 — Visual Scripting (3JSE Graph)
-A node-graph authoring frontend that compiles to 3JSE Gameplay IR, not an isolated execution engine. Detailed in `VISUAL_SCRIPTING.md`.
+### 5 — Visual Authoring (3JSE Atlas)
+The authoring surface is **3JSE Atlas** (`3JSE_ATLAS_FULL_PLAN.md`): semantic navigation, FeelSpec tuning, and agent-scoped editing over the same 3JSE Gameplay IR — the Blueprint/Verse alternative in which the human edits intent and feel, the agent edits implementation, and the viewport is a witness. The node-graph machinery of `VISUAL_SCRIPTING.md` remains underneath as the execution architecture (and one of Atlas's lenses), not the primary authoring surface.
 
 ### 6 — AI Development Layer
 The Agent API and the observe → plan → act → verify loop that lets an AI agent operate the editor's own command surface. Detailed in `AI_AGENT_API.md`.
@@ -58,7 +58,7 @@ Play-button local run, Publish pipeline, and the target matrix (static web, PWA,
 ### 9 — Project / Templates
 Genre starter kits and the project scaffolding CLI/UI. Detailed in `TEMPLATES.md`, `PROJECT_FORMAT.md`.
 
-Two more documents cut across these layers rather than owning one: `GAMEPLAY_IR.md` (the compiler architecture connecting layers 1, 5, and 6) and `VERSE_COMPATIBILITY.md` (an evaluation of how far to lean on Verse-shaped concepts in layer 5).
+Three more documents cut across these layers rather than owning one: `GAMEPLAY_IR.md` (the compiler architecture connecting layers 1, 5, and 6), `3JSE_ATLAS_FULL_PLAN.md` (the semantic visual layer over the harness and layer 5's authoring surface), and `VERSE_COMPATIBILITY.md` (an evaluation of how far to lean on Verse-shaped concepts in layer 5).
 
 ## Data flow: how the layers actually talk
 

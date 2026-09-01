@@ -2,6 +2,8 @@
 
 Dependency-ordered, not calendar-ordered — each phase specifies what it needs from the previous one and what it unlocks for the next. The overall sequencing bet: ship something that already beats hand-rolled Three.js before visual scripting exists, ship visual scripting before AI depends on it, ship AI before ecosystem/marketplace features need a userbase and content that don't exist yet, and treat "professional tooling" (terrain, cinematics, VFX graphs) as depth to layer in once the foundation is proven, not a prerequisite for anything else.
 
+> **Tandem note:** this roadmap is the *engine* track. The *harness* track — **3JSE Harness v0.1** — is already live (`HARNESS.md`) and serves as a working field test of Phase 4's AI-native thesis before that phase is built, feeding design decisions back into every earlier phase. The harness track's visual layer is **3JSE Atlas** (`3JSE_ATLAS_FULL_PLAN.md`), which supersedes Phase 3's node-wiring canvas while keeping that phase's compiler deliverables.
+
 ---
 
 ## Phase 0 — Technical experiments
@@ -62,7 +64,7 @@ Dependency-ordered, not calendar-ordered — each phase specifies what it needs 
 
 **Prerequisites**: Phase 0's validated IR prototype; Phase 2's Entity/Component/System runtime to compile against.
 
-**Architecture affected**: `GAMEPLAY_IR.md` (production implementation), `VISUAL_SCRIPTING.md`, Debugger panel in `EDITOR.md`.
+**Architecture affected**: `GAMEPLAY_IR.md` (production implementation), `VISUAL_SCRIPTING.md` (compiler machinery; the canvas UI is superseded by `3JSE_ATLAS_FULL_PLAN.md`), Debugger panel in `EDITOR.md`.
 
 **Deliverables**: `@3jse/ir` production compiler (interpreter + JS/TS backends); `@3jse/graph` node canvas, core node families (events, flow control, functions, variables, async); live debugging (active wires, breakpoints, watches); bidirectional graph↔code for the recognized TS subset, including the visible "Code node" boundary for anything outside it; `@3jse/vendor` registry + fetcher (`VENDOR_INTEGRATIONS.md`) landing here specifically so Tier B open-source staging is available well before any Tier A plugin adapter is ready — a developer shouldn't have to wait for Phase 5 to at least look at the best available open-source work.
 

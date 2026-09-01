@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>3JSE — Engine Design Plan</title>
+<title>3JSE — Engine Design Plan × Agent Harness</title>
 <style>
   :root{
     --bg:#0a0d14; --bg2:#0d1119; --surface:#121725; --surface2:#171d2f;
@@ -85,7 +85,7 @@
   .btn.ghost:hover{border-color:var(--accent);transform:translateY(-2px)}
 
   /* stats band */
-  .stats{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-top:64px}
+  .stats{display:grid;grid-template-columns:repeat(6,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-top:64px}
   .stat{background:var(--surface);padding:26px 18px;text-align:center}
   .stat .num{font-size:40px;font-weight:900;letter-spacing:-.02em;
     background:linear-gradient(135deg,#9db9ff,#3ae0c4);-webkit-background-clip:text;background-clip:text;color:transparent}
@@ -235,6 +235,8 @@
   <div class="hdr">
     <a class="logo" href="#top-hero"><span class="mark">3J</span><b>3JSE</b></a>
     <nav class="nav">
+      <a href="#harness">Harness</a>
+      <a href="#atlas">Atlas</a>
       <a href="#vision">Vision</a>
       <a href="#roadmap">Roadmap</a>
       <a href="#architecture">Architecture</a>
@@ -247,6 +249,9 @@
 </header>
 
 <aside id="sidebar">
+  <h5>Today — harness &amp; atlas</h5>
+  <a href="#harness"><span class="n">H</span> 3JSE Harness v0.1</a>
+  <a href="#atlas"><span class="n">A</span> 3JSE Atlas — spec</a>
   <h5>The plan</h5>
   <a href="#vision"><span class="n">01</span> Vision</a>
   <a href="#roadmap"><span class="n">02</span> Roadmap</a>
@@ -277,22 +282,28 @@
   <a href="#templates"><span class="n">22</span> Templates</a>
   <h5>Compatibility</h5>
   <a href="#verse"><span class="n">23</span> Verse compatibility</a>
+  <h5>Evidence</h5>
+  <a href="#reference-games"><span class="n">R</span> Reference games</a>
 </aside>
 
 <main>
 <div class="hero" id="top-hero">
   <div class="wrap">
-    <span class="badge"><span class="dot"></span> Engine design package · 23 pages · one plan</span>
+    <span class="badge"><span class="dot"></span> Engine design package × agent harness × Atlas · 30 pages · three tracks</span>
     <h1><span class="grad">3JSE</span></h1>
     <div class="sub">An open-source game engine and editor built <em>around</em> Three.js and WebGPU — not on top of a fork of them.</div>
     <p class="lede">It exists to answer one question honestly: <strong style="color:var(--text)">if Unreal Engine were invented today — for WebGPU, TypeScript, and AI-assisted development — what would it look like?</strong> The answer is not Unreal's UI redrawn in a browser tab. It is an editor, an object model, a scripting system, an asset pipeline, an AI-native command surface, and a web-first deployment story — all of them agreeing on <em>one</em> underlying representation of a game.</p>
+    <p class="lede" style="margin-top:12px">And it is a <strong style="color:var(--text)">tandem project</strong>: the <a href="#harness" style="font-weight:700">3JSE Harness</a> — the agent-native development system that exists and works <em style="color:var(--accent2)">today</em> — and this engine design package, the platform its games converge toward. Two tracks, one bet: <strong style="color:var(--text)">the coding agent is the editor, and everything else earns its place by proving it helps the agent ship playable games.</strong> Its newest face is <a href="#atlas" style="font-weight:700">3JSE Atlas</a> — the semantic alternative to Blueprints and Verse, where the human edits <em>intent and feel</em>, the agent edits implementation, and the viewport is a witness.</p>
     <div class="cta">
       <a class="btn primary" href="#reading">Go through the pages ↓</a>
+      <a class="btn ghost" href="#harness">Meet the harness — working today</a>
+      <a class="btn ghost" href="#atlas">See Atlas — meaning over wires</a>
       <a class="btn ghost" href="#roadmap">The plan at a glance</a>
       <a class="btn ghost" href="#architecture">How it fits together</a>
     </div>
     <div class="stats reveal">
-      <div class="stat"><div class="num">23</div><div class="lbl">design pages</div></div>
+      <div class="stat"><div class="num">30</div><div class="lbl">design pages</div></div>
+      <div class="stat"><div class="num">3</div><div class="lbl">tracks — engine · harness · atlas</div></div>
       <div class="stat"><div class="num">8</div><div class="lbl">roadmap phases</div></div>
       <div class="stat"><div class="num">10</div><div class="lbl">engine layers</div></div>
       <div class="stat"><div class="num">30+</div><div class="lbl">@3jse packages</div></div>
@@ -306,9 +317,19 @@
   <div class="wrap">
     <div class="kicker"><span class="no">GUIDE</span><span class="file">index.html — this page</span><span class="pill accent">suggested reading order</span></div>
     <h2>Go through the pages</h2>
-    <p class="lede">Twenty-three documents, one plan. Each page below links to its section on this page <em>and</em> to the full Markdown source. The order matters: every document builds on the ones before it — exactly like the roadmap it describes.</p>
+    <p class="lede">Thirty pages, <strong>three tracks</strong>, one plan: the <strong>harness that works today</strong>, the <strong>Atlas</strong> that makes it understandable, and the <strong>engine they converge toward</strong> — with four shipped games as living evidence. Each page below links to its section on this page <em>and</em> to the full Markdown source. The order matters: every document builds on the ones before it — exactly like the roadmap it describes.</p>
 
     <div class="grid">
+      <a class="card" href="#harness" style="color:inherit;border-color:rgba(58,224,196,.45);background:linear-gradient(135deg,rgba(58,224,196,.07),rgba(91,140,255,.05))">
+        <div class="t"><span class="ico" style="background:rgba(58,224,196,.18)">🧠</span>H · Harness v0.1 <span class="pill ok" style="margin-left:auto">working today</span></div>
+        <p>The agent-native development system that turns a coding agent into a reference-first Three.js/WebGPU game developer. The today-half of the plan — doctrine, reuse ladder, provider registry, quality gates.</p>
+        <small>HARNESS.md · 3JSE_Harness_v0.1/</small>
+      </a>
+      <a class="card" href="#atlas" style="color:inherit;border-color:rgba(167,139,250,.45);background:linear-gradient(135deg,rgba(167,139,250,.07),rgba(58,224,196,.05))">
+        <div class="t"><span class="ico" style="background:rgba(167,139,250,.18)">🧭</span>A · 3JSE Atlas <span class="pill warn" style="margin-left:auto">the Blueprint / Verse alternative</span></div>
+        <p>The semantic visual layer over the harness: eleven lenses, FeelSpec intent and tuning, agent-scoped editing. Meaning over wires — the human edits feel, the agent edits implementation, the viewport witnesses.</p>
+        <small>3JSE_ATLAS_FULL_PLAN.md</small>
+      </a>
       <a class="card" href="#vision" style="color:inherit">
         <div class="t"><span class="ico" style="background:rgba(245,166,35,.15)">🧭</span>01 · Vision</div>
         <p>What 3JSE is, the core bet, the four ways of working, and what success looks like.</p>
@@ -424,6 +445,385 @@
         <p>Which parts of Epic's Verse are worth resembling: levels 1–3 yes, levels 4–5 no.</p>
         <small>VERSE_COMPATIBILITY.md</small>
       </a>
+      <a class="card" href="#reference-games" style="color:inherit;border-color:rgba(58,224,196,.45)">
+        <div class="t"><span class="ico" style="background:rgba(58,224,196,.18)">🏄</span>R · Reference games <span class="pill ok" style="margin-left:auto">living laboratories</span></div>
+        <p>3JSURF, ZENDRIVE, PULSEHOP, DAMN BEAVERS — what the four shipped games prove, the harness tooling and feel anchors they donate, and the asset kits they seed.</p>
+        <small>REFERENCE_GAMES.md</small>
+      </a>
+      <a class="card" href="VENDOR_INTEGRATIONS.md" style="color:inherit">
+        <div class="t"><span class="ico" style="background:rgba(245,166,35,.15)">🔧</span>24 · Vendor integrations</div>
+        <p>Real repositories instead of a hypothetical table: the Owen pantheon, editor-UI adoption, and the Babylon.js differentiation — pinned.</p>
+        <small>VENDOR_INTEGRATIONS.md</small>
+      </a>
+      <a class="card" href="VENDOR_PROJECT_MODULES.md" style="color:inherit">
+        <div class="t"><span class="ico" style="background:rgba(96,165,250,.15)">☑️</span>25 · Project modules</div>
+        <p>New-Project checkboxes over the vendor registry — including the Kimodo text-to-motion and Chiro VFX wave.</p>
+        <small>VENDOR_PROJECT_MODULES.md</small>
+      </a>
+      <a class="card" href="SHOP.md" style="color:inherit">
+        <div class="t"><span class="ico" style="background:rgba(52,211,153,.15)">🛍️</span>26 · Shop</div>
+        <p>The link-first content marketplace: examples, kits, templates, community games — metadata and pointers, never content.</p>
+        <small>SHOP.md</small>
+      </a>
+      <a class="card" href="WEBSITE.md" style="color:inherit">
+        <div class="t"><span class="ico" style="background:rgba(244,114,182,.15)">🌐</span>27 · Website</div>
+        <p>3jse.com — the promotional landing page plus a manual generated from these very docs, never a second source of truth.</p>
+        <small>WEBSITE.md</small>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ================= H HARNESS ================= -->
+<section id="harness">
+  <div class="wrap">
+    <div class="kicker"><span class="no">§ H</span><span class="file">HARNESS.md · v0.1 · 3JSE_Harness_v0.1/</span><a class="pill blue" href="HARNESS.md">Read the full page →</a><span class="pill ok" style="margin-left:8px">● working today</span></div>
+    <h2>The 3JSE Harness — the today-half of the plan</h2>
+    <p class="lede">The harness is the <strong>first working artifact of the AI-native bet</strong> made in the Vision: an agent-native Three.js/WebGPU game-development system that turns a general coding agent — Claude Code today, other coding agents by design — into a <strong>reference-first game-development agent</strong>. Where the engine pages describe machinery to be built, the harness exists, runs, and ships playable games <strong>now</strong> — and every lesson it produces feeds the engine design in return.</p>
+
+    <div class="bigidea reveal">
+      <span class="tag">the tandem bet</span>
+      <p><b>3JSE is not an editor. The coding agent is the editor.</b> Visual tools are added only when repeated work proves they are necessary — and the graphical surface is a witness to the project state the agent and the structured data already own. The harness is where the plan's claims get tested against reality first; the engine is where they become first-class machinery.</p>
+    </div>
+
+    <h3 class="subhead">Core doctrine</h3>
+    <div class="flow reveal">
+      <div class="fnode" style="border-color:rgba(251,113,133,.45)">DO NOT INVENT<br><small>what can be found</small></div>
+      <div class="farr">·</div>
+      <div class="fnode" style="border-color:rgba(245,166,35,.45)">DO NOT GENERATE<br><small>what can be reused</small></div>
+      <div class="farr">·</div>
+      <div class="fnode" style="border-color:rgba(52,211,153,.45)">DO NOT REBUILD<br><small>what can be adapted</small></div>
+    </div>
+    <p class="lede" style="font-size:14px">Reference implementations, working code, legal reusable assets, executable examples, tests, screenshots, and measured evidence outrank additional prose — in that order.</p>
+
+    <h3 class="subhead">The reuse ladder — 8 rungs, justification required to skip</h3>
+    <div class="stack reveal">
+      <div class="layer"><span class="ln">0</span><div class="nm">Current project implementation</div><div class="ds">Existing working code in the repo — always wins</div><span class="pill ok">default</span></div>
+      <div class="layer"><span class="ln">1</span><div class="nm">Current project asset</div><div class="ds">Models, textures, audio already in the project</div><span class="pill ok">default</span></div>
+      <div class="layer"><span class="ln">2</span><div class="nm">3JSE curated provider</div><div class="ds">Named providers in the registry — ocean → Poseidon, grass → Gaia…</div><span class="pill accent">preferred</span></div>
+      <div class="layer"><span class="ln">3</span><div class="nm">Proven reference implementation</div><div class="ds">Working code &gt; test &gt; demo &gt; video &gt; screenshot &gt; docs &gt; prose</div><span class="pill blue">route</span></div>
+      <div class="layer"><span class="ln">4</span><div class="nm">Licensed external asset</div><div class="ds">With recorded provenance, license, and attribution</div><span class="pill blue">route</span></div>
+      <div class="layer"><span class="ln">5</span><div class="nm">Procedural generation provider</div><div class="ds">Deterministic procedural systems — trees, grass, ocean</div><span class="pill blue">route</span></div>
+      <div class="layer"><span class="ln">6</span><div class="nm">Adjacent implementation, adapted</div><div class="ds">Port or adapt a relevant subsystem</div><span class="pill warn">justify</span></div>
+      <div class="layer"><span class="ln">7</span><div class="nm">Custom implementation</div><div class="ds">From scratch — the final option, always justified in writing</div><span class="pill bad">last resort</span></div>
+    </div>
+
+    <h3 class="subhead">Architecture — coordination is the product</h3>
+    <div class="grid">
+      <div class="card reveal"><div class="t"><span class="ico" style="background:rgba(58,224,196,.15)">🧭</span>What the harness owns</div><p><strong>Coordination and institutional knowledge.</strong> External providers own specialized rendering/simulation whenever they already solve the problem well. The harness decides who does what, in what order, with what evidence.</p></div>
+      <div class="card reveal"><div class="t"><span class="ico" style="background:rgba(96,165,250,.15)">👥</span>Five workers, not a persona zoo</div><p>Director · Gameplay · Graphics · Assets/References · QA/Performance. Most specialization loads as Skills on demand — context routing loads only what the current capabilities need, never the whole library.</p></div>
+      <div class="card reveal"><div class="t"><span class="ico" style="background:rgba(167,139,250,.15)">📁</span>Canonical directories</div><p><code>.agents/</code> is the provider-neutral canonical brain (skills, registry, recipes, hooks); <code>.claude/skills/</code> is the Claude Code mirror; <code>evidence/</code> holds reports, screenshots, and metrics.</p></div>
+    </div>
+
+    <h3 class="subhead">The mandatory route for any broad game task</h3>
+    <div class="vflow reveal">
+      <div class="fnode">1 · Read the 3JSE Director skill</div><div class="farr">↓</div>
+      <div class="fnode">2 · Resolve capabilities — Capability Resolver</div><div class="farr">↓</div>
+      <div class="fnode">3 · Route each capability — Vendor Router</div><div class="farr">↓</div>
+      <div class="fnode">4 · Search existing project code/assets first</div><div class="farr">↓</div>
+      <div class="fnode">5 · Use the appropriate provider skill(s)</div><div class="farr">↓</div>
+      <div class="fnode">6 · Build the smallest playable vertical slice</div><div class="farr">↓</div>
+      <div class="fnode">7 · Verify — gameplay, visual, runtime-error, performance</div>
+    </div>
+
+    <h3 class="subhead">22 skills</h3>
+    <div class="chips reveal">
+      <span class="chip" style="border-color:rgba(58,224,196,.5)"><b>coordination</b></span>
+      <span class="chip">3jse-director</span><span class="chip">capability-resolver</span><span class="chip">vendor-router</span>
+      <span class="chip">project-learning</span><span class="chip">reference-broker</span><span class="chip">asset-broker</span><span class="chip">safe-repo-inspector</span>
+    </div>
+    <div class="chips reveal">
+      <span class="chip" style="border-color:rgba(96,165,250,.5)"><b>runtime &amp; pipeline</b></span>
+      <span class="chip">threejs-runtime</span><span class="chip">webgpu</span><span class="chip">gltf-pipeline</span>
+    </div>
+    <div class="chips reveal">
+      <span class="chip" style="border-color:rgba(52,211,153,.5)"><b>quality gates</b></span>
+      <span class="chip">gameplay-qa</span><span class="chip">visual-qa</span><span class="chip">performance-qa</span>
+    </div>
+    <div class="chips reveal">
+      <span class="chip" style="border-color:rgba(245,166,35,.5)"><b>providers</b></span>
+      <span class="chip">poseidon</span><span class="chip">gaia</span><span class="chip">dryad</span><span class="chip">tiamat</span><span class="chip">demiurge</span>
+      <span class="chip">apate</span><span class="chip">map3d</span><span class="chip">react-three-map</span><span class="chip">3dtiles</span>
+    </div>
+
+    <h3 class="subhead">Provider registry — 14 curated entries, tiered and moded</h3>
+    <div class="tblwrap reveal">
+      <table>
+        <tr><th>Provider</th><th>Tier</th><th>Mode</th><th>Capabilities</th></tr>
+        <tr><td>Poseidon <code>owenyuwono/poseidon</code></td><td><span class="pill ok">A</span></td><td>provider</td><td>Large outdoor oceans, waves, underwater, surf environments — WebGPU spectral ocean.</td></tr>
+        <tr><td>Gaia <code>owenyuwono/gaia</code></td><td><span class="pill ok">A</span></td><td>provider</td><td>Procedural deterministic grass, lawns, meadows, field vegetation.</td></tr>
+        <tr><td>Dryad <code>owenyuwono/dryad</code></td><td><span class="pill ok">A</span></td><td>provider</td><td>Procedural trees, shrubs, forests, plant wind.</td></tr>
+        <tr><td>Tiamat <code>owenyuwono/tiamat</code></td><td><span class="pill accent">A/B</span></td><td>provider/ref</td><td>Bounded dynamic fluids, splashing, flooding, GPU fluid — not open ocean.</td></tr>
+        <tr><td>map3d <code>cartesiancs/map3d</code></td><td><span class="pill accent">A/B</span></td><td>provider</td><td>OSM-derived real-city buildings and roads — the preferred real-city route.</td></tr>
+        <tr><td>react-three-map <code>wendylabsinc</code></td><td><span class="pill accent">A/B</span></td><td>provider</td><td>R3F/Three content aligned with MapLibre/Mapbox geography.</td></tr>
+        <tr><td>3DTilesRendererJS <code>NASA-AMMOS</code></td><td><span class="pill ok">A</span></td><td>provider</td><td>Streamed 3D Tiles / large geospatial 3D.</td></tr>
+        <tr><td>Demiurge <code>owenyuwono/demiurge</code></td><td><span class="pill warn">B</span></td><td>reference</td><td>Terrain, erosion, climate, weather, clouds, atmosphere, planet LOD — study/adapt.</td></tr>
+        <tr><td>Apate <code>owenyuwono/apate</code></td><td><span class="pill warn">B</span></td><td>reference</td><td>Surface relief — POM/SPOM/displacement before multiplying geometry.</td></tr>
+        <tr><td>Minos <code>owenyuwono/minos</code></td><td><span class="pill warn">B</span></td><td>reference</td><td>Terrain LOD, voxel terrain, floating origin — port algorithms, don't import blindly.</td></tr>
+        <tr><td>AgentMaps <code>noncomputable</code></td><td><span class="pill warn">B</span></td><td>reference</td><td>Agents on real maps, contagion/social simulation patterns.</td></tr>
+        <tr><td>JollyPixel editor</td><td><span class="pill warn">B</span></td><td>reference</td><td>ECS patterns, event store, collaborative scene editing — study, don't adopt as the editor shell.</td></tr>
+        <tr><td>GameStudio <code>bullish0x</code></td><td><span class="pill bad">D</span></td><td>harness ref</td><td>Canonical <code>.agents</code> layout, provider-neutral adapters — avoid the persona/skill zoo.</td></tr>
+        <tr><td>threejs-game-skills <code>majidmanzarpour</code></td><td><span class="pill bad">D</span></td><td>harness ref</td><td>Director loop, visual gate, completion gates — 3JSE uses reuse-first ordering.</td></tr>
+      </table>
+    </div>
+    <p class="lede" style="font-size:14px">Modes matter: <code>provider</code> may be integrated; <code>reference_implementation</code> is studied and ported selectively; <code>harness_reference</code> is studied for patterns only.</p>
+
+    <div class="grid" style="margin-top:26px">
+      <div class="card reveal"><div class="t"><span class="ico" style="background:rgba(244,114,182,.15)">📜</span>Five recipes</div><p><strong>Third-Person Platformer</strong> · <strong>Surf / Kite / Wake</strong> (ocean → Poseidon) · <strong>Open-World Hub</strong> (sector-based metaspace) · <strong>Isometric / Overhead Tactics</strong> · <strong>Geospatial Surveillance / Social Simulation</strong>. Each declares required capabilities and provider routes up front.</p></div>
+      <div class="card reveal"><div class="t"><span class="ico" style="background:rgba(52,211,153,.15)">🛡️</span>Four gates, one evidence report</div><p>Gameplay QA (a static scene is not a game), Visual QA (fresh-eyes screenshots), runtime-error check, Performance QA (measure, don't guess). The report records: playable loop exercised, build/typecheck, console errors, gameplay test, screenshots, frame-rate/draw-calls, asset ledger, known limitations.</p></div>
+      <div class="card reveal"><div class="t"><span class="ico" style="background:rgba(251,113,133,.15)">🔒</span>Supply-chain security</div><p>Assemble-first makes intake security-critical: unknown repositories are inspection-only until source, dependency, license, and script review pass — never execute downloaded binaries, prefer <code>--ignore-scripts</code> during review. Every external asset records source, creator, license, attribution, and commercial-use status.</p></div>
+      <div class="card reveal"><div class="t"><span class="ico" style="background:rgba(96,165,250,.15)">⚡</span>Operating mode</div><p><strong>UNDERSTAND → RESOLVE → ASSEMBLE → BUILD → PLAYTEST → REPAIR → VERIFY.</strong> No unnecessary approval loops for ordinary reversible edits. Before writing a major subsystem, report a routing ledger: capability → existing solution? → selected provider → why → fallback.</p></div>
+    </div>
+
+    <div class="chips reveal">
+      <span class="chip" style="border-color:rgba(58,224,196,.45)"><b>scripts</b></span>
+      <span class="chip">verify-harness.mjs</span><span class="chip">resolve-capability.mjs</span>
+      <span class="chip">sync-claude-skills.mjs</span><span class="chip">inspect-project.mjs</span>
+      <span class="chip" style="border-color:rgba(167,139,250,.45)"><b>templates</b></span>
+      <span class="chip">PROJECT_3JSE.md</span><span class="chip">ASSET_REGISTRY.example.json</span>
+      <span class="chip">EVIDENCE_REPORT.example.md</span>
+    </div>
+    <p class="lede" style="font-size:14px">The harness maintains itself: the bootstrap prompt audits before modifying, runs <code>verify-harness.mjs</code> (required files, valid registry JSON, canonical↔Claude mirror drift), improves the three highest-leverage weak skills <em>without increasing always-loaded context</em>, and requires deterministic verification for every change.</p>
+
+    <h3 class="subhead">Convergence — harness practices today, engine machinery tomorrow</h3>
+    <div class="tblwrap reveal">
+      <table>
+        <tr><th>Harness piece (today)</th><th>Engine machinery it converges toward (plan)</th></tr>
+        <tr><td>Director workflow, mandatory route</td><td><a href="#agent">AI_AGENT_API</a> — observe → plan → act → verify as a built-in loop</td></tr>
+        <tr><td>Evidence report fields</td><td><code>runtime.getConsole</code> · <code>runtime.getPerf</code> · <code>runtime.captureFrame</code></td></tr>
+        <tr><td>Gameplay / Visual / Performance QA gates</td><td><code>build.runTests</code> + the Profiler panel</td></tr>
+        <tr><td>Asset Broker + provenance ledger</td><td><a href="#assets">ASSET_PIPELINE</a> analysis passes, metadata, dependency tracking</td></tr>
+        <tr><td>Capability Resolver + Vendor Router</td><td><a href="#plugins">PLUGIN_ARCHITECTURE</a> extension points — capabilities as registrable contracts</td></tr>
+        <tr><td>Provider registry — 14, tiered</td><td>Phase 6 registry/discovery</td></tr>
+        <tr><td>Five recipes</td><td><a href="#templates">TEMPLATES</a> catalog</td></tr>
+        <tr><td>Reuse ladder</td><td>The build/wrap/adopt framework</td></tr>
+        <tr><td>Safe Repository Inspector</td><td>Plugin sandboxing + Agent API capability scoping</td></tr>
+        <tr><td>Project Learning Distiller</td><td>Agent-side project understanding</td></tr>
+        <tr><td>Three.js Runtime skill</td><td><a href="#runtime">RUNTIME</a></td></tr>
+        <tr><td>glTF pipeline skill</td><td><a href="#assets">ASSET_PIPELINE</a> glTF-first posture</td></tr>
+      </table>
+    </div>
+
+    <div class="docnav reveal">
+      <a href="#reading"><span class="dir">← previous</span><div class="t">Reading guide</div></a>
+      <a class="next" href="#atlas"><span class="dir">next →</span><div class="t">A · 3JSE Atlas</div></a>
+    </div>
+  </div>
+</section>
+
+<!-- ================= A ATLAS ================= -->
+<section id="atlas">
+  <div class="wrap">
+    <div class="kicker"><span class="no">§ A</span><span class="file">3JSE_ATLAS_FULL_PLAN.md · product spec</span><a class="pill blue" href="3JSE_ATLAS_FULL_PLAN.md">Read the full plan →</a><span class="pill warn" style="margin-left:8px">the Blueprint / Verse alternative</span></div>
+    <h2>3JSE Atlas — meaning over wires</h2>
+    <p class="lede">Atlas is 3JSE's replacement for traditional visual scripting. It is <strong>not a visual programming language — and should never become one.</strong> Its purpose: make a game <strong>understandable, navigable, tunable, debuggable, and editable through an AI agent</strong>, without forcing the human to work in code or reconnect hundreds of execution wires. Where Blueprints expose implementation, Atlas exposes <em>meaning</em> — and where the human's job was once wiring, the human's job is now <strong>intent and feel</strong>. The agent edits implementation. The viewport is a witness. Tests and runtime probes prove changes.</p>
+
+    <div class="grid" style="margin-top:28px">
+      <div class="card reveal" style="border-color:rgba(251,113,133,.35)">
+        <div class="t"><span class="ico" style="background:rgba(251,113,133,.15)">🧩</span>Blueprints expose implementation</div>
+        <div class="chips" style="margin-top:8px">
+          <span class="chip">Event</span><span class="chip">Branch</span><span class="chip">Variable</span><span class="chip">Function</span><span class="chip">Cast</span><span class="chip">Tick</span><span class="chip">Set Value</span>
+        </div>
+        <p>Hundreds of interconnected execution nodes. The human is the compiler.</p>
+      </div>
+      <div class="card reveal" style="border-color:rgba(52,211,153,.45);background:linear-gradient(135deg,rgba(52,211,153,.07),rgba(91,140,255,.05))">
+        <div class="t"><span class="ico" style="background:rgba(52,211,153,.18)">🧭</span>Atlas exposes meaning</div>
+        <div class="chips" style="margin-top:8px">
+          <span class="chip">Player</span><span class="chip">Movement</span><span class="chip">Jump</span><span class="chip">Landing</span><span class="chip">Camera</span><span class="chip">Animation</span><span class="chip">Score</span>
+        </div>
+        <p>Semantic systems and design concepts — the agent is the compiler.</p>
+      </div>
+    </div>
+
+    <div class="bigidea reveal">
+      <span class="tag">the core distinction</span>
+      <p><b>Code is for agents. Graphs are for understanding. FeelSpec is for intent and tuning. The viewport is a witness. Tests and runtime probes prove changes.</b> Atlas is generated primarily from the real project — the TypeScript/JavaScript source remains ordinary source code and the canonical source of program logic. Atlas builds a semantic model on top of it from system metadata, imports, ECS components, events, state stores, providers, assets, scene hierarchy, tests, profiling, runtime telemetry, FeelSpec, recipes, mechanic profiles, and git/agent history. The human navigates this model, changes safe parameters directly, or tells the agent what should change — the agent edits the real project, runs verification, and Atlas updates automatically.</p>
+    </div>
+
+    <h3 class="subhead">Three classes of change</h3>
+    <div class="grid">
+      <div class="card reveal"><div class="t"><span class="ico" style="background:rgba(52,211,153,.15)">🎚️</span>Direct parameter change</div><p>Safe, known tuning values change directly — <code>jumpHeight 1.7 → 2.0</code>, <code>driftAssist 0.62 → 0.70</code>, <code>bloom 0.40 → 0.25</code>. Updated live where possible.</p></div>
+      <div class="card reveal"><div class="t"><span class="ico" style="background:rgba(167,139,250,.15)">💬</span>Semantic / structural change</div><p>The user describes the goal — <em>"Make clean landings preserve almost all momentum, but punish sideways landings much harder."</em> Atlas scopes the agent to the landing system, its neighbors, related tests, and current FeelSpec — and the agent edits source.</p></div>
+      <div class="card reveal"><div class="t"><span class="ico" style="background:rgba(245,166,35,.15)">🔁</span>Provider change</div><p>Swapping a major implementation source — <code>SimpleWater → Poseidon</code> — with expected benefits, dependencies, compatibility, performance impact, migration plan, and affected systems shown before the agent migrates.</p></div>
+    </div>
+
+    <h3 class="subhead">The semantic contract — <code>defineSystem()</code></h3>
+    <p class="lede" style="font-size:14px">Atlas needs a lightweight declaration. This does not define the implementation — it defines how Atlas <em>understands</em> the implementation:</p>
+    <pre><span class="k">defineSystem</span>({
+  id: <span class="s">"player.tricks"</span>,  label: <span class="s">"Trick System"</span>,  domain: <span class="s">"gameplay"</span>,
+  purpose: <span class="s">"Controls aerial tricks, landing quality, combo continuity, and scoring."</span>,
+  owns:     [<span class="s">"src/gameplay/tricks/**"</span>],
+  requires: [<span class="s">"player.physics"</span>, <span class="s">"input.actions"</span>, <span class="s">"player.animation"</span>],
+  emits:    [<span class="s">"trick.started"</span>, <span class="s">"trick.completed"</span>, <span class="s">"combo.changed"</span>],
+  listens:  [<span class="s">"player.airborne"</span>, <span class="s">"player.landed"</span>],
+  knobs: {
+    airControl:      { type: <span class="s">"number"</span>, min: 0, max: 1, default: 0.72, category: <span class="s">"air"</span> },
+    landingTolerance:{ type: <span class="s">"number"</span>, min: 5, max: 90, unit: <span class="s">"degrees"</span>, default: 32, category: <span class="s">"landing"</span> }
+  },
+  tests: [<span class="s">"tests/tricks/**"</span>]
+})</pre>
+
+    <h3 class="subhead">Eleven lenses over the same project</h3>
+    <p class="lede" style="font-size:14px">Users switch views rather than encoding everything into one graph. Each lens answers a different question.</p>
+    <div class="grid">
+      <div class="card reveal"><div class="t"><span class="ico" style="background:rgba(245,166,35,.15)">🗺️</span>System Map</div><p>The default view — what systems exist and how they connect, with typed edges: dependency, event, state, ownership, provider, asset, data flow. Node size can communicate importance or runtime cost.</p></div>
+      <div class="card reveal"><div class="t"><span class="ico" style="background:rgba(52,211,153,.15)">🎬</span>Gameplay Flow</div><p>Player-facing sequence and game-design logic — spawn → surf section → tricks/fishing/shark-attack → checkpoint → finish. Design flow, not control flow.</p></div>
+      <div class="card reveal"><div class="t"><span class="ico" style="background:rgba(96,165,250,.15)">🔀</span>State Machine</div><p>Shown only where state machines are actually meaningful — Grounded → Airborne → Grinding — transitions display conditions and emitted events.</p></div>
+      <div class="card reveal"><div class="t"><span class="ico" style="background:rgba(167,139,250,.15)">📡</span>Event / Signal</div><p><code>input.jump → player.jump.requested → player.airborne → trick.window.open → camera.airborne</code>. In live mode, event pulses animate along the graph.</p></div>
+      <div class="card reveal"><div class="t"><span class="ico" style="background:rgba(251,113,133,.15)">⏱️</span>Runtime Trace</div><p>The last period of gameplay, timestamped — select an event to highlight the originating system, downstream systems, state values, and affected entities. Then ask: <em>"Why did the combo break here?"</em></p></div>
+      <div class="card reveal"><div class="t"><span class="ico" style="background:rgba(245,166,35,.15)">🎁</span>Asset Graph</div><p>Which assets support which systems — Surfer → body GLB, rig, animation set, board, materials, audio; World → water (Poseidon), trees (Dryad), city (map3d).</p></div>
+      <div class="card reveal"><div class="t"><span class="ico" style="background:rgba(58,224,196,.15)">🔌</span>Provider Graph</div><p>Reusable technologies and their health — source, license, version, capabilities, integration skill, alternatives, dependent systems. Selecting one enables a migration ask.</p></div>
+      <div class="card reveal"><div class="t"><span class="ico" style="background:rgba(244,114,182,.15)">🎨</span>Style Graph</div><p>The game's visual identity — geometry profile (PS1/N64 low-poly), cel/PBR hybrid shading, photoreal water, stylized vegetation, saturated coastal lighting, post stack. Heavily linked to FeelSpec.</p></div>
+      <div class="card reveal"><div class="t"><span class="ico" style="background:rgba(251,113,133,.15)">📊</span>Performance Graph</div><p>Systems sized by runtime cost — Poseidon 5.3 ms, Dryad 2.1 ms, Traffic 1.4 ms. Ask: <em>"Reduce this by 25% without noticeably affecting surfing quality."</em></p></div>
+      <div class="card reveal"><div class="t"><span class="ico" style="background:rgba(52,211,153,.15)">🌍</span>World Graph</div><p>World/region hierarchy — Andreas Archipelago → Capital, Suburbs, Forest, Uncanny Valley — each region exposing scene files, quests, music, NPCs, providers, assets, mechanics.</p></div>
+      <div class="card reveal"><div class="t"><span class="ico" style="background:rgba(167,139,250,.15)">🦴</span>Rig Graph</div><p>Rigging gets its own semantic view — skeleton, motion (locomotion, foot IK, look-at, aim, procedural lean), animation clips — with overlays for active constraints, blend weights, IK contacts, retarget quality. The witness viewport renders the rig alongside.</p></div>
+    </div>
+
+    <h3 class="subhead">Progressive disclosure — semantic zoom</h3>
+    <div class="stack reveal">
+      <div class="layer"><span class="ln">1</span><div class="nm">GAME</div><div class="ds">the whole project</div><span class="pill ok">far zoom</span></div>
+      <div class="layer"><span class="ln">2</span><div class="nm">DOMAIN</div><div class="ds">Player · World · AI · UI · Style</div><span class="pill ok">far zoom</span></div>
+      <div class="layer"><span class="ln">3</span><div class="nm">SYSTEM</div><div class="ds">Movement · Jump · Camera · Animation</div><span class="pill accent">mid zoom</span></div>
+      <div class="layer"><span class="ln">4</span><div class="nm">MECHANIC</div><div class="ds">Takeoff · Air Control · Apex · Double Jump · Landing</div><span class="pill accent">mid zoom</span></div>
+      <div class="layer"><span class="ln">5</span><div class="nm">SUBSYSTEM</div><div class="ds">landing physics · momentum · animation blend</div><span class="pill blue">close zoom</span></div>
+      <div class="layer"><span class="ln">6</span><div class="nm">TUNING PARAMETERS</div><div class="ds">landingTolerance 32° · momentum 0.84 · tests 6/6</div><span class="pill blue">close zoom</span></div>
+      <div class="layer"><span class="ln">7</span><div class="nm">FILES / TESTS</div><div class="ds">landing.ts · landing.spec.ts</div><span class="pill warn">very close</span></div>
+      <div class="layer"><span class="ln">8</span><div class="nm">CODE</div><div class="ds">the implementation — visible, never the starting point</div><span class="pill warn">very close</span></div>
+    </div>
+    <p class="lede" style="font-size:14px">The user should never be forced to start from source files. Focus Mode dims everything unrelated — double-click any node and work in a small, comprehensible graph.</p>
+
+    <h3 class="subhead">FeelSpec — machine-readable intent</h3>
+    <p class="lede" style="font-size:14px">Game feel is rarely captured by one value — a jump is not simply jump velocity, a car is not simply acceleration. FeelSpec describes systems in <strong>multidimensional design spaces</strong>: human-understandable dimensions, reference profiles inspired by known game families, weighted blending, protected values, safe tuning controls, agent constraints, A/B auditioning, reusable presets — all implementation-independent. It describes <strong>intent</strong>; source code realizes it.</p>
+    <pre><span class="c">atlas/feelspec/driving.yaml</span>
+<span class="k">version</span>: 1
+<span class="k">system</span>: vehicle.arcade
+<span class="k">profile</span>:
+  id: xirtus-arcade-driving-v3
+<span class="k">references</span>:
+  burnout_like: 0.50
+  outrun_like: 0.30
+  heavy_openworld_like: 0.20
+<span class="k">intent</span>:
+  arcadeSimulation: 0.82
+  weight: 0.61
+  steeringResponse: 0.78
+  stability: 0.72
+  driftAssist: 0.66
+  accelerationDrama: 0.91
+  collisionDrama: 0.88
+  cameraAggression: 0.76
+<span class="k">protected</span>:
+  - acceleration.topSpeed
+  - acceleration.zeroToSixty
+<span class="k">overrides</span>:
+  steering.highSpeedDamping: 0.58
+  suspension.bodyRoll: 0.62
+<span class="k">tests</span>:
+  - driving.slalom
+  - driving.highSpeed
+  - driving.collision</pre>
+
+    <div class="chips reveal">
+      <span class="chip" style="border-color:rgba(58,224,196,.5)"><b>feel vocabularies</b></span>
+      <span class="chip">Driving</span><span class="chip">Platforming</span><span class="chip">Trick System</span>
+      <span class="chip">Surf</span><span class="chip">Camera</span><span class="chip">Rig / Locomotion</span><span class="chip">AI</span>
+    </div>
+
+    <div class="grid" style="margin-top:22px">
+      <div class="card reveal"><div class="t"><span class="ico" style="background:rgba(167,139,250,.15)">💬</span>Natural-language transformations</div><p><em>"More dangerous, heavier body roll, less snap steering, but do not make it slower."</em> Atlas proposes a delta — <code>bodyRoll 0.42 → 0.66</code>, <code>collisionDrama 0.72 → 0.89</code>, acceleration protected and unchanged — accept, reject, edit, or A/B audition.</p></div>
+      <div class="card reveal"><div class="t"><span class="ico" style="background:rgba(251,113,133,.15)">🛡️</span>Protected intent</div><p>Explicit constraints — <code>topSpeed</code>, <code>jumpHeight</code>, <code>waveHeight</code>. If a requested change would violate them, Atlas warns and the agent searches for alternate tuning first: <em>"Requested transformation may reduce jump height. Proceed using alternate tuning?"</em></p></div>
+      <div class="card reveal"><div class="t"><span class="ico" style="background:rgba(52,211,153,.15)">🅰️🅱️</span>A/B auditioning</div><p>A = current, B = proposed — instant switching, then <em>"Keep B's steering but A's suspension"</em> and Atlas generates the merged FeelSpec. Personal feel libraries (<code>XIRTUS-ARCADE-DRIVING</code>, <code>XIRTUS-THPS-COMBO</code>) make the harness a personal game-design instrument.</p></div>
+      <div class="card reveal"><div class="t"><span class="ico" style="background:rgba(245,166,35,.15)">🧪</span>Feel Lab</div><p>Focused test environments instead of testing every mechanic inside the full game: Vehicle Lab (slalom, figure-eight, drift circle — measured 0–60, braking distance, lateral g), Character Lab (jump arc, landing error, foot sliding), Rig Lab (contact points, blend weights, root motion), Surf Lab (small wave, tube, wipeout, tow).</p></div>
+    </div>
+
+    <h3 class="subhead">Every node is an agent control surface</h3>
+    <p class="lede" style="font-size:14px">Selecting a node exposes purpose, status, dependencies, dependents, provider, owned files, tests, runtime cost, FeelSpec controls, recent history — and a scoped <strong>context package</strong> for the agent. Atlas never dumps the entire project into agent context:</p>
+    <pre>{
+  <span class="k">"system"</span>: <span class="s">"player.tricks.landing"</span>,
+  <span class="k">"intent"</span>: <span class="s">"Make clean landings preserve more momentum."</span>,
+  <span class="k">"neighbors"</span>: [<span class="s">"player.physics"</span>, <span class="s">"player.animation"</span>, <span class="s">"combo"</span>],
+  <span class="k">"files"</span>: [<span class="s">"src/gameplay/tricks/landing.ts"</span>, <span class="s">"src/player/movement.ts"</span>],
+  <span class="k">"tests"</span>: [<span class="s">"tests/tricks/landing.spec.ts"</span>],
+  <span class="k">"feelSpec"</span>: <span class="s">"profiles/player-tricks.yaml"</span>,
+  <span class="k">"runtimeEvidence"</span>: <span class="s">"traces/trace-0042.json"</span>
+}</pre>
+    <div class="chips reveal">
+      <span class="chip" style="border-color:rgba(58,224,196,.5)"><b>standard actions</b></span>
+      <span class="chip">Explain</span><span class="chip">Modify</span><span class="chip">Tune</span><span class="chip">Optimize</span>
+      <span class="chip">Repair</span><span class="chip">Replace</span><span class="chip">Compare</span><span class="chip">Document</span>
+    </div>
+    <p class="lede" style="font-size:14px">Every task closes a verification loop — build, typecheck, tests, console; plus gameplay test, visual capture, performance, and FeelSpec constraints when applicable — and Atlas displays the results <strong>directly on the node</strong> (Build PASS · Tests 18/18 · Performance 0.22 ms · Visual PASS). Node health is derived from evidence: Healthy, Warning, Failing, Unknown, Modified, Untested, Profiling, Agent Working. Change previews show affected systems, files, tests, protected FeelSpec, and estimated risk before significant structural changes execute. Git history integrates semantically — <em>"Revert only the spin limiter change."</em></p>
+
+    <h3 class="subhead">The visual architecture</h3>
+    <div class="flow reveal">
+      <div class="fnode">React / HTML<br><small>inspectors, panels</small></div><div class="farr">+</div>
+      <div class="fnode">React Flow<br><small>2D semantic graph</small></div><div class="farr">+</div>
+      <div class="fnode ir">Three.js Atlas canvas<br><small>semantic 3D navigation</small></div><div class="farr">+</div>
+      <div class="fnode">Witness canvas<br><small>the game itself</small></div>
+    </div>
+    <div class="chips reveal">
+      <span class="chip" style="border-color:rgba(167,139,250,.5)"><b>modes</b></span>
+      <span class="chip">GAME</span><span class="chip">SYSTEM</span><span class="chip">FLOW</span><span class="chip">STATE</span>
+      <span class="chip">EVENTS</span><span class="chip">WORLD</span><span class="chip">RIG</span><span class="chip">ASSETS</span>
+      <span class="chip">STYLE</span><span class="chip">FEEL</span><span class="chip">PERF</span><span class="chip">HISTORY</span>
+    </div>
+    <div class="chips reveal">
+      <span class="chip" style="border-color:rgba(245,166,35,.5)"><b>semantic color</b></span>
+      <span class="chip" style="border-color:rgba(245,166,35,.6)">Gameplay amber</span>
+      <span class="chip" style="border-color:rgba(96,165,250,.6)">Physics blue</span>
+      <span class="chip" style="border-color:rgba(167,139,250,.6)">Animation violet</span>
+      <span class="chip" style="border-color:rgba(52,211,153,.6)">World green</span>
+      <span class="chip" style="border-color:rgba(244,114,182,.6)">AI magenta</span>
+      <span class="chip" style="border-color:rgba(58,224,196,.6)">UI cyan</span>
+      <span class="chip" style="border-color:rgba(251,113,133,.6)">Audio rose</span>
+      <span class="chip" style="border-color:rgba(245,166,35,.6)">Assets gold</span>
+      <span class="chip" style="border-color:rgba(58,224,196,.6)">Providers teal</span>
+      <span class="chip" style="border-color:rgba(163,230,53,.6)">Tests lime</span>
+      <span class="chip" style="border-color:rgba(251,113,133,.6)">Performance red</span>
+      <span class="chip" style="border-color:rgba(167,139,250,.6)">Style purple</span>
+    </div>
+    <p class="lede" style="font-size:14px">Color communicates domain, not decoration. Layout prevents chaos by rule: automatic layout is default, nodes snap to semantic regions, edges bundle across domains, distant nodes simplify, no edge animations unless live trace is active. 3D is used only where it materially helps — 2.5D domain layers, system constellations with focus-based expansion, spatial metaphors chosen deliberately (islands, floors, constellations, rivers, heat), never an unconstrained force graph. The witness viewport and graph cross-highlight: select <code>vehicle.suspension</code> and the viewport highlights the vehicle, wheel contacts, and force vectors; select <code>rig.footIK</code> and it shows feet, IK targets, and ground-contact rays. Runtime pulses animate activity along active edges — throttled, grouped, and importance-filtered — and a time scrubber replays history: <em>inspect failures after they happen.</em></p>
+
+    <h3 class="subhead">Ship plan</h3>
+    <div class="grid">
+      <div class="card reveal"><div class="t"><span class="ico" style="background:rgba(52,211,153,.15)">1️⃣</span>Atlas v0.1 — the semantic core</div><p>System registry · semantic system map · node inspector · FeelSpec numeric tuning · system search · agent-scoped task generation · test/provider/asset links · runtime health badges · basic witness linking. Then apply it to one existing 3JSE game and let real pain points decide which 3D visualizations are genuinely useful.</p></div>
+      <div class="card reveal"><div class="t"><span class="ico" style="background:rgba(96,165,250,.15)">2️⃣</span>v0.2</div><p>Runtime event pulses · trace recording · performance graph · A/B FeelSpec · Feel Lab · state machine view · world graph · style graph.</p></div>
+      <div class="card reveal"><div class="t"><span class="ico" style="background:rgba(167,139,250,.15)">3️⃣</span>v0.3</div><p>Rig graph + rig witness · provider swapping · visual regression · time scrubber · git semantic history · asset provenance UI.</p></div>
+      <div class="card reveal"><div class="t"><span class="ico" style="background:rgba(245,166,35,.15)">🏁</span>Atlas 1.0</div><p>A non-programmer opens a complex 3JSE game, understands its major systems within minutes, locates a mechanic without knowing filenames, tunes values directly, asks the agent for structural changes, watches the scope, sees verification, A/Bs the new feel, and reverts or keeps the result.</p></div>
+    </div>
+
+    <div class="bigidea reveal" style="border-color:rgba(251,113,133,.4)">
+      <span class="tag">anti-goals &amp; failure conditions</span>
+      <p>Atlas is <b>not</b> Blender, Unreal Editor, a general-purpose visual programming language, a source-code replacement, or an unrestricted graph drawing tool. It has failed if: graphs routinely exceed comprehensible density; users must manually connect low-level execution nodes; semantics drift from implementation; FeelSpec becomes a collection of meaningless sliders; 3D navigation is harder to understand than 2D; or visual richness reduces readability. <b>Never recreate Blueprint spaghetti in a different color palette.</b></p>
+    </div>
+
+    <div class="bigidea reveal">
+      <span class="tag">core doctrine</span>
+      <p><b>The graph is not the program. The graph is the explanation of the program.</b> The human edits intent; the agent edits implementation. Expose systems before files, mechanics before functions, feel before constants. Use progressive disclosure to make complexity navigable. Color communicates meaning; movement communicates change. Every change must be witnessed and verified.</p>
+    </div>
+
+    <h3 class="subhead">The loop — Atlas over the harness</h3>
+    <div class="flow reveal">
+      <div class="fnode">USER</div><div class="farr">→</div>
+      <div class="fnode ir">ATLAS<br><small>FeelSpec · semantic selection</small></div><div class="farr">→</div>
+      <div class="fnode">3JSE Director</div><div class="farr">→</div>
+      <div class="fnode">Capability Resolver</div><div class="farr">→</div>
+      <div class="fnode">Vendor Router</div><div class="farr">→</div>
+      <div class="fnode">Agent</div><div class="farr">→</div>
+      <div class="fnode">Project</div><div class="farr">→</div>
+      <div class="fnode">Tests · Runtime · Witness</div><div class="farr">→</div>
+      <div class="fnode ir">ATLAS</div>
+    </div>
+    <p class="lede" style="font-size:14px">Atlas is the <strong>visual intelligence layer over the existing harness</strong> — it does not replace the harness and is not required to build games; the harness remains fully capable of working headlessly. Atlas makes the harness <em>understandable and controllable</em>. And it supersedes the Blueprint-style canvas of <a href="#graph">§ 08</a>: the 3IR compiler, JS/TS backend, and debugger machinery remain — Atlas navigates and edits them semantically instead of asking a human to wire them by hand.</p>
+
+    <div class="bigidea reveal" style="border-color:rgba(52,211,153,.45)">
+      <span class="tag">the walkthrough</span>
+      <p>Open a game → Atlas shows <b>WORLD · PLAYER · GAMEPLAY · AI · STYLE · AUDIO · UI</b>. Enter <b>PLAYER</b> → Movement · Camera · Animation · Tricks · Combat. Open <b>TRICKS</b> → Air · Grind · Landing · Combo. Select <b>LANDING</b> → landing tolerance 32°, momentum retention 0.84, tests 6/6 — and the witness viewport shows the player landing a trick. Say: <em>"Keep the existing jump exactly as it is. Make clean landings feel much faster and more satisfying, but sideways landings should punish momentum more."</em> Atlas creates the scoped agent task, the agent modifies the implementation, tests run, A/B appears, you try both and keep B. <b>No Blueprint graph was authored. No source file had to be found. No physics constant was changed blindly.</b> The user interacted with the game at the level of meaning and feel — that is the intended role of 3JSE Atlas.</p>
+    </div>
+
+    <div class="docnav reveal">
+      <a href="#harness"><span class="dir">← previous</span><div class="t">H · 3JSE Harness</div></a>
+      <a class="next" href="#vision"><span class="dir">next →</span><div class="t">01 · Vision</div></a>
     </div>
   </div>
 </section>
@@ -461,6 +861,11 @@
       </div>
     </div>
 
+    <div class="bigidea reveal" style="border-color:rgba(245,166,35,.35)">
+      <span class="tag">assemble first</span>
+      <p>3JSE does not reinvent wheels — the Three.js ecosystem is full of brilliant wheel engineers, and every wheel we bolt on instead of re-forging is one less thing we update forever. The operating rule: <b>adopt → wrap → build</b>, in that order, and build only when nothing good exists. Three.js is the renderer wheel; the Owen pantheon is the water/foliage/flora/terrain wheels, vendored at pinned commits and wrapped as <code>@3jse/*</code> packages — with a license notebook (<code>packages/vendor/licenses.json</code>) and an update tracker (<code>tools/vendor-update.mjs</code>) so bumping a pin is a deliberate adoption decision, never an accident. What 3JSE builds itself is the part nobody else is building: the editor, the Gameplay IR, the AI command surface, and the glue that makes all those wheels one machine. This is the strategy, not a phase — see <a href="VENDOR_INTEGRATIONS.md">VENDOR_INTEGRATIONS.md</a>.</p>
+    </div>
+
     <h3 class="subhead">Non-goals — what 3JSE deliberately is not</h3>
     <div class="grid">
       <div class="card reveal">
@@ -481,6 +886,11 @@
       </div>
     </div>
 
+    <div class="bigidea reveal" style="border-color:rgba(58,224,196,.35)">
+      <span class="tag">the first working artifact</span>
+      <p>The AI-native bet on this page is not hypothetical: <b>the 3JSE Harness</b> is the first working artifact of it — a system that turns a general coding agent into a reference-first Three.js/WebGPU game developer and ships playable games <b>today</b> (<a href="#harness">§ H</a>). The harness is where the plan's ideas get tested against reality first; the engine is where they get made first-class. Its governing idea — <b>the coding agent is the editor; visual tools are added only when repeated work proves them necessary</b> — is the through-line for every "AI-native" claim made here.</p>
+    </div>
+
     <div class="bigidea reveal" style="border-color:rgba(52,211,153,.35)">
       <span class="tag">what success looks like</span>
       <p>A developer with Blueprint, Verse, Unity, or Godot experience can open 3JSE and be productive <b>within a day</b>. A game built in 3JSE is, at every layer, <b>a normal, readable, Git-diffable software project</b> — never a proprietary binary blob only the editor can open. And an AI agent, given a one-sentence request, can operate 3JSE through the exact same primitives a human uses, produce a working change, verify it by actually running the game, and hand back something the human can keep editing normally — because "AI-native" means <b>legible to both the AI and the human</b>, not opaque to one of them.</p>
@@ -494,6 +904,11 @@
     <div class="kicker"><span class="no">§ 02</span><span class="file">ROADMAP.md</span><a class="pill blue" href="ROADMAP.md">Read the full page →</a></div>
     <h2>The roadmap</h2>
     <p class="lede">Dependency-ordered, not calendar-ordered — each phase specifies what it needs from the previous one and what it unlocks for the next. The sequencing bet: <strong>ship something that already beats hand-rolled Three.js before visual scripting exists; ship visual scripting before AI depends on it; ship AI before ecosystem features need a userbase that doesn't exist yet; and treat professional tooling as depth to layer in once the foundation is proven.</strong></p>
+
+    <div class="bigidea reveal" style="border-color:rgba(58,224,196,.4);margin-top:26px">
+      <span class="tag">running in parallel, today</span>
+      <p>The phases below are the <b>engine track</b>. Alongside it, the <b>harness track</b> is already live: <b>3JSE Harness v0.1</b> ships the observe → plan → act → verify loop, quality gates, and provider routing as working agent instructions today (<a href="#harness">§ H</a>) — a living field test of Phase 4's AI-native thesis that feeds design decisions back into every phase <b>before</b> they're built.</p>
+    </div>
 
     <div class="flow reveal" style="margin-top:26px">
       <div class="fnode">Phase 0<br><small>experiments</small></div><div class="farr">→</div>
@@ -643,7 +1058,7 @@
       <div class="layer"><span class="ln">8</span><div class="nm">Build + Deployment</div><div class="ds">Play → Publish, web / desktop / XR</div><span class="pill">dev-time</span></div>
       <div class="layer"><span class="ln">7</span><div class="nm">Plugin / Package System</div><div class="ds">@3jse/* registry &amp; sandboxing</div><span class="pill">dev-time</span></div>
       <div class="layer"><span class="ln">6</span><div class="nm">AI Development Layer</div><div class="ds">Agent API, the agentic loop</div><span class="pill">dev-time</span></div>
-      <div class="layer"><span class="ln">5</span><div class="nm">Visual Scripting — 3JSE Graph</div><div class="ds">Node authoring → 3IR</div><span class="pill accent">authoring dev-time · compiled output ships</span></div>
+      <div class="layer"><span class="ln">5</span><div class="nm">Visual Authoring — Atlas</div><div class="ds">Semantic navigation + FeelSpec over 3IR, agent-driven</div><span class="pill accent">authoring dev-time · compiled output ships</span></div>
       <div class="layer"><span class="ln">4</span><div class="nm">Gameplay Framework</div><div class="ds">CharacterController, Inventory, …</div><span class="pill">plugins — ship if used</span></div>
       <div class="layer"><span class="ln">3</span><div class="nm">Asset Pipeline</div><div class="ds">Import, analyze, optimize</div><span class="pill">dev-time</span></div>
       <div class="layer"><span class="ln">2</span><div class="nm">Editor</div><div class="ds">Viewport, panels, PIE</div><span class="pill">dev-time</span></div>
@@ -902,6 +1317,11 @@
     <h2>3JSE Graph — visual scripting</h2>
     <p class="lede">A node-graph authoring frontend for <strong>3JSE Gameplay IR</strong> — not a separate execution engine. Every capability exists because it's expressible in 3IR; there is no Graph feature hand-written TypeScript can't also express, and no TypeScript-callable engine API a graph node can't call. That symmetry is deliberate: it's what keeps this from becoming "its own isolated universe" — the one thing the design brief calls out to avoid above all else.</p>
 
+    <div class="bigidea reveal" style="border-color:rgba(167,139,250,.45)">
+      <span class="tag">superseded as the authoring UI — 3JSE Atlas</span>
+      <p>The Blueprint-style node-wiring canvas is superseded by <a href="#atlas">3JSE Atlas</a> — the semantic alternative to Unreal Blueprints and Verse. Everything on this page about the <b>machinery</b> — the 3IR compiler, the JS/TS backend, bidirectional graph ⇄ code, the debugger — remains the execution architecture underneath Atlas. The graph becomes <b>one of Atlas's eleven lenses</b> rather than the primary authoring surface: a human rarely wires nodes by hand anymore. They navigate meaning, tune FeelSpec, and let the agent (or a direct edit) produce the graph — Atlas exposes systems before files, mechanics before functions, and feel before constants.</p>
+    </div>
+
     <h3 class="subhead">14 node families, typed pins throughout</h3>
     <div class="grid">
       <div class="card reveal"><div class="t"><span class="ico" style="background:rgba(251,113,133,.15)">📡</span>Events</div><p><code>BeginPlay</code>, <code>Tick(dt)</code>, <code>OnCollision</code>, <code>OnInput</code>, custom events with fan-out.</p></div>
@@ -1019,6 +1439,7 @@
     </div>
     <p class="lede" style="font-size:14px">Guarantees independent of tier: every agent mutation lands in the <strong>same undo/version history</strong> as a manual edit; generated TypeScript runs in a <strong>capability-scoped sandbox</strong> (no network, no filesystem outside the project tree); secrets are excluded from what the agent can read; and scope limits (files touched, entities mutated per turn) are configurable — a Suggest-tier session fixing one bug can't touch two hundred files without a visible, flagged deviation from plan.</p>
     <p class="lede" style="font-size:14px;margin-top:16px"><strong style="color:var(--accent2)">Why this doesn't need a second engine:</strong> because the tool surface <em>is</em> the editor's own command API, there was no temptation to build a parallel "AI scripting language" or a simulated-input automation layer. The Agent API mostly assembles pieces the rest of the engine already required — typed validation, headless verification, undo-integrated history — into a loop, rather than inventing new ones.</p>
+    <p class="lede" style="font-size:14px;margin-top:16px"><strong style="color:var(--accent2)">First working slice — the Harness:</strong> the <a href="#harness">3JSE Harness</a> already runs this layer's core loop today — observe → plan → act → verify, evidence gates, and structured routing — as agent instructions, registries, and deterministic scripts. The Agent API generalizes what the harness does by <em>convention</em> into what the engine does by <em>construction</em>: the same loop, backed by a typed command surface instead of disciplined prompting.</p>
     <div class="docnav reveal">
       <a href="#graph"><span class="dir">← previous</span><div class="t">08 · Visual scripting</div></a>
       <a class="next" href="#framework"><span class="dir">next →</span><div class="t">10 · Gameplay framework</div></a>
@@ -1540,6 +1961,99 @@
     <p class="lede" style="font-size:14px">This table is documentation, not a compatibility shim — its value is making a Verse-literate developer's existing mental model transfer to 3JSE quickly, which is the actual goal the Vision sets, not source-level interoperability with Epic's ecosystem.</p>
     <div class="docnav reveal">
       <a href="#templates"><span class="dir">← previous</span><div class="t">22 · Templates</div></a>
+      <a class="next" href="#reference-games"><span class="dir">next →</span><div class="t">R · Reference games</div></a>
+    </div>
+  </div>
+</section>
+
+<!-- ================= R REFERENCE GAMES ================= -->
+<section id="reference-games">
+  <div class="wrap">
+    <div class="kicker"><span class="no">§ R</span><span class="file">REFERENCE_GAMES.md</span><a class="pill blue" href="REFERENCE_GAMES.md">Read the full page →</a><span class="pill ok" style="margin-left:8px">● living laboratories</span></div>
+    <h2>The six reference games</h2>
+    <p class="lede">Six games built on the 3JSE stack already exist as working laboratories — <strong>3JSURF</strong>, <strong>ZENDRIVE</strong>, <strong>UBURT/PULSEHOP</strong>, <strong>DAMN BEAVERS</strong>, <strong>BREAKING WAVES</strong>, and <strong>MANDELHOP</strong>. Together they validate most of this design package's riskiest claims, and they donate working systems, measured feel anchors, harness tooling, and reusable rigs/animation/asset kits. The short answer to "can any of this accelerate the project": <strong>yes — five things specifically</strong>: the headless mechanics-harness pattern, feel measured as numbers, reference implementations for four Gameplay Framework packages, asset kits, and gate-sentence discipline.</p>
+
+    <div class="grid">
+      <div class="card reveal" style="border-color:rgba(58,224,196,.4)">
+        <div class="t"><span class="ico" style="background:rgba(58,224,196,.18)">🏄</span>3JSURF <span class="pill ok" style="margin-left:auto">TUBULAR × Poseidon</span></div>
+        <p>TUBULAR surf mechanics on Poseidon's WebGPU FFT ocean — 8 breaks up to 300 m faces, 5 riders, sharks, rival AI, barrel riding.</p>
+        <p style="font-size:12.5px;margin-top:8px"><strong style="color:var(--text)">Proves:</strong> headless mechanics checks (<code>mechcheck.mjs</code> — no renderer, numbers must match the build) · feel as numbers (<code>feel.mjs</code>) · per-frame invariant soaks (<code>soak.mjs</code>) · single-term debug isolation (<code>WAVEDBG</code>) · scaling laws (stations not metres, √K authority, quadratic drag, swept pickups).</p>
+        <small>donates: 2 auto-rigged riders + baked Mixamo clip library · 3 sharks · 3 floaties · Poseidon (MIT, vendored)</small>
+      </div>
+      <div class="card reveal" style="border-color:rgba(244,114,182,.4)">
+        <div class="t"><span class="ico" style="background:rgba(244,114,182,.18)">🌸</span>ZENDRIVE <span class="pill ok" style="margin-left:auto">serene velocity</span></div>
+        <p>Pole Position × zen garden × vaporwave — four procedural roads, zero authored assets, generative music that listens to your driving.</p>
+        <p style="font-size:12.5px;margin-top:8px"><strong style="color:var(--text)">Proves:</strong> track-space vehicle physics (distance/lateral on a self-closing spline) · demand-vs-capacity cornering (<code>curv·v²</code> vs steer authority → slide/drift) · the provider strategy (poseidon/gaia/dryad/apate techniques) · headless race tests · seeded rival AI · HOOD-cam witness discipline.</p>
+        <small>donates: the reference implementation for @3jse/vehicle arcade mode + Atlas driving FeelSpec anchors</small>
+      </div>
+      <div class="card reveal" style="border-color:rgba(167,139,250,.4)">
+        <div class="t"><span class="ico" style="background:rgba(167,139,250,.18)">🎹</span>UBURT / PULSEHOP <span class="pill ok" style="margin-left:auto">Q*bert as an instrument</span></div>
+        <p>The tile-hopping grammar of Q*bert rebuilt as a musical instrument — every hop is a quantized note, playing well <em>is</em> the music.</p>
+        <p style="font-size:12.5px;margin-top:8px"><strong style="color:var(--text)">Proves:</strong> gameplay-as-music (hops → 16th-note grid, combos → groove layers, MIDI/OSC out to a DAW) · intent-relative input on diagonal boards · world-as-sim inside an arcade game (Mandelbrot voxels, water/lava cellular automaton, living Julia arena) · zero per-frame allocation.</p>
+        <small>donates: sequencer + MIDI/OSC bridge architecture, hop-grammar input patterns</small>
+      </div>
+      <div class="card reveal" style="border-color:rgba(245,166,35,.4)">
+        <div class="t"><span class="ico" style="background:rgba(245,166,35,.18)">🦫</span>DAMN BEAVERS <span class="pill ok" style="margin-left:auto">DF-class systemic sim</span></div>
+        <p>Systemic beaver-civilization simulator — hydrology, ecology, engineering, economy, culture, history. 183 tasks, 1,534 tests, 9 gates, all green.</p>
+        <p style="font-size:12.5px;margin-top:8px"><strong style="color:var(--text)">Proves:</strong> <em>the simulation is authoritative</em> — renderer/audio/UI observe sim state, headless always makes sense · systems not scripted outcomes (implement causes, never <code>DamFloodEvent</code>) · a working ECS with JSON-plain components, stable IDs, snapshot versioning · determinism + counterfactual replay · per-phase gate sentences · grounded NL explanation with a no-fabrication proof.</p>
+        <small>donates: the object-model spec already implemented — plus gate-sentence test discipline</small>
+      </div>
+      <div class="card reveal" style="border-color:rgba(96,165,250,.4)">
+        <div class="t"><span class="ico" style="background:rgba(96,165,250,.18)">🌊</span>BREAKING WAVES <span class="pill ok" style="margin-left:auto">first-person surf tech</span></div>
+        <p>The parametric breaking-wave + FFT ocean technology from finalsurf as a standalone demo — WebGPU, TypeScript, EXR skybox, live Tweakpane controls.</p>
+        <p style="font-size:12.5px;margin-top:8px"><strong style="color:var(--text)">Proves:</strong> the breaking wave painted by shader — storage-buffer wave slots, winner-take-all compositor, lip rotation, barrel cavity — as one <code>vec4(dx,dy,dz,foam)</code> entry point · <strong>Tweakpane = FeelSpec knobs already working</strong> · a live 2D profile plot as witness beside the viewport · explicit WebGPU <code>requiredLimits</code> (8 storage textures) · wave lifecycle (onset → swell → residual → fade).</p>
+        <small>donates: the upstream for @3jse/water's breaking-wave authoring + Atlas's live-tuning tier</small>
+      </div>
+      <div class="card reveal" style="border-color:rgba(163,230,53,.4)">
+        <div class="t"><span class="ico" style="background:rgba(163,230,53,.18)">🐸</span>MANDELHOP <span class="pill ok" style="margin-left:auto">endless frogger descent</span></div>
+        <p>An infinite frogger journey into a Mandelbrot dream — then a full temporal platforming campaign: 9 worlds × 4 stages, 8 powers, 5 time powers, ghost-replay speedruns.</p>
+        <p style="font-size:12.5px;margin-top:8px"><strong style="color:var(--text)">Proves:</strong> a deterministic <em>unfairness-free</em> core — constant-velocity lanes, seeded generation, collision = grid math on the same numbers you see · time powers through one clock (<code>worldDt = dt·scale</code>) · 12 Hz ghost replay · <strong>player agents as QA</strong> (bots drive the real game and classify "unfair" deaths as system faults) · infinite track pooled 45-ahead/25-behind · model <code>LICENSES.md</code> for adapted techniques.</p>
+        <small>donates: time-scaling, replay, and player-agent patterns — plus the unfair-death QA rule</small>
+      </div>
+    </div>
+
+    <div class="bigidea reveal" style="border-color:rgba(58,224,196,.4)">
+      <span class="tag">incorporated into the harness — now</span>
+      <p>This is not just an essay — it's already wired into <code>3JSE_Harness_v0.1/</code>: <b>six new mechanics-registry entries</b> (<code>surf_feel</code>, <code>first_person_surf</code>, <code>arcade_racing</code>, <code>hop_grammar</code>, <code>endless_hopper</code>, <code>systemic_sim</code> — each naming its canonical reference implementation), <b>four new recipes</b> (arcade-racer, musical-hopper, frogger-endless, colony-sim), the surf recipe updated to cite 3JSURF and breaking-waves, and a <b>new skill: <code>mechanics-harness</code></b> — the five-tool pattern every project should ship: headless mechanics check, feel-as-numbers, per-frame invariant soak, heuristic player agents with unfair-death classification, single-term debug isolation. <code>verify-harness.mjs</code> remains green.</p>
+    </div>
+
+    <h3 class="subhead">The five accelerators</h3>
+    <div class="grid">
+      <div class="card reveal"><div class="t"><span class="ico" style="background:rgba(52,211,153,.15)">1️⃣</span>Headless mechanics harness</div><p>3jsurf's <code>mechcheck.mjs</code>, zendrive's headless races, and dambeavers' simulation tests are <code>runtime.run --headless</code> and the Agent API's verify step — already proven in production. Gameplay logic must be renderer-independent by construction.</p></div>
+      <div class="card reveal"><div class="t"><span class="ico" style="background:rgba(96,165,250,.15)">2️⃣</span>Feel as numbers</div><p>3jsurf's <code>feel.mjs</code> table (face run, crossing time, peak speed per break) is exactly the measurement FeelSpec wants — Atlas's surf and driving dimensions now have real anchors, not guesses.</p></div>
+      <div class="card reveal"><div class="t"><span class="ico" style="background:rgba(167,139,250,.15)">3️⃣</span>Reference implementations</div><p>Zendrive's demand-capacity vehicle model (~120 lines) de-risks <code>@3jse/vehicle</code>; pulsehop de-risks hop-grammar input + rhythm systems; dambeavers de-risks the entire ECS/object-model spec.</p></div>
+      <div class="card reveal"><div class="t"><span class="ico" style="background:rgba(245,166,35,.15)">4️⃣</span>Asset kits</div><p>Two auto-rigged surf riders, a baked Mixamo clip library, three sharks, three floaties, sky panoramas — ready-made Shop "Kits" and template seeds, with provenance per the security policy.</p></div>
+      <div class="card reveal"><div class="t"><span class="ico" style="background:rgba(251,113,133,.15)">5️⃣</span>Gate sentences</div><p>Dambeavers ends every phase with a written gate sentence and a composed gate test that proves it — the harness evidence gate formalized, and the shape <code>build.runTests</code> should adopt.</p></div>
+    </div>
+
+    <h3 class="subhead">Reusable assets — what can be shared today</h3>
+    <div class="tblwrap reveal">
+      <table>
+        <tr><th>Asset</th><th>Source</th><th>Notes</th></tr>
+        <tr><td>Surf rig + baked clip library</td><td>3jsurf <code>public/assets/</code></td><td><code>skeleton_rig.glb</code> · <code>man_rigged.glb</code> · <code>surf_anims.glb</code> — Mixamo clips, retarget-ready</td></tr>
+        <tr><td>Sharks ×3, floaties ×3, buoy</td><td>3jsurf <code>public/assets/</code></td><td>Sketchfab exports — attribution ledger required</td></tr>
+        <tr><td>Sky panoramas ×2</td><td>3jsurf <code>public/sky/</code></td><td>Baked HDRI-style</td></tr>
+        <tr><td>Poseidon ocean (vendored)</td><td>3jsurf <code>src/render/poseidon/</code></td><td>MIT — already matches the pinned-vendor policy</td></tr>
+        <tr><td>Arcade vehicle model</td><td>zendrive <code>js/physics.js</code></td><td>Track-space physics — reference for <code>@3jse/vehicle</code></td></tr>
+        <tr><td>Shader ocean / grass / trees / surfaces</td><td>zendrive <code>js/</code></td><td>WebGL-toon ports of the Owen pantheon</td></tr>
+        <tr><td>Sequencer + MIDI/OSC bridge</td><td>pulsehop <code>js/audio/</code></td><td>Gameplay-as-music architecture</td></tr>
+        <tr><td>Voxel CA fluids, living-fractal world</td><td>pulsehop <code>js/world/</code></td><td>World-as-sim patterns</td></tr>
+        <tr><td>ECS core (ComponentStore / Clock / EntityId)</td><td>dambeavers <code>src/sim/core/</code></td><td>The object-model spec, already implemented</td></tr>
+        <tr><td>Hydrology / economy sims</td><td>dambeavers <code>src/sim/</code></td><td>References for <code>@3jse/water</code> / economy packages</td></tr>
+        <tr><td>Parametric breaking-wave compositor</td><td>breaking-waves <code>src/ocean/</code></td><td>TSL wave slots, lip rotation, barrel cavity — upstream for <code>@3jse/water</code></td></tr>
+        <tr><td>EXR skybox + gradient fallback</td><td>breaking-waves <code>assets/</code></td><td>Drop-in sky path</td></tr>
+        <tr><td>Time powers / ghost replay / player-agent QA</td><td>mendalhop <code>js/timemagic.js</code> <code>js/ghost.js</code> <code>qa/</code></td><td>One-clock time scaling, 12 Hz replay, unfair-death classification</td></tr>
+        <tr><td>Infinite-track generation</td><td>mendalhop <code>js/world.js</code> <code>js/flow.js</code></td><td>45-ahead/25-behind pooling, biome genomes, DataTexture water mask</td></tr>
+      </table>
+    </div>
+
+    <div class="bigidea reveal" style="border-color:rgba(167,139,250,.45)">
+      <span class="tag">what it means for atlas</span>
+      <p>Driving FeelSpec now has real anchors — zendrive's demand-vs-capacity model <b>is</b> the <code>stability</code>/<code>driftAssist</code>/<code>steeringResponse</code> axes. Surf FeelSpec has measured anchors from <code>feel.mjs</code>. Live tuning and replays are already real: breaking-waves' Tweakpane panel <b>is</b> Atlas's direct-parameter-change tier, and mendalhop's 12 Hz ghost replay is the time-scrubbing lens with a fraction of the machinery. And the witness is already real: dambeavers proves the sim-authoritative seam, 3jsurf's soak invariants prove per-frame witness checks catch the bugs screenshots miss, and breaking-waves' live profile plot is the witness beside the viewport. <b>The six games are the plan's Phase 1–4 exit criteria running ahead of schedule — the harness is the development system, these games are the evidence, and the engine's job is to make both first-class.</b></p>
+    </div>
+
+    <div class="docnav reveal">
+      <a href="#verse"><span class="dir">← previous</span><div class="t">23 · Verse compatibility</div></a>
       <a class="next" href="#summary"><span class="dir">finish →</span><div class="t">The plan in one sentence</div></a>
     </div>
   </div>
@@ -1548,12 +2062,14 @@
 <!-- ================= SUMMARY ================= -->
 <section id="summary" style="background:var(--bg2)">
   <div class="wrap">
-    <div class="kicker"><span class="no">FIN</span><span class="file">all 23 pages · one plan</span></div>
+    <div class="kicker"><span class="no">FIN</span><span class="file">30 pages · three tracks · one plan</span></div>
     <h2>The plan in one sentence</h2>
     <div class="bigidea" style="border-color:rgba(58,224,196,.4);margin-top:26px;padding:30px 34px">
-      <p style="font-size:clamp(17px,2.2vw,21px);line-height:1.5">One typed, serializable gameplay representation — <b>the 3JSE Gameplay IR</b> — underneath four authoring surfaces; an <b>editor that is the runtime</b>, not a proxy for it; a <b>plugin-first system catalog</b> a studio would otherwise rebuild; an <b>AI that operates the exact same primitives as a human</b> and verifies by running the game; and a <b>web-native deployment story Unreal structurally cannot match</b> — shipped in dependency order, validated phase by phase, against a design where "AI-native" means legible to both the AI and the human.</p>
+      <p style="font-size:clamp(17px,2.2vw,21px);line-height:1.5"><b>Three tracks, one plan:</b> a <b>working agent harness today</b> — the coding agent is the editor, reuse-first, evidence-gated; an <b>Atlas</b> that makes it understandable — semantic navigation, FeelSpec intent, the human edits feel while the agent edits implementation and the viewport witnesses; and an <b>engine that makes these practices first-class tomorrow</b>: one typed, serializable gameplay representation — <b>the 3JSE Gameplay IR</b> — underneath four authoring surfaces; an <b>editor that is the runtime</b>, not a proxy for it; a <b>plugin-first system catalog</b> a studio would otherwise rebuild; and a <b>web-native deployment story Unreal structurally cannot match</b> — shipped in dependency order, validated phase by phase, against a design where "AI-native" means legible to both the AI and the human.</p>
     </div>
     <div class="grid" style="margin-top:30px">
+      <a class="card" href="#harness" style="color:inherit"><div class="t">🧠 What runs today</div><p>The Harness — the agent-native development system shipping playable games now.</p></a>
+      <a class="card" href="#atlas" style="color:inherit"><div class="t">🧭 What you'll see</div><p>Atlas — semantic navigation, FeelSpec tuning, and agent-scoped editing over the harness. Meaning over wires.</p></a>
       <a class="card" href="#vision" style="color:inherit"><div class="t">🔭 Where it starts</div><p>The Vision — why Three.js needs a platform, not another renderer.</p></a>
       <a class="card" href="#roadmap" style="color:inherit"><div class="t">🗺️ How it ships</div><p>The Roadmap — eight phases in dependency order, each with an exit criterion.</p></a>
       <a class="card" href="#ir" style="color:inherit"><div class="t">🧬 What holds it together</div><p>The Gameplay IR — the one decision every other claim hangs from.</p></a>
@@ -1565,8 +2081,10 @@
 
 <footer>
   <div class="wrap">
-    <h3>All 23 pages</h3>
+    <h3>All 30 pages</h3>
     <div class="cols">
+      <a href="HARNESS.md">HARNESS.md</a>
+      <a href="3JSE_ATLAS_FULL_PLAN.md">3JSE_ATLAS_FULL_PLAN.md</a>
       <a href="VISION.md">VISION.md</a>
       <a href="ROADMAP.md">ROADMAP.md</a>
       <a href="ARCHITECTURE.md">ARCHITECTURE.md</a>
@@ -1590,8 +2108,13 @@
       <a href="BUILD_DEPLOYMENT.md">BUILD_DEPLOYMENT.md</a>
       <a href="TEMPLATES.md">TEMPLATES.md</a>
       <a href="VERSE_COMPATIBILITY.md">VERSE_COMPATIBILITY.md</a>
+      <a href="VENDOR_INTEGRATIONS.md">VENDOR_INTEGRATIONS.md</a>
+      <a href="VENDOR_PROJECT_MODULES.md">VENDOR_PROJECT_MODULES.md</a>
+      <a href="SHOP.md">SHOP.md</a>
+      <a href="WEBSITE.md">WEBSITE.md</a>
+      <a href="REFERENCE_GAMES.md">REFERENCE_GAMES.md</a>
     </div>
-    <p class="note">3JSE — an open-source game engine and editor built around Three.js and WebGPU, not on top of a fork of them. This page is a guided tour of the full design package; each Markdown file linked above is the authoritative specification. The roadmap is dependency-ordered: every phase specifies what it needs from the previous one, what it unlocks for the next, and how it will know it's done.</p>
+    <p class="note">3JSE is a tandem project — an open-source game engine and editor built around Three.js and WebGPU, not on top of a fork of them, plus the <strong>3JSE Harness</strong>, the agent-native development system that works today (<code>3JSE_Harness_v0.1/</code>). This page is a guided tour of the full design package; each Markdown file linked above is the authoritative specification. The roadmap is dependency-ordered: every phase specifies what it needs from the previous one, what it unlocks for the next, and how it will know it's done — while the harness runs the AI-native loop in production alongside it, feeding lessons back into the design.</p>
   </div>
 </footer>
 
