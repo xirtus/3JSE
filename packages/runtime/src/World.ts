@@ -8,8 +8,8 @@ export class World {
   private readonly resources = new Map<string, unknown>();
   private playing = false;
 
-  createLevel(name: string): Level {
-    const level = new Level(this, name);
+  createLevel(name: string, id?: string): Level {
+    const level = new Level(this, name, id);
     this.levels.set(level.id, level);
     return level;
   }

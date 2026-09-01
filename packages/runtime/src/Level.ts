@@ -12,15 +12,18 @@ export class Level {
   readonly scene: THREE.Scene;
   private readonly entities = new Map<string, Entity>();
 
-  constructor(world: World, name: string) {
-    this.id = `level_${nextLevelId++}`;
+  constructor(world: World, name: string, id?: string) {
+    this.id = id ?? `level_${nextLevelId++}`;
     this.name = name;
     this.world = world;
     this.scene = new THREE.Scene();
   }
 
-  createEntity(name: string, opts: { spatial?: boolean; parent?: Entity | null } = {}): Entity {
-    const entity = new Entity(this, name, opts.spatial ?? true);
+  createEntity(
+    name: string,
+    opts: { spatial?: boolean; parent?: Entity | null; id?: string } = {},
+  ): Entity {
+    const entity = new Entity(this, name, opts.spatial ?? true, opts.id);
     this.entities.set(entity.id, entity);
     if (entity.object3D) {
       (opts.parent?.object3D ?? this.scene).add(entity.object3D);

@@ -28,8 +28,11 @@ export class Entity {
 
   private readonly components = new Map<string, Record<string, unknown>>();
 
-  constructor(level: Level, name: string, spatial = true) {
-    this.id = `entity_${nextId++}`;
+  constructor(level: Level, name: string, spatial = true, id?: string) {
+    // A caller-supplied id is how a project loader (docs/PROJECT_FORMAT.md) rehydrates an
+    // Entity under its persisted, stable id instead of minting a fresh session-local one —
+    // stable IDs are what keep a scene file's Git diff sane across sessions.
+    this.id = id ?? `entity_${nextId++}`;
     this.name = name;
     this.level = level;
     this.object3D = spatial ? new THREE.Object3D() : null;
