@@ -28,7 +28,7 @@ Baseline at ledger creation: commit `2fc24e8`, harness verify green.
 | # | Task | Status | Evidence | Commit |
 |---|---|---|---|---|
 | 1.0 | Confirm Phase 0 open items 1–3 (mid-range-laptop ECS re-measure; Tauri confirmation checklist; `shell/` adapter + browser CI target) | todo | — | — |
-| 1.1 | `@3jse/runtime` archetype storage (promote `spikes/phase0/ecs-object3d` layout into the real runtime; `EntityId` registry, snapshot/restore) | **partial — done: archetype index behind `Level.query`** (signature-bucketed, superset match, signature-level query cache; `Entity.seq` keeps creation-order results; API identical; 2.8× faster than the full scan at 20k entities, results byte-identical). **Still open:** SoA column storage, `EntityId` stable-identity registry, snapshot/restore. | `evidence/phase1.1-runtime-archetype-index-2026-09-01.md`; `packages/runtime` 29 tests (was 19) | (uncommitted) |
+| 1.1 | `@3jse/runtime` archetype storage (promote `spikes/phase0/ecs-object3d` layout into the real runtime; `EntityId` registry, snapshot/restore) | **archetype index + EntityRegistry + snapshot/restore done** — `Level.query` signature-bucketed (2.8× faster at 20k, byte-identical results, API unchanged); `EntityRegistry` generational `EntityHandle` (`World.resolveEntity`, stale-handle safe); `World`/`Level` `snapshot()`/`restore()` (total, id-preserving round-trip, deep-equal proven). **Still open:** SoA column storage (Phase 0 memo: not-yet-needed to ~10k). | `evidence/phase1.1-runtime-archetype-index-2026-09-01.md`; `packages/runtime` 39 tests (was 19) | (uncommitted) |
 | 1.2 | `@3jse/runtime` World/Level/Entity/Component + fixed/variable tick | done (pre-existing) — 19 tests; + `id?` params added for stable-id project load | `packages/runtime` | (uncommitted) |
 | 1.3 | Editor panels: Viewport, Hierarchy, Inspector, Content Browser, transform gizmos | done (pre-existing) — 13 active panels, editor builds | `apps/editor/src/panels/registry.ts` | — |
 | 1.4 | Play/Pause (no modify-while-paused) | done (pre-existing) — `World.play/pause`, editor toolbar | `apps/editor/src/App.tsx` | — |
@@ -82,8 +82,8 @@ hold the module in-graph) was preserved and re-verified on-screen.
 
 | # | Task | Status | Evidence | Commit |
 |---|---|---|---|---|
-| 5.1 | `@3jse/water-poseidon` / `@3jse/terrain-demiurge` / `@3jse/foliage-gaia` / `@3jse/flora-dryad` | partial (pre-existing) — pure generation cores re-exported from vendored upstreams (pinned, MIT-verified); the WebGPU/TSL material + InstancedMesh/chunk-mesher runtime Systems are **not** built (need the editor viewport to validate — genuine Phase 5 depth). | `packages/{water-poseidon,terrain-demiurge,foliage-gaia,flora-dryad}` | — |
-| 5.2 | Cinematics/Sequencer, particle/VFX graph, retargeting/IK, full Profiler, replay, automated test framework | mixed — **`@3jse/cinematics` built this session** (timeline/sequencer *runtime*: property/event/activation tracks, easings, `SequencePlayer` seek/loop-safe, `createCinematicSystem` + `Cinematic` component — 6 tests, headless); `@3jse/replay` + TwoBoneIK pre-existing; Sequencer *panel*, VFX-graph, Profiler still `planned` UI only | `packages/cinematics` | (uncommitted) |
+| 5.1 | `@3jse/water-poseidon` / `@3jse/terrain-demiurge` / `@3jse/foliage-gaia` / `@3jse/flora-dryad` | partial (pre-existing) — pure generation cores re-exported from vendored MIT upstreams; WebGPU/TSL material + InstancedMesh/chunk-mesher runtime Systems + paint tools **not** built. Sequenced in `docs/ENGINE_GAP_ANALYSIS.md` §6 item 6 (after packaging/audio/UI/material-graph). | `packages/{water-poseidon,terrain-demiurge,foliage-gaia,flora-dryad}` | — |
+| 5.2 | Cinematics/Sequencer, particle/VFX graph, retargeting/IK, full Profiler, replay, automated test framework | **Sequencer + Profiler panels done** — `@3jse/cinematics` (7 tests; external `time` write = seek); editor **Sequencer** panel (live Cinematic list, Play/Pause/scrub bound to the component, track summary, event-marker log; demo `sunSweep` sequence) and **Profiler** panel (real `runtime.getPerf` from `@3jse/agent` fed by the live render loop — avg/min/max ms, est FPS, scene census, per-component usage). `@3jse/replay` + TwoBoneIK pre-existing. VFX-graph + animation-retargeting UI still todo. | `packages/cinematics`, `apps/editor/src/panels/{SequencerPanel,ProfilerPanel}.tsx` | (uncommitted) |
 
 ---
 
@@ -91,7 +91,7 @@ hold the module in-graph) was preserved and re-verified on-screen.
 
 | # | Task | Status | Evidence | Commit |
 |---|---|---|---|---|
-| 6.1 | Package registry/discovery, full template catalog, `@3jse/networking`, third-party plugin path | partial — **`@3jse/networking` built this session** (replication core: `markReplicated` schema flags, `SnapshotWriter` full/delta dirty-tracking, `applySnapshot` spawn/update/despawn by NetId, `Authority`/`NetId` components + `hasAuthority`, `Transport` iface + `LoopbackPair`, `PredictedController` prediction/reconciliation replay, `RpcHub` + direction-checked RPC — 7 tests, headless). Registry/discovery surface + full template catalog + plugin path still todo; `@3jse/templates` has 1 of the catalog (Third Person). | `packages/networking` | (uncommitted) |
+| 6.1 | Package registry/discovery, full template catalog, `@3jse/networking`, third-party plugin path | **mostly done** — `@3jse/plugins` (new, 10 tests): `PluginManifest` + `EXTENSION_POINT_API_VERSIONS` + `checkCompatibility`; `PluginHost` (register/validate/activate components/systems/resources/agentTools/editorPanels); `PACKAGE_CATALOG` (24 official `@3jse/*` with capability/phase/status/points). Editor **Packages** panel lists the catalog by phase + registered third-party plugins. `community/orbit-marker` proves the path end-to-end (Component + System via the same host an official pkg uses, live in the scene). `@3jse/templates` catalog now 3 (Third Person / Top-Down / First Person) via CameraRig presets in `@3jse/character`. `@3jse/networking` core pre-existing. Still todo: a remote plugin *fetch/install* flow. | `packages/plugins`, `packages/{templates,character}`, `apps/editor` | (uncommitted) |
 
 ---
 
@@ -99,7 +99,7 @@ hold the module in-graph) was preserved and re-verified on-screen.
 
 | # | Task | Status | Evidence | Commit |
 |---|---|---|---|---|
-| 7.1 | Written gap analysis vs. Unreal/Unity/Godot for genres real users ship in | todo | — | — |
+| 7.1 | Written gap analysis vs. Unreal/Unity/Godot for genres real users ship in | **first pass done** — `docs/ENGINE_GAP_ANALYSIS.md`: subsystem tables vs the three incumbents, editor/workflow table, "where 3JSE is ahead", genre-readiness matrix, recommended sequencing (packaging → audio → UI first). Per-deferred-item build/defer/out-of-scope decisions owed pending Phase 4–6 usage data. | `docs/ENGINE_GAP_ANALYSIS.md` | (uncommitted) |
 
 ---
 
