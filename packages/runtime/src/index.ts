@@ -2,6 +2,17 @@ export { World } from "./World.js";
 export { Level } from "./Level.js";
 export { Entity } from "./Entity.js";
 export { Scheduler } from "./Scheduler.js";
+export { EntityRegistry, NULL_HANDLE, type EntityHandle } from "./EntityRegistry.js";
+export {
+  snapshotWorld,
+  restoreWorld,
+  snapshotLevel,
+  restoreLevel,
+  snapshotEntity,
+  type WorldSnapshot,
+  type LevelSnapshot,
+  type EntitySnapshot,
+} from "./snapshot.js";
 export type { SystemDef, SystemStage, SystemContext } from "./Scheduler.js";
 export {
   registerComponent,

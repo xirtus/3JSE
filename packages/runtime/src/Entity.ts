@@ -4,6 +4,7 @@
 // must import from the same specifier the renderer does — see apps/editor/src/Viewport.tsx.
 import * as THREE from "three/webgpu";
 import { getComponentSchema } from "./ComponentRegistry.js";
+import { NULL_HANDLE, type EntityHandle } from "./EntityRegistry.js";
 import type { Level } from "./Level.js";
 
 let nextId = 1;
@@ -25,6 +26,10 @@ export class Entity {
   readonly id: string;
   /** Process-wide creation order — see `creationSeq`. Used only by Level's archetype index. */
   readonly seq: number = creationSeq++;
+  /** Compact generational handle for hot paths (see EntityRegistry). Assigned by the owning
+   *  Level right after construction; `NULL_HANDLE` in the brief window before that and on a
+   *  never-registered Entity. */
+  handle: EntityHandle = NULL_HANDLE;
   name: string;
   readonly level: Level;
   object3D: THREE.Object3D | null;
