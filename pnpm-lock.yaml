@@ -41,6 +41,9 @@ importers:
       '@3jse/physics-rapier':
         specifier: workspace:*
         version: link:../../packages/physics-rapier
+      '@3jse/plugins':
+        specifier: workspace:*
+        version: link:../../packages/plugins
       '@3jse/runtime':
         specifier: workspace:*
         version: link:../../packages/runtime
@@ -336,6 +339,19 @@ importers:
       '@3jse/runtime':
         specifier: workspace:*
         version: link:../runtime
+      typescript:
+        specifier: ^5.7.0
+        version: 5.9.3
+      vitest:
+        specifier: ^2.1.0
+        version: 2.1.9(@types/node@22.20.1)(lightningcss@1.33.0)
+
+  packages/plugins:
+    dependencies:
+      '@3jse/runtime':
+        specifier: workspace:*
+        version: link:../runtime
+    devDependencies:
       typescript:
         specifier: ^5.7.0
         version: 5.9.3

@@ -9,6 +9,7 @@ import { World, type Level } from "@3jse/runtime";
 import { registerBuiltinSystems } from "@3jse/runtime/systems/builtins";
 import { buildThirdPersonTemplate } from "@3jse/templates";
 import { buildCharacterRig, buildLocomotionClips } from "./proceduralCharacter.js";
+import { pluginHost } from "./plugins.js";
 
 /**
  * The editor's starting content is now the **shipped Third Person template**
@@ -29,6 +30,11 @@ export async function buildSampleWorld(): Promise<{ world: World; level: Level }
   // below has a live target. See installHotReload's doc comment.
   registerBuiltinSystems(world.scheduler);
   installHotReload(world);
+
+  // docs/PLUGIN_ARCHITECTURE.md: activate registered plugins (official + community) against the
+  // same live World every panel edits. Registers the community/orbit-marker plugin's Component
+  // schema + System — see plugins.ts.
+  pluginHost.activate({ world });
 
   const { level } = await buildThirdPersonTemplate({
     world,
@@ -89,6 +95,17 @@ export async function buildSampleWorld(): Promise<{ world: World; level: Level }
       crate.addComponent("RigidBody", { bodyType: "dynamic", mass: 2 });
       crate.addComponent("Collider", { shape: "box", sizeX: 1, sizeY: 1, sizeZ: 1, restitution: 0.3 });
       crate.addComponent("Saveable"); // where it settles persists (docs/GAMEPLAY_FRAMEWORK.md SaveGame)
+
+      // Driven entirely by the community/orbit-marker plugin's Component + System (plugins.ts).
+      const orbiter = level.createEntity("Orbiter");
+      orbiter.object3D!.position.set(3, 2, 0);
+      orbiter.object3D!.add(
+        new THREE.Mesh(
+          new THREE.IcosahedronGeometry(0.4, 1),
+          new THREE.MeshStandardMaterial({ color: 0x9b5de5, roughness: 0.5 }),
+        ),
+      );
+      orbiter.addComponent("OrbitMarker", { radius: 3.5, speed: 0.8 });
     },
   });
 

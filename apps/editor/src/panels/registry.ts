@@ -8,6 +8,7 @@ import { AtlasPanel } from "./AtlasPanel.js";
 import { CodeEditorPanel } from "./CodeEditorPanel.js";
 import { DebuggerPanel } from "./DebuggerPanel.js";
 import { OpenSourcePanel } from "./OpenSourcePanel.js";
+import { PackagesPanel } from "./PackagesPanel.js";
 import { AgentPanel } from "./AgentPanel.js";
 import { ContentBrowserPanel } from "./ContentBrowserPanel.js";
 import { planned } from "./planned.js";
@@ -135,4 +136,7 @@ export const panels: PanelDef[] = [
     component: planned("Packaging / Deployment", "BUILD_DEPLOYMENT.md"),
   },
   { id: "open-source", title: "Open Source", region: "bottom", status: "active", component: OpenSourcePanel },
+  // docs/ROADMAP.md Phase 6 — official @3jse/* catalog + third-party plugins registered via
+  // @3jse/plugins' PluginHost (docs/PLUGIN_ARCHITECTURE.md).
+  { id: "packages", title: "Packages", region: "bottom", status: "active", component: PackagesPanel },
 ];

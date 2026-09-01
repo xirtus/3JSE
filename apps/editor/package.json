@@ -18,6 +18,7 @@
     "@3jse/graph": "workspace:*",
     "@3jse/ir": "workspace:*",
     "@3jse/physics-rapier": "workspace:*",
+    "@3jse/plugins": "workspace:*",
     "@3jse/runtime": "workspace:*",
     "@3jse/save": "workspace:*",
     "@3jse/templates": "workspace:*",
