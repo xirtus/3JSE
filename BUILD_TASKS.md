@@ -28,7 +28,7 @@ Baseline at ledger creation: commit `2fc24e8`, harness verify green.
 | # | Task | Status | Evidence | Commit |
 |---|---|---|---|---|
 | 1.0 | Confirm Phase 0 open items 1–3 (mid-range-laptop ECS re-measure; Tauri confirmation checklist; `shell/` adapter + browser CI target) | todo | — | — |
-| 1.1 | `@3jse/runtime` archetype storage (promote `spikes/phase0/ecs-object3d` layout into the real runtime; `EntityId` registry, snapshot/restore) | todo — still Phase-1-honest Map+full-scan | `spikes/phase0/ecs-object3d/` proves the layout | — |
+| 1.1 | `@3jse/runtime` archetype storage (promote `spikes/phase0/ecs-object3d` layout into the real runtime; `EntityId` registry, snapshot/restore) | **partial — done: archetype index behind `Level.query`** (signature-bucketed, superset match, signature-level query cache; `Entity.seq` keeps creation-order results; API identical; 2.8× faster than the full scan at 20k entities, results byte-identical). **Still open:** SoA column storage, `EntityId` stable-identity registry, snapshot/restore. | `evidence/phase1.1-runtime-archetype-index-2026-09-01.md`; `packages/runtime` 29 tests (was 19) | (uncommitted) |
 | 1.2 | `@3jse/runtime` World/Level/Entity/Component + fixed/variable tick | done (pre-existing) — 19 tests; + `id?` params added for stable-id project load | `packages/runtime` | (uncommitted) |
 | 1.3 | Editor panels: Viewport, Hierarchy, Inspector, Content Browser, transform gizmos | done (pre-existing) — 13 active panels, editor builds | `apps/editor/src/panels/registry.ts` | — |
 | 1.4 | Play/Pause (no modify-while-paused) | done (pre-existing) — `World.play/pause`, editor toolbar | `apps/editor/src/App.tsx` | — |

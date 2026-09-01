@@ -7,6 +7,11 @@ import { getComponentSchema } from "./ComponentRegistry.js";
 import type { Level } from "./Level.js";
 
 let nextId = 1;
+// Monotonic across every Entity in the process, independent of `id` (which may be
+// caller-supplied on project load). Level.query() sorts its archetype-index results by this so
+// query order stays "creation order", the same as the old full-scan filter over an insertion-
+// ordered Map. Never reset — collisions would only reorder query results, never corrupt them.
+let creationSeq = 0;
 
 /**
  * The addressable "thing" in a Level — docs/ENTITY_COMPONENT_MODEL.md.
@@ -18,6 +23,8 @@ let nextId = 1;
  */
 export class Entity {
   readonly id: string;
+  /** Process-wide creation order — see `creationSeq`. Used only by Level's archetype index. */
+  readonly seq: number = creationSeq++;
   name: string;
   readonly level: Level;
   object3D: THREE.Object3D | null;
@@ -48,7 +55,9 @@ export class Entity {
     const schema = getComponentSchema(type);
     if (!schema) throw new Error(`Unknown component type "${type}" — did you registerComponent() it?`);
     const data = { ...schema.createDefault(), ...overrides } as T;
+    const had = this.components.has(type);
     this.components.set(type, data);
+    if (!had) this.level.reindexEntity(this); // component set changed -> archetype changed
     return data;
   }
 
@@ -67,7 +76,7 @@ export class Entity {
   }
 
   removeComponent(type: string): void {
-    this.components.delete(type);
+    if (this.components.delete(type)) this.level.reindexEntity(this);
   }
 
   listComponentTypes(): string[] {
