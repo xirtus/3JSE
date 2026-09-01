@@ -51,6 +51,28 @@ projects) · `pnpm -r test` all green · `pnpm --filter @3jse/editor build` OK.
   restore still open.
 - Harness track — green; repo-root mirror + CI gate are new.
 
+## 2026-09-01e addendum — Atlas Semantic Core (the Blueprint alternative)
+
+Commits `e9c8f3f` + `f7f8d5a`. `docs/3JSE_ATLAS_FULL_PLAN.md` §54/§63.
+
+- **`@3jse/atlas`** (new headless package, 31 tests): `defineSystem()` semantic contract +
+  `SystemRegistry`; `compileAtlas` → typed node/edge `AtlasModel` (dependency/event/provider/
+  asset, reverse-dep index, dangling refs surfaced); FeelSpec `parseFeelSpec` /
+  `resolveInheritance` (§14, cycle-guard) / `resolveFeel` (§11 weighted blend) / `checkProtected`
+  (§13) / `feelDelta` (§12); deterministic layered-DAG `layoutAtlas` (§22, cycle-guarded);
+  `exportAgentContext` (§28 1-ring scoped package) + `previewChange` (§30); `deriveHealth`
+  (§32, pure function of harness evidence); `searchAtlas` (§38/§39); §20 semantic colors.
+- **Editor `AtlasPanel`** (center "Atlas" tab, active): hand-rolled SVG system map (layered
+  layout, domain colors, typed edges, health badges, focus dimming), node inspector, live knob
+  editing that writes straight to the template's `CharacterController`/`CameraRig`/`Spin`/
+  `Movable` components (§3.1), search, §28/§30 agent-scoping (→ log + clipboard, no live LLM).
+  `sampleAtlas.ts` = the Third Person template's semantic declarations (§63 "apply to one game").
+- `apps/editor` gains vitest + `sampleAtlas.test.ts` (4). `engine-package` skill rung-0 table
+  += `@3jse/atlas` (canonical + both mirrors, FILE_INDEX regenerated). `docs/ATLAS.md` +
+  `evidence/atlas-semantic-core-2026-09-01.md`.
+- Verified in Chrome/WebGPU, zero console errors. Full gate green (25 typecheck projects, all
+  package + editor tests, editor build, verify-harness).
+
 ## Not done / next
 
 - Push `harness-integration` + open PR — left for the repo owner (live remote, other work
