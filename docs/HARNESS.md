@@ -160,7 +160,7 @@ The harness's practices today prefigure the engine's machinery tomorrow:
 | Harness piece (today) | Engine machinery it converges toward (plan) |
 |---|---|
 | Director workflow, mandatory route | `AI_AGENT_API.md` — observe → plan → act → verify as a built-in loop |
-| Evidence report fields | `runtime.getConsole` · `runtime.getPerf` · `runtime.captureFrame` — the verify step as engine APIs |
+| Evidence report fields | `runtime.getConsole` · `runtime.getPerf` · `runtime.captureState` + `buildEvidenceReport()` — the verify step as engine APIs (headless subset live in `@3jse/agent`; pixel `captureFrame` still owed) |
 | Gameplay/Visual/Performance QA gates | `build.runTests` + Profiler panel (`PERFORMANCE.md`) |
 | Asset Broker + provenance ledger | `ASSET_PIPELINE.md` analysis passes, metadata, dependency tracking |
 | Capability Resolver + Vendor Router | `PLUGIN_ARCHITECTURE.md` extension points — capabilities as registrable contracts |

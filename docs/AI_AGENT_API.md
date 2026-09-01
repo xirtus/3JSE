@@ -31,6 +31,8 @@ Exposed as an MCP-shaped local tool server (`@3jse/agent`), so any MCP-capable a
 
 Every tool call is schema-validated against the same Component/IR type system the editor UI enforces (`GAMEPLAY_IR.md`) — a malformed call fails fast with a structured error, not a silent bad state.
 
+**Implemented today** (`@3jse/agent`, headless, Node-testable): `scene.*`, `graph.*`, `runtime.run/pause/step`, `runtime.getConsole`, `build.typecheck/runTests`, and — as of the harness-integration work — `runtime.getPerf` (real measured CPU/simulation frame timing plus a scene census; *not* draw calls or GPU time, which need the Profiler panel) and `runtime.captureState` (the headless-honest stand-in for `runtime.captureFrame`: authoritative simulation state — transforms + components — serialized deterministically for diffing/invariant checks, rather than a faked pixel grab). `buildEvidenceReport()` composes these into the `EVIDENCE_REPORT` shape. A true pixel `captureFrame`, `assets.import`, `materials.create`, `codegen.writeFile`, and `project.settings.*` still wait on the renderer / Asset Pipeline / Material Graph.
+
 ## The loop: plan → modify → run → inspect → diagnose → repair → test
 
 ```

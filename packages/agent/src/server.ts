@@ -3,7 +3,16 @@ import { z } from "zod";
 import type { World, Level } from "@3jse/runtime";
 import { sceneQuery, sceneCreateEntity, sceneDestroyEntity, sceneAddComponent, sceneRemoveComponent, sceneSetProperty } from "./scene.js";
 import { GraphStore, graphRead, graphWrite, graphConnect } from "./graph.js";
-import { ConsoleSink, runtimeRun, runtimePause, runtimeStep, runtimeGetConsole } from "./runtime.js";
+import {
+  ConsoleSink,
+  PerfRecorder,
+  runtimeRun,
+  runtimePause,
+  runtimeStep,
+  runtimeGetConsole,
+  runtimeGetPerf,
+  runtimeCaptureState,
+} from "./runtime.js";
 import { buildTypecheck, buildRunTests, type CommandRunner } from "./build.js";
 
 export interface AgentContext {
@@ -11,6 +20,9 @@ export interface AgentContext {
   level: Level;
   graphs: GraphStore;
   console: ConsoleSink;
+  /** Optional shared perf recorder for `runtime.getPerf`. When omitted, the server creates its
+   *  own with the same lifetime as `console`. Pass one to inspect timings outside the tool calls. */
+  perf?: PerfRecorder;
   /** `build.typecheck`/`build.runTests` only register when this is supplied — it needs a real
    *  subprocess (buildRunner.ts's `createNodeCommandRunner()`, Node-only), so apps/editor's
    *  browser-hosted Agent Panel simply never provides one and those two tools don't appear in
@@ -41,16 +53,24 @@ function errorResult(err: unknown) {
  * supplied (AgentContext's own doc comment) — Node-only, so the browser-hosted Agent Panel omits
  * them.
  *
+ * `runtime.getPerf` reports real measured CPU/simulation timing over a headless run (not a GPU
+ * profile — see runtime.ts). `runtime.captureState` is the headless-honest stand-in for
+ * `runtime.captureFrame`: the authoritative simulation state, deterministically serialized,
+ * rather than a faked pixel grab.
+ *
  * Not implemented in this slice (see each module's own doc comments for why): `assets.import`,
- * `materials.create`, `codegen.writeFile`, `project.settings.get/.set`, `runtime.getPerf`,
- * `runtime.captureFrame` — these need the Asset Pipeline, Material Graph, a project file-tree
- * convention, and a real renderer, none of which exist yet (docs/ROADMAP.md's own phase
- * ordering: several of those are Phase 5+). The trust-tier gating (Suggest/Co-pilot/Autonomous)
- * and undo-history integration are also real future work — every tool here acts immediately, at
- * what amounts to "Co-pilot" trust with no scope limiter yet.
+ * `materials.create`, `codegen.writeFile`, `project.settings.get/.set`, and a true
+ * `runtime.captureFrame` pixel capture — these need the Asset Pipeline, Material Graph, a
+ * project file-tree convention, and a real renderer, none of which exist yet (docs/ROADMAP.md's
+ * own phase ordering: several of those are Phase 5+). The trust-tier gating
+ * (Suggest/Co-pilot/Autonomous) and undo-history integration are also real future work — every
+ * tool here acts immediately, at what amounts to "Co-pilot" trust with no scope limiter yet.
  */
 export function createAgentServer(ctx: AgentContext): McpServer {
   const server = new McpServer({ name: "3jse-agent", version: "0.0.0" });
+  // One recorder per server, same lifetime as ctx.console: runtime.run fills it, runtime.getPerf
+  // reads it. Callers that want to share/inspect it can pass their own via ctx.perf.
+  const perf = ctx.perf ?? new PerfRecorder();
 
   server.registerTool(
     "scene.query",
@@ -193,8 +213,8 @@ export function createAgentServer(ctx: AgentContext): McpServer {
     },
     async ({ frames, dt }) => {
       try {
-        runtimeRun(ctx.world, ctx.console, frames, dt);
-        return json({ ok: true, frames, consoleEntries: ctx.console.length });
+        runtimeRun(ctx.world, ctx.console, frames, dt, perf);
+        return json({ ok: true, frames, consoleEntries: ctx.console.length, perfFrames: perf.frames });
       } catch (err) {
         return errorResult(err);
       }
@@ -220,6 +240,29 @@ export function createAgentServer(ctx: AgentContext): McpServer {
     { description: "Pull captured console entries since a given index.", inputSchema: { since: z.number().int().nonnegative().optional() } },
     async ({ since }) => {
       return json(runtimeGetConsole(ctx.console, since));
+    },
+  );
+
+  server.registerTool(
+    "runtime.getPerf",
+    {
+      description:
+        "Measured CPU/simulation timing over the headless run so far, plus a scene census. Not a GPU profile.",
+    },
+    async () => {
+      return json(runtimeGetPerf(ctx.world, perf));
+    },
+  );
+
+  server.registerTool(
+    "runtime.captureState",
+    {
+      description:
+        "Deterministic snapshot of authoritative simulation state (transforms + components) — the headless stand-in for captureFrame.",
+      inputSchema: { precision: z.number().int().min(0).max(12).optional() },
+    },
+    async ({ precision }) => {
+      return json(runtimeCaptureState(ctx.world, { precision }));
     },
   );
 

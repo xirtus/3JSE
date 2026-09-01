@@ -44,6 +44,17 @@ export class Scheduler {
     if (i !== -1) this.systems.splice(i, 1);
   }
 
+  /** Read-only census of registered Systems in stage/registration order — what a Profiler
+   *  panel (docs/PERFORMANCE.md) and the headless perf report (`@3jse/agent`'s runtime.getPerf)
+   *  list. Returns copies so callers can't mutate the schedule through it. */
+  describe(): { name: string; stage: SystemStage; query: string[] }[] {
+    return STAGE_ORDER.flatMap((stage) =>
+      this.systems
+        .filter((s) => s.stage === stage)
+        .map((s) => ({ name: s.name, stage: s.stage, query: [...s.query] })),
+    );
+  }
+
   tick(world: World, dt: number): void {
     for (const stage of STAGE_ORDER) {
       for (const system of this.systems) {
