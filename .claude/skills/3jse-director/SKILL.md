@@ -1,0 +1,3 @@
+# 3JSE Director
+
+Use for broad game tasks.\n\n## Workflow\n1. Summarize the intended player experience and non-negotiables.\n2. Inventory the current repo before proposing architecture.\n3. Load Capability Resolver.\n4. Produce a capability routing ledger.\n5. Load only relevant provider/technical skills.\n6. Build the smallest playable vertical slice.\n7. Run the loop yourself via browser/test tools when available.\n8. Repair until Gameplay QA passes.\n9. Run Visual QA and Performance QA.\n10. Write `evidence/3jse-report.md`.\n\n## Forbidden shortcuts\n- static scene as completion\n- primitive placeholder art presented as final\n- ignoring registered providers\n- declaring success without evidence

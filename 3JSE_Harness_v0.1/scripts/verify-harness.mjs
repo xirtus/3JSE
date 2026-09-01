@@ -70,5 +70,29 @@ if (!fs.existsSync(indexPath)) {
   for (const f of extra) fail('FILE_INDEX STALE ENTRY (no such file)', f);
 }
 
+// 6. Repo-root .claude/skills mirror (only when the harness lives inside the 3JSE monorepo).
+//    This is the mirror that makes the harness skills apply to packages/* and apps/* work.
+//    Regenerate with scripts/sync-claude-skills.mjs; drift here = fail.
+const repoRoot = path.resolve(root, '..');
+const repoMirror = path.join(repoRoot, '.claude/skills');
+if (fs.existsSync(path.join(repoRoot, 'pnpm-workspace.yaml')) && fs.existsSync(canonical)) {
+  if (!fs.existsSync(repoMirror)) {
+    fail('MISSING repo-root .claude/skills mirror — run scripts/sync-claude-skills.mjs');
+  } else {
+    const cNames = fs.readdirSync(canonical).sort();
+    for (const name of cNames) {
+      const a = path.join(canonical, name, 'SKILL.md');
+      const b = path.join(repoMirror, name, 'SKILL.md');
+      if (!fs.existsSync(b)) { fail('MISSING REPO MIRROR', name); continue; }
+      if (fs.readFileSync(a, 'utf8') !== fs.readFileSync(b, 'utf8')) fail('REPO MIRROR DRIFT', name);
+    }
+    for (const name of fs.readdirSync(repoMirror)) {
+      if (!fs.existsSync(path.join(canonical, name, 'SKILL.md'))) {
+        fail('REPO MIRROR HAS EXTRA SKILL (not in canonical)', name);
+      }
+    }
+  }
+}
+
 if (!ok) process.exit(1);
 console.log('3JSE harness verification PASS');

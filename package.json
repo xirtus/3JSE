@@ -7,7 +7,10 @@
     "dev": "pnpm --filter @3jse/editor dev",
     "build": "pnpm -r build",
     "test": "pnpm -r test",
-    "typecheck": "pnpm -r typecheck"
+    "typecheck": "pnpm -r typecheck",
+    "verify:harness": "node 3JSE_Harness_v0.1/scripts/verify-harness.mjs",
+    "sync:harness": "node 3JSE_Harness_v0.1/scripts/sync-claude-skills.mjs && node 3JSE_Harness_v0.1/scripts/build-file-index.mjs",
+    "gate": "pnpm verify:harness && pnpm typecheck && pnpm test && pnpm --filter @3jse/editor build"
   },
   "engines": {
     "node": ">=20"

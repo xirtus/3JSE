@@ -1,0 +1,38 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  gate:
+    name: 3JSE gate (harness + typecheck + test + editor build)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11.7.0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      # Deterministic harness self-check: registries valid, skill mirrors in agreement
+      # (incl. repo-root .claude/skills), FILE_INDEX in sync.
+      - run: pnpm verify:harness
+
+      - run: pnpm typecheck
+
+      - run: pnpm test
+
+      - run: pnpm --filter @3jse/editor build
