@@ -44,6 +44,9 @@ importers:
       '@3jse/save':
         specifier: workspace:*
         version: link:../../packages/save
+      '@3jse/templates':
+        specifier: workspace:*
+        version: link:../../packages/templates
       '@3jse/vendor':
         specifier: workspace:*
         version: link:../../packages/vendor

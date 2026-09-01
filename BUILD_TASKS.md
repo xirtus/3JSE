@@ -34,7 +34,7 @@ Baseline at ledger creation: commit `2fc24e8`, harness verify green.
 | 1.4 | Play/Pause (no modify-while-paused) | done (pre-existing) — `World.play/pause`, editor toolbar | `apps/editor/src/App.tsx` | — |
 | 1.5 | Local project save/load in `PROJECT_FORMAT.md` layout; Git-diff clean round-trip | **done this session** — `@3jse/project`: byte-identical round-trip, one-line diff on one-field change, versioned migration chain, unregistered-component preservation | `packages/project` (6 tests) | (uncommitted) |
 | 1.6 | `@3jse/assets` v1 (glTF/GLB import, thumbnails, basic metadata) | done (pre-existing) — 41 tests | `packages/assets` | — |
-| 1.x | **Exit gate:** non-programmer places/arranges a scene with zero hand-written code; project file diffs sensibly in Git | partial — editor scene-editing works; project file now diffs cleanly (1.5). Not verified with a real non-programmer / in the Tauri shell. | `evidence/SESSION_REPORT-2026-09-01b.md` | — |
+| 1.x | **Exit gate:** non-programmer places/arranges a scene with zero hand-written code; project file diffs sensibly in Git | **met (browser)** — editor boots the shipped Third Person template as its scene; Hierarchy select + Inspector edit of components verified live in Chrome/WebGPU; project file diffs cleanly (1.5). Not yet re-verified in the Tauri shell or with a non-programmer. | `evidence/phase1-2-exit-gate-2026-09-01.md` | (uncommitted) |
 
 ---
 
@@ -51,9 +51,11 @@ Baseline at ledger creation: commit `2fc24e8`, harness verify green.
 | 2.7 | Hot reload for hand-written TS systems (function-swap) | done (pre-existing) — `Scheduler.register` upsert + editor HMR accept | `apps/editor/src/sampleScene.ts` | — |
 | 2.8 | `@3jse/spawning` (spawn-point Components, `ObjectPool` resource) | **done this session** — SpawnPoint/Spawned components, `SpawnRegistry`, `ObjectPool` (recycle, prewarm), spawn System (interval/maxAlive/totalLimit/jitter/pooled), `onSpawn` hook | `packages/spawning` (5 tests) | (uncommitted) |
 | 2.9 | Third Person template end-to-end (Phase 2 exit criterion) | **done this session** — `@3jse/templates` `buildThirdPersonTemplate`: headless-valid, wires input→character→physics→camera→animation→save; tests assert player falls & settles on the ground collider and forward input drives movement | `packages/templates` (4 tests) | (uncommitted) |
-| 2.x | **Exit gate:** Third Person template playable, tunable via Inspector, logic hot-reloads without restarting Play | partial — template is playable headlessly (2.9) and the editor's equivalent sample scene runs with the follow camera; not yet verified as the *packaged template* opened fresh in the editor + Inspector-tuned + hot-reloaded on-screen. | `evidence/SESSION_REPORT-2026-09-01b.md` | — |
+| 2.x | **Exit gate:** Third Person template playable, tunable via Inspector, logic hot-reloads without restarting Play | **met (browser)** — `apps/editor/src/sampleScene.ts` now calls `buildThirdPersonTemplate({ world, clips, decorate })`, so the editor scene and the shipped template are one code path. Verified in Chrome/WebGPU: Play runs the full loop with follow camera; Inspector edit of Spin.degreesPerSecond (60→240) drives the live sim; editing `systems/builtins.ts` during Play function-swaps via the preserved `sampleScene.ts` HMR accept boundary with no reload / no Play-state loss. | `evidence/phase1-2-exit-gate-2026-09-01.md` | (uncommitted) |
 
-Open follow-up: swap `apps/editor/src/sampleScene.ts` to call `buildThirdPersonTemplate({ world, decorate })` so the editor demo and the shipped template are one code path (left untouched this session to avoid disturbing the editor's HMR accept boundary — needs care).
+Follow-up done: the sampleScene → template swap is complete; the HMR accept boundary
+(`@3jse/runtime/systems/builtins` subpath, `registerBuiltinSystems` kept as a direct call to
+hold the module in-graph) was preserved and re-verified on-screen.
 
 ---
 
