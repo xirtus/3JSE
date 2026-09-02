@@ -11,6 +11,16 @@ Legend: ✅ shipped & tested · 🟡 partial / headless-only / needs a viewport 
 
 ## 1. The honest position
 
+> **Update (2026-09-02):** the nine net-new subsystems this document's §6 sequenced are now
+> built as **headless-first `@3jse/*` packages with tests** — `@3jse/packaging`, `@3jse/audio`,
+> `@3jse/ui`, animation retargeting in `@3jse/animation`, `@3jse/materials`, `@3jse/terrain` +
+> `@3jse/foliage`, `@3jse/nav`, priority/lag-comp/WebSocket in `@3jse/networking`, `@3jse/vfx`.
+> The editor has live panels for Packaging, Material Graph, Particles, Sequencer, Profiler,
+> Atlas, Packages, plus Animation/Terrain views. What remains for each is **depth + the GPU/
+> viewport half** (chunk meshing to BufferGeometry, a GPU particle path, a real audio backend,
+> a polygon navmesh, a relay/matchmaking service), not the core mechanism. The tables below
+> keep their original 🟡/⬜ marks with a trailing note where a package now exists.
+
 3JSE today is a **headless-first web game runtime + an editor shell + an agent-native
 development harness**, with roughly Phase 1–2 of a traditional engine's core built and tested,
 Phase 3–6 partially, and the differentiators (Atlas, the Agent API, the reuse harness) further
@@ -99,18 +109,20 @@ What that means concretely:
 
 ## 6. Recommended sequencing to close the biggest gaps
 
-Ordered by "unblocks the most genres per unit of work":
+Ordered by "unblocks the most genres per unit of work". **Status after 2026-09-02:** items 1–9
+have a shipped headless core + (mostly) an editor panel; the trailing work is depth + the
+GPU/viewport/service half.
 
-1. **Packaging** (`BUILD_DEPLOYMENT.md`) — nothing ships without this; every genre needs it.
-2. **Audio** (`AUDIO.md`) — every genre; the mixer/bus/event layer on top of Web Audio.
-3. **UI / HUD framework** — every genre; menus, HUD, dialogue all sit on it.
-4. **Animation retargeting + graph UI** — unblocks using marketplace/Mixamo animation at scale.
-5. **Material Graph → TSL** — unblocks anything with a custom look; the vendored providers assume it.
-6. **Terrain/foliage runtime Systems + paint tools** — unblocks open-world and large outdoor genres.
-7. **Nav-mesh (`@3jse/nav`)** — unblocks RTS/tactics/RPG AI movement.
-8. **Networking transport + priority model** — turns the replication core into shippable multiplayer.
-9. **Particles/VFX** — polish layer; every genre wants it, few genres are blocked without it.
-10. **Atlas v0.2 lenses + live agent planning** — compounds the differentiator once the above give it more to describe.
+1. ✅ **Packaging** (`BUILD_DEPLOYMENT.md`) — `@3jse/packaging`: plan/gate/publish, tree-shake, asset finalize, manifest, notices, generated static-host bundle. Editor Packaging panel. *Left:* the actual esbuild step (CLI/CI), Tauri/Steam/mobile wrappers.
+2. ✅ **Audio** (`AUDIO.md`) — `@3jse/audio`: bus mixer + ducking, AudioSource/Listener/ReverbZone, event router, musical grid + MIDI/OSC. *Left:* the Web Audio backend, a Project-Settings mixer panel, reverb-zone occlusion.
+3. ✅ **UI / HUD framework** — `@3jse/ui`: retained tree, flexbox-subset layout, data binding, hit-test, renderer seam. *Left:* the DOM/canvas renderer, an editor UI editor, a widget library.
+4. ✅ **Animation retargeting** — `retargetClip` / `autoMapSkeleton` in `@3jse/animation`; editor Animation panel with a live retarget demo. *Left:* a full anim-graph *editing* canvas, root-motion extraction UI, cross-side-convention bone matching.
+5. ✅ **Material Graph → TSL** — `@3jse/materials`: model, validation, `compileToTSL`, CPU reference evaluator. Editor Material Graph panel. *Left:* a drag/wire node canvas, the live GPU preview.
+6. ✅ **Terrain/foliage runtime** — `@3jse/terrain` (heightfield/mesher/LOD/streamer) + `@3jse/foliage` (constrained scatter → instance matrices). Editor Terrain panel (residency + thumbnail). *Left:* chunk mesh → BufferGeometry in the viewport, TSL splat material, paint tools, CSG.
+7. ✅ **Nav-mesh** — `@3jse/nav`: grid bake, octile A* + string-pull, flow field (group pathing), NavAgent component/system. *Left:* a true polygon navmesh + off-mesh links, a bake panel.
+8. ✅ **Networking transport + priority** — `PriorityAccumulator`, `HistoryBuffer` (lag comp), `WebSocketTransport` in `@3jse/networking`. *Left:* a relay/matchmaking service, a binary codec.
+9. ✅ **Particles/VFX** — `@3jse/vfx`: CPU SoA sim, curves/gradients over life, ParticleEmitter component/system. Editor Particles panel. *Left:* the GPU compute path (three-vfx), a VFX node graph.
+10. ⬜ **Atlas v0.2 remaining lenses + live agent planning** — the rest of §5, runtime pulses + time scrubber, a live LLM behind "Ask agent". Compounds the differentiator.
 
 ---
 
