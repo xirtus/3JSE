@@ -11,6 +11,7 @@ import { OpenSourcePanel } from "./OpenSourcePanel.js";
 import { PackagesPanel } from "./PackagesPanel.js";
 import { SequencerPanel } from "./SequencerPanel.js";
 import { ProfilerPanel } from "./ProfilerPanel.js";
+import { PackagingPanel } from "./PackagingPanel.js";
 import { AgentPanel } from "./AgentPanel.js";
 import { ContentBrowserPanel } from "./ContentBrowserPanel.js";
 import { planned } from "./planned.js";
@@ -129,13 +130,8 @@ export const panels: PanelDef[] = [
   // docs/PERFORMANCE.md's Profiler — real runtime.getPerf (@3jse/agent) fed by the actual
   // render loop's World.step() calls (perf.ts), not a synthetic probe.
   { id: "profiler", title: "Profiler", region: "bottom", status: "active", component: ProfilerPanel },
-  {
-    id: "packaging",
-    title: "Packaging",
-    region: "bottom",
-    status: "planned",
-    component: planned("Packaging / Deployment", "BUILD_DEPLOYMENT.md"),
-  },
+  // docs/BUILD_DEPLOYMENT.md's Publish over the real @3jse/packaging pipeline.
+  { id: "packaging", title: "Packaging", region: "bottom", status: "active", component: PackagingPanel },
   { id: "open-source", title: "Open Source", region: "bottom", status: "active", component: OpenSourcePanel },
   // docs/ROADMAP.md Phase 6 — official @3jse/* catalog + third-party plugins registered via
   // @3jse/plugins' PluginHost (docs/PLUGIN_ARCHITECTURE.md).
