@@ -3,6 +3,7 @@
 
 import { readFileSync, readdirSync, writeFileSync, mkdirSync, statSync } from "node:fs";
 import { join, relative, dirname } from "node:path";
+import { build as esbuild } from "esbuild";
 import { parseArgs } from "./args.js";
 import { runPublish } from "./publish.js";
 import { PACKAGE_CATALOG } from "@3jse/plugins";
@@ -73,14 +74,19 @@ async function main() {
         tier,
       },
       async (src) => {
-        // esbuild is an optional peer — loaded by specifier so tsc doesn't require its types.
-        const spec = "esbuild";
-        const esbuild = (await import(spec).catch(() => null)) as
-          | { transform: (s: string, o: object) => Promise<{ code: string }> }
-          | null;
-        if (!esbuild) throw new Error("esbuild not installed");
-        const r = await esbuild.transform(src, { minify: true, format: "esm", target: "es2022" });
-        return r.code;
+        // Bundle the generated bootstrap: resolve its @3jse/* + three imports into one ESM
+        // file. stdin entry so nothing hits disk until the result is written.
+        const r = await esbuild({
+          stdin: { contents: src, resolveDir: process.cwd(), loader: "js" },
+          bundle: true,
+          format: "esm",
+          minify: true,
+          target: "es2022",
+          write: false,
+          logLevel: "silent",
+          external: ["three", "three/webgpu", "three/tsl"], // loaded from the host page's importmap
+        });
+        return r.outputFiles[0]?.text ?? src;
       },
     );
 

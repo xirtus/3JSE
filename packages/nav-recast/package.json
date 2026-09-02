@@ -1,27 +1,24 @@
 {
-  "name": "@3jse/cli",
+  "name": "@3jse/nav-recast",
   "version": "0.0.0",
   "private": true,
   "type": "module",
   "main": "./src/index.ts",
   "types": "./src/index.ts",
-  "bin": {
-    "3jse": "./src/bin.ts"
-  },
-  "exports": {
-    ".": "./src/index.ts"
-  },
+  "exports": { ".": "./src/index.ts" },
   "scripts": {
     "typecheck": "tsc --noEmit -p tsconfig.json",
     "test": "vitest run"
   },
   "dependencies": {
-    "@3jse/packaging": "workspace:*",
-    "@3jse/plugins": "workspace:*",
-    "esbuild": "^0.24.2"
+    "@3jse/nav": "workspace:*",
+    "@recast-navigation/core": "^0.43.1",
+    "@recast-navigation/three": "^0.43.1"
   },
+  "peerDependencies": { "three": "^0.185.1" },
   "devDependencies": {
-    "@types/node": "^22.0.0",
+    "@types/three": "^0.185.0",
+    "three": "^0.185.1",
     "typescript": "^5.7.0",
     "vitest": "^2.1.0"
   }
