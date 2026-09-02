@@ -1,4 +1,4 @@
-# RESUME — pick-up point after 2026-09-02
+# RESUME — pick-up point after 2026-09-02b
 
 Branch **`harness-integration`**, **pushed**, PR **#1** (`github.com/xirtus/3JSE/pull/1`).
 Off `main` @ `2fc24e8`. Working tree clean, all gates green.
@@ -11,8 +11,8 @@ Off `main` @ `2fc24e8`. Working tree clean, all gates green.
 ```
 pnpm verify:harness    # PASS (also gates the repo-root .claude/skills mirror)
 pnpm gate              # verify:harness + typecheck + test + editor build — all green
-pnpm -r typecheck      # clean, 33 projects
-pnpm -r test           # 388 tests passing across the workspace + apps/editor
+pnpm -r typecheck      # clean, 35 projects
+pnpm -r test           # 410 tests passing across the workspace + apps/editor
 ```
 
 ## The whole branch (≈30 commits)
@@ -36,19 +36,26 @@ headless-first `@3jse/*` core with tests + (mostly) an editor panel:
 `@3jse/vfx`. Editor panels for Packaging / Material Graph / Animation / Terrain / Particles
 flipped `planned → active`.
 
-## What's left
+## The depth pass (`BUILD_TASKS.md` G.10–G.15) is done
 
-The **depth + GPU/viewport/service half** of the gap-roadmap subsystems — enumerated per item
-in `docs/ENGINE_GAP_ANALYSIS.md` §6 ("Left:" notes). Highest-leverage next steps:
+Viewport rendering (`@3jse/render`, verified live in Chrome), the `3jse` CLI (`@3jse/cli`),
+the Web Audio backend (`@3jse/audio` → shipped), the polygon-navmesh seam (`@3jse/nav` adapts
+recast-navigation-js → shipped), the reusable `NodeCanvas` (`@3jse/graph`, Atlas map uses it),
+and the state-machine / gameplay-flow Atlas lenses. All reuse-first — see
+`evidence/SESSION_REPORT-2026-09-02b.md` for the library research.
+
+## What's left (polish + install tail, or genuinely blocked)
 
 1. **Merge PR #1.**
-2. **Viewport rendering for terrain/foliage/particles** — `meshChunk` → `BufferGeometry`,
-   `toInstanceMatrices` → `InstancedMesh`, `ParticlePool.buffers()` → `Points`; drop into
-   `Viewport.tsx`'s scene. This is where the headless cores become visible.
-3. **The esbuild step behind `@3jse/packaging`** — a `3jse publish` CLI that runs the plan and
-   writes `dist/`.
-4. **A Web Audio backend for `@3jse/audio`** + a Project-Settings mixer panel.
-5. **A node-canvas *editor*** (drag/wire/palette) shared by 3JSE Graph + Material Graph + the
-   anim graph + VFX graph — `@3jse/graph`'s `GraphCanvas` is render-only today.
-6. **Atlas v0.2 remainder** (`A.4`) + live LLM planning behind "Ask agent".
-7. Phase 0 items 1–2 (mid-range-laptop ECS re-measure; a running Tauri shell for the checklist).
+2. `pnpm add` the real optional peers — `esbuild` (for `3jse publish` bundling),
+   `@recast-navigation/three` (for a real polygon navmesh bake) — and human-verify their
+   LICENSE at the pinned version (`packages/vendor/licenses.json` rows already staged).
+3. **GPU particle compute path** — swap `ParticleRenderer` for three-vfx (vendored in
+   `@3jse/extras`) at large counts; same `sync(pools)` call site.
+4. **TSL splat material + paint tools for terrain** (`@3jse/render` `TerrainRenderer` takes a
+   `material` arg — feed it a `@3jse/materials`-compiled splat shader).
+5. **Atlas Runtime Trace / Style / World / Rig lenses** + runtime event pulses + time scrubber
+   (§5.5, §5.8, §5.10, §5.11, §26–27) — need instrumentation / data models not yet built.
+6. **Live LLM planning** behind Atlas "Ask agent" — needs an actual LLM; the scoped-context
+   export + change preview are real, planning is deliberately not faked.
+7. Phase 0 items 1–2 — a mid-range Windows laptop; a Rust toolchain + a running Tauri shell.
