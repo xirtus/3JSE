@@ -36,6 +36,8 @@ export const PACKAGE_CATALOG: PackageEntry[] = [
   { id: "@3jse/agent", capability: "MCP-shaped agent tool server + headless perf/state probes", phase: 4, status: "partial", points: ["agentTools"], official: true },
   { id: "@3jse/atlas", capability: "Semantic system model / FeelSpec / Atlas graph compiler / agent-scoping", phase: 5, status: "partial", points: ["editorPanels"], official: true },
   { id: "@3jse/plugins", capability: "Plugin manifest, host, extension-point versioning, package catalog", phase: 6, status: "shipped", points: [], official: true },
+  { id: "@3jse/packaging", capability: "Publish pipeline: tree-shake, asset finalize, manifest, third-party notices, static-host files", phase: 8, status: "shipped", points: ["buildTargets"], official: true },
+  { id: "@3jse/audio", capability: "Bus mixer, AudioSource/Listener/ReverbZone components, event router, musical grid + MIDI/OSC bridge", phase: 4, status: "partial", points: ["components", "systems"], official: true },
   { id: "@3jse/extras", capability: "Vendored MIT ecosystem libs (mesh-bvh, troika text, postprocessing…)", phase: 5, status: "shipped", points: [], official: true },
   { id: "@3jse/vendor", capability: "Vendor registry + fetcher; Tier A wraps (poseidon/gaia/dryad/demiurge)", phase: 5, status: "partial", points: [], official: true },
   { id: "@3jse/water-poseidon", capability: "WebGPU spectral ocean (wraps owenyuwono/poseidon)", phase: 5, status: "partial", points: ["components", "systems"], official: true },

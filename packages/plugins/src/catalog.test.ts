@@ -18,7 +18,7 @@ describe("PACKAGE_CATALOG", () => {
   it("every entry declares a valid phase and status", () => {
     for (const p of PACKAGE_CATALOG) {
       expect(p.phase).toBeGreaterThanOrEqual(1);
-      expect(p.phase).toBeLessThanOrEqual(7);
+      expect(p.phase).toBeLessThanOrEqual(9); // ARCHITECTURE.md layers 1–9 (8 = Build/Deploy)
       expect(["shipped", "partial", "planned"]).toContain(p.status);
     }
   });
