@@ -1,61 +1,48 @@
-# RESUME — pick-up point after 2026-09-02b
+# RESUME — pick-up point after 2026-09-02c
 
-Branch **`harness-integration`**, **pushed**, PR **#1** (`github.com/xirtus/3JSE/pull/1`).
-Off `main` @ `2fc24e8`. Working tree clean, all gates green.
-
-> CI workflow at `tools/ci/github-ci.yml` — push credential lacks GitHub `workflow` scope.
-> `git mv` it to `.github/workflows/ci.yml` with a `workflow`-scoped login to activate.
-
-## State: all gates green
+Branch **`main`**, pushed. Working tree: only the long-standing vendored-`chiro` untracked tree
+(pre-existing, unrelated). All gates green.
 
 ```
-pnpm verify:harness    # PASS (also gates the repo-root .claude/skills mirror)
-pnpm gate              # verify:harness + typecheck + test + editor build — all green
-pnpm -r typecheck      # clean, 35 projects
-pnpm -r test           # 410 tests passing across the workspace + apps/editor
+pnpm verify:harness   # PASS (also gates the repo-root .claude/skills mirror)
+pnpm gate             # verify:harness + typecheck + test + editor build — all green
+pnpm -r typecheck     # clean, 36 projects
+pnpm -r test          # 433 passing across the workspace + apps/editor
 ```
 
-## The whole branch (≈30 commits)
+## What this session did (`SESSION_REPORT-2026-09-02c.md`)
 
-**Harness → repo:** committed `3JSE_Harness_v0.1/`, repo-root `CLAUDE.md` + generated
-`.claude/skills/` mirror (drift-gated) + hooks, `pnpm gate`, CI workflow.
+Closed the "install + polish tail" from the last RESUME — all reuse-first:
 
-**Engine core (Phases 1–7):** archetype-indexed `Level.query` + `EntityRegistry` (generational
-handles) + `World`/`Level` `snapshot()`/`restore()`; `runtime.getPerf` / `runtime.captureState`
-/ `buildEvidenceReport` in `@3jse/agent`; Phase 1/2 exit gates (editor scene **is**
-`buildThirdPersonTemplate`); `@3jse/atlas` Semantic Core + v0.2 lenses/A-B/manifest (the
-Blueprint alternative) + editor Atlas panel; Sequencer + Profiler panels; `@3jse/plugins`
-(manifest + host + versioned extension points + 26-package catalog) + Packages panel;
-Top-Down / First-Person templates via CameraRig presets; `docs/ENGINE_GAP_ANALYSIS.md`
-(Phase 7); `apps/editor/src/shell/` adapter (browser + Tauri).
+- **`@3jse/cli` bundles for real** — `esbuild` (`^0.24.2`, MIT) is a real dep now; `3jse
+  publish` runs `esbuild.build` (stdin entry, `three*` external) instead of a hand-run
+  `build.mjs`. (`86f885f`)
+- **`@3jse/nav-recast`** (new package) — `bakeRecastNavMesh(meshes, config?)` runs
+  recast-navigation-js `threeToSoloNavMesh` + `NavMeshQuery` → `@3jse/nav` `PolyNavMesh`. Kept
+  separate so `@3jse/nav` stays WASM-free/three-free. 6 tests incl. a real WASM bake. (`86f885f`)
+- **`@3jse/render` `GpuParticleRenderer`** — drop-in for `ParticleRenderer` (same `sync(pools)`);
+  `PointsNodeMaterial`, per-particle size + soft sprite in TSL, storage buffers. `@3jse/vfx`
+  stays the headless sim authority. Editor Viewport uses it. (`198eeeb`)
+- **Atlas Trace time scrubber** in `AtlasPanel` — play/pause rAF sweep + seek slider over
+  `TraceRecorder.span`, `◉` pulse on nodes fired <0.3 s ago, `pulseCounts` density strip.
+  (`198eeeb`)  The §5 data-side lenses (world/style/trace/rig) landed in `9acf95c`.
+- Provenance: `licenses.json` recast + esbuild rows → `installed-package-json` (`bd36355`).
 
-**Gap roadmap — all 9 net-new subsystems** (`BUILD_TASKS.md` §"Gap roadmap", G.1–G.9), each a
-headless-first `@3jse/*` core with tests + (mostly) an editor panel:
-`@3jse/packaging` · `@3jse/audio` · `@3jse/ui` · animation retargeting · `@3jse/materials` ·
-`@3jse/terrain` + `@3jse/foliage` · `@3jse/nav` · networking priority/lag-comp/WebSocket ·
-`@3jse/vfx`. Editor panels for Packaging / Material Graph / Animation / Terrain / Particles
-flipped `planned → active`.
+`BUILD_TASKS.md` rows A.4, G.15 updated; G.16–G.19 added.
 
-## The depth pass (`BUILD_TASKS.md` G.10–G.15) is done
+## What's left — both genuinely blocked
 
-Viewport rendering (`@3jse/render`, verified live in Chrome), the `3jse` CLI (`@3jse/cli`),
-the Web Audio backend (`@3jse/audio` → shipped), the polygon-navmesh seam (`@3jse/nav` adapts
-recast-navigation-js → shipped), the reusable `NodeCanvas` (`@3jse/graph`, Atlas map uses it),
-and the state-machine / gameplay-flow Atlas lenses. All reuse-first — see
-`evidence/SESSION_REPORT-2026-09-02b.md` for the library research.
+1. **Live LLM planning** behind Atlas "Ask agent" — needs an actual LLM. The §28 scoped-context
+   export + §30 change preview are real and wired to the log + clipboard; the planning loop is
+   deliberately not faked (same posture as `AI_AGENT_API.md`'s PLAN stage).
+2. **Phase 0 items 1–2** — a mid-range Windows laptop for the perf-floor capture; a Rust
+   toolchain + a running Tauri shell for the desktop-shell smoke test. Hardware-bound.
 
-## What's left (polish + install tail, or genuinely blocked)
+## Notes for next time
 
-1. **Merge PR #1.**
-2. `pnpm add` the real optional peers — `esbuild` (for `3jse publish` bundling),
-   `@recast-navigation/three` (for a real polygon navmesh bake) — and human-verify their
-   LICENSE at the pinned version (`packages/vendor/licenses.json` rows already staged).
-3. **GPU particle compute path** — swap `ParticleRenderer` for three-vfx (vendored in
-   `@3jse/extras`) at large counts; same `sync(pools)` call site.
-4. **TSL splat material + paint tools for terrain** (`@3jse/render` `TerrainRenderer` takes a
-   `material` arg — feed it a `@3jse/materials`-compiled splat shader).
-5. **Atlas Runtime Trace / Style / World / Rig lenses** + runtime event pulses + time scrubber
-   (§5.5, §5.8, §5.10, §5.11, §26–27) — need instrumentation / data models not yet built.
-6. **Live LLM planning** behind Atlas "Ask agent" — needs an actual LLM; the scoped-context
-   export + change preview are real, planning is deliberately not faked.
-7. Phase 0 items 1–2 — a mid-range Windows laptop; a Rust toolchain + a running Tauri shell.
+- CI workflow still parked at `tools/ci/github-ci.yml` — the push credential lacks the GitHub
+  `workflow` scope. `git mv` it to `.github/workflows/ci.yml` from a `workflow`-scoped login.
+- `tools/license-scan.mjs` **rewrites `licenses.json` destructively** — it drops the
+  hand-curated `vendored-upstream` / `vendor-registry` rows. Use it to read MIT fields; hand-edit
+  the file. Don't commit its output wholesale.
+- Editor bundle is ~8 MB (one chunk). Code-splitting is a known, unstarted optimisation.

@@ -113,16 +113,16 @@ Ordered by "unblocks the most genres per unit of work". **Status after 2026-09-0
 have a shipped headless core + (mostly) an editor panel; the trailing work is depth + the
 GPU/viewport/service half.
 
-1. ✅ **Packaging** (`BUILD_DEPLOYMENT.md`) — `@3jse/packaging`: plan/gate/publish, tree-shake, asset finalize, manifest, notices, generated static-host bundle. Editor Packaging panel. *Left:* the actual esbuild step (CLI/CI), Tauri/Steam/mobile wrappers.
+1. ✅ **Packaging** (`BUILD_DEPLOYMENT.md`) — `@3jse/packaging`: plan/gate/publish, tree-shake, asset finalize, manifest, notices, generated static-host bundle. Editor Packaging panel. `@3jse/cli` `3jse publish` now runs a real **esbuild** bundle (stdin entry, `three*` external). *Left:* Tauri/Steam/mobile wrappers.
 2. ✅ **Audio** (`AUDIO.md`) — `@3jse/audio`: bus mixer + ducking, AudioSource/Listener/ReverbZone, event router, musical grid + MIDI/OSC. *Left:* the Web Audio backend, a Project-Settings mixer panel, reverb-zone occlusion.
 3. ✅ **UI / HUD framework** — `@3jse/ui`: retained tree, flexbox-subset layout, data binding, hit-test, renderer seam. *Left:* the DOM/canvas renderer, an editor UI editor, a widget library.
 4. ✅ **Animation retargeting** — `retargetClip` / `autoMapSkeleton` in `@3jse/animation`; editor Animation panel with a live retarget demo. *Left:* a full anim-graph *editing* canvas, root-motion extraction UI, cross-side-convention bone matching.
 5. ✅ **Material Graph → TSL** — `@3jse/materials`: model, validation, `compileToTSL`, CPU reference evaluator. Editor Material Graph panel. *Left:* a drag/wire node canvas, the live GPU preview.
-6. ✅ **Terrain/foliage runtime** — `@3jse/terrain` (heightfield/mesher/LOD/streamer) + `@3jse/foliage` (constrained scatter → instance matrices). Editor Terrain panel (residency + thumbnail). *Left:* chunk mesh → BufferGeometry in the viewport, TSL splat material, paint tools, CSG.
-7. ✅ **Nav-mesh** — `@3jse/nav`: grid bake, octile A* + string-pull, flow field (group pathing), NavAgent component/system. *Left:* a true polygon navmesh + off-mesh links, a bake panel.
+6. ✅ **Terrain/foliage runtime** — `@3jse/terrain` (heightfield/mesher/LOD/streamer + splat maps + `paintSplat` brush) + `@3jse/foliage` (constrained scatter → instance matrices). `@3jse/render` chunk mesh → BufferGeometry + `terrainSplatMaterial` (TSL channel-mix) live in the viewport. Editor Terrain panel. *Left:* CSG, an in-viewport paint UI.
+7. ✅ **Nav-mesh** — `@3jse/nav`: grid bake, octile A* + string-pull, flow field (group pathing), NavAgent. `@3jse/nav-recast` `bakeRecastNavMesh` bakes a real polygon navmesh from THREE geometry via recast-navigation-js. *Left:* off-mesh links, a bake panel.
 8. ✅ **Networking transport + priority** — `PriorityAccumulator`, `HistoryBuffer` (lag comp), `WebSocketTransport` in `@3jse/networking`. *Left:* a relay/matchmaking service, a binary codec.
-9. ✅ **Particles/VFX** — `@3jse/vfx`: CPU SoA sim, curves/gradients over life, ParticleEmitter component/system. Editor Particles panel. *Left:* the GPU compute path (three-vfx), a VFX node graph.
-10. ⬜ **Atlas v0.2 remaining lenses + live agent planning** — the rest of §5, runtime pulses + time scrubber, a live LLM behind "Ask agent". Compounds the differentiator.
+9. ✅ **Particles/VFX** — `@3jse/vfx`: CPU SoA sim, curves/gradients over life, ParticleEmitter component/system. `@3jse/render` `GpuParticleRenderer` (TSL `PointsNodeMaterial`, per-particle size + soft sprite, storage buffers) is the GPU render path; editor Viewport uses it. *Left:* a full GPU-*compute* re-sim, a VFX node graph.
+10. 🟡 **Atlas v0.2 remaining lenses + live agent planning** — all §5 lenses done (state/flow/world/style/trace/rig), plus a wired Trace **time scrubber** (rAF sweep + seek slider + node pulses + `pulseCounts` strip). *Left (deliberate):* a live LLM behind "Ask agent" (§28 export + §30 preview are real; planning waits on an actual LLM), Feel Lab, the 2.5D/Three.js layer.
 
 ---
 
