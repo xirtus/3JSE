@@ -18,6 +18,7 @@ import {
   type AgentAction,
   type LensGraph,
 } from "@3jse/atlas";
+import { NodeCanvas, type CanvasNode, type CanvasEdge } from "@3jse/graph";
 import { buildSampleAtlas, SAMPLE_EVIDENCE, applyAtlasKnob, readAtlasKnob } from "../sampleAtlas.js";
 import type { EditorContext } from "./types.js";
 
@@ -194,65 +195,39 @@ function SystemMap({
   selectedId: string | null;
   onSelect: (id: string) => void;
 }) {
-  const box = (id: string) => layout.nodes[id];
-  return (
-    <svg width={layout.width} height={layout.height} style={{ display: "block" }}>
-      <defs>
-        <marker id="atlas-arrow" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto">
-          <path d="M0,0 L8,4 L0,8 z" fill="#64748b" />
-        </marker>
-      </defs>
-      {model.edges.map((e) => {
-        const a = box(e.source);
-        const b = box(e.target);
-        if (!a || !b) return null;
-        const style = EDGE_STYLE[e.kind];
-        const x1 = a.x + a.width;
-        const y1 = a.y + a.height / 2;
-        const x2 = b.x;
-        const y2 = b.y + b.height / 2;
-        const mx = (x1 + x2) / 2;
-        return (
-          <path
-            key={e.id}
-            d={`M ${x1} ${y1} C ${mx} ${y1}, ${mx} ${y2}, ${x2} ${y2}`}
-            fill="none"
-            stroke={style.stroke}
-            strokeWidth={e.kind === "dependency" ? 1.6 : 1.2}
-            strokeDasharray={style.dash}
-            markerEnd={e.kind === "dependency" ? "url(#atlas-arrow)" : undefined}
-            opacity={selectedId && e.source !== selectedId && e.target !== selectedId ? 0.25 : 0.9}
-          />
-        );
-      })}
-      {model.nodes.map((n) => {
-        const b = box(n.id);
-        if (!b) return null;
-        const hue = DOMAIN_COLOR[n.domain];
-        const isSel = n.id === selectedId;
-        const dim = selectedId && !isSel && !isNeighbor(model, selectedId, n.id);
-        return (
-          <g key={n.id} transform={`translate(${b.x}, ${b.y})`} style={{ cursor: "pointer" }} onClick={() => onSelect(n.id)} opacity={dim ? 0.4 : 1}>
-            <rect width={b.width} height={b.height} rx={6} fill="#202024" stroke={isSel ? "#fff" : hue} strokeWidth={isSel ? 2 : 1.4} />
-            <rect width={4} height={b.height} rx={2} fill={hue} />
-            <text x={12} y={18} fill="#f5f5f7" fontSize={12} fontWeight={600}>{n.label}</text>
-            <text x={12} y={33} fill="#9a9a9e" fontSize={10}>{n.domain}</text>
-            <text x={12} y={b.height - 22} fill={HEALTH_COLOR[n.status]} fontSize={10}>
-              {HEALTH_GLYPH[n.status]} {n.status}
-            </text>
-            <text x={12} y={b.height - 8} fill="#8a8a8e" fontSize={10}>
-              {n.tests.length ? `${n.tests.length} test path(s)` : "no tests"}
-              {n.cpuMs != null ? ` · ${n.cpuMs.toFixed(2)} ms` : ""}
-            </text>
-          </g>
-        );
-      })}
-    </svg>
-  );
-}
+  // Node positions: auto-layout, overridden by any the user has dragged (per lens/session).
+  const [moved, setMoved] = useState<Record<string, { x: number; y: number }>>({});
+  const pos = (id: string) => moved[id] ?? layout.nodes[id];
 
-function isNeighbor(model: LensGraph, a: string, b: string): boolean {
-  return model.edges.some((e) => (e.source === a && e.target === b) || (e.source === b && e.target === a));
+  const canvasNodes: CanvasNode[] = model.nodes.flatMap((n) => {
+    const b = pos(n.id);
+    if (!b) return [];
+    const hue = DOMAIN_COLOR[n.domain];
+    return [{
+      id: n.id,
+      x: b.x, y: b.y, width: layout.nodes[n.id]?.width ?? 200, height: layout.nodes[n.id]?.height ?? 84,
+      title: n.label,
+      subtitle: n.domain,
+      accent: hue,
+      badge: `${HEALTH_GLYPH[n.status]} ${n.status}${n.cpuMs != null ? ` · ${n.cpuMs.toFixed(2)} ms` : ""}`,
+      bodyLines: n.tests.length ? [`${n.tests.length} test path(s)`] : ["no tests"],
+    }];
+  });
+
+  const canvasEdges: CanvasEdge[] = model.edges.map((e) => {
+    const style = EDGE_STYLE[e.kind];
+    return { id: e.id, from: e.source, to: e.target, color: style.stroke, dashed: !!style.dash, kind: "value" as const, label: e.label };
+  });
+
+  return (
+    <NodeCanvas
+      nodes={canvasNodes}
+      edges={canvasEdges}
+      selectedId={selectedId}
+      onSelect={(id) => id && onSelect(id)}
+      onNodeMove={(id, x, y) => setMoved((m) => ({ ...m, [id]: { x, y } }))}
+    />
+  );
 }
 
 function NodeInspector({
