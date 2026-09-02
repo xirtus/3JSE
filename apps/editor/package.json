@@ -24,6 +24,7 @@
     "@3jse/physics-rapier": "workspace:*",
     "@3jse/plugins": "workspace:*",
     "@3jse/project": "workspace:*",
+    "@3jse/render": "workspace:*",
     "@3jse/runtime": "workspace:*",
     "@3jse/save": "workspace:*",
     "@3jse/templates": "workspace:*",

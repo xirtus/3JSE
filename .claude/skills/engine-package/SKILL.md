@@ -36,6 +36,7 @@ Use when the task is to build or change a `@3jse/*` **engine** package (or the e
    | Foliage: deterministic field scatter -> InstancedMesh instance data | `@3jse/foliage` |
    | Navigation: grid bake, A* + string-pull, flow field (group pathing), NavAgent | `@3jse/nav` |
    | Particles/VFX: CPU SoA sim, curves/gradients over life, ParticleEmitter component/system | `@3jse/vfx` |
+   | THREE-side render bridges: terrain chunks / foliage InstancedMesh / particle Points from the headless cores | `@3jse/render` |
    | Vendored MIT ecosystem libs (mesh-bvh, troika text, postprocessing, …) | `@3jse/extras` |
    | Vendor registry + fetcher; Tier A wraps (poseidon/gaia/dryad/demiurge) | `@3jse/vendor`, `@3jse/water-poseidon` etc. |
 

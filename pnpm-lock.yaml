@@ -59,6 +59,9 @@ importers:
       '@3jse/project':
         specifier: workspace:*
         version: link:../../packages/project
+      '@3jse/render':
+        specifier: workspace:*
+        version: link:../../packages/render
       '@3jse/runtime':
         specifier: workspace:*
         version: link:../../packages/runtime
@@ -453,6 +456,34 @@ importers:
       '@types/three':
         specifier: ^0.185.0
         version: 0.185.4
+      typescript:
+        specifier: ^5.7.0
+        version: 5.9.3
+      vitest:
+        specifier: ^2.1.0
+        version: 2.1.9(@types/node@22.20.1)(lightningcss@1.33.0)
+
+  packages/render:
+    dependencies:
+      '@3jse/foliage':
+        specifier: workspace:*
+        version: link:../foliage
+      '@3jse/runtime':
+        specifier: workspace:*
+        version: link:../runtime
+      '@3jse/terrain':
+        specifier: workspace:*
+        version: link:../terrain
+      '@3jse/vfx':
+        specifier: workspace:*
+        version: link:../vfx
+    devDependencies:
+      '@types/three':
+        specifier: ^0.185.0
+        version: 0.185.4
+      three:
+        specifier: ^0.185.1
+        version: 0.185.1
       typescript:
         specifier: ^5.7.0
         version: 5.9.3

@@ -5,7 +5,10 @@ import { TransformControls } from "three/addons/controls/TransformControls.js";
 import { INPUT_RESOURCE, type InputManager, type Level, type World } from "@3jse/runtime";
 import { CAMERA_FOLLOW_RESOURCE, type CameraPose } from "@3jse/character";
 import type { ColliderData } from "@3jse/physics-rapier";
+import { fbm, valueNoise2D } from "@3jse/terrain";
+import { TerrainRenderer, FoliageRenderer, ParticleRenderer, type TerrainData, type FoliageFieldData } from "@3jse/render";
 import { getPerfRecorder } from "./perf.js";
+import { particleSystem } from "./vfxScene.js";
 
 interface ViewportProps {
   world: World;
@@ -90,6 +93,32 @@ export function Viewport({ world, level, selectedId, onSelect, playing }: Viewpo
     );
     colliderHelper.visible = false;
     level.scene.add(colliderHelper);
+
+    // --- @3jse/render bridges (docs/ENGINE_GAP_ANALYSIS.md §6) -------------------------------
+    // Build renderers from the authoring components; @3jse/{terrain,foliage,vfx} do the sim.
+    const terrainEntity = level.allEntities.find((e) => e.hasComponent("Terrain"));
+    let terrainRenderer: TerrainRenderer | undefined;
+    if (terrainEntity) {
+      const d = terrainEntity.getComponent<TerrainData>("Terrain")!;
+      const base = terrainEntity.object3D?.position ?? new THREE.Vector3();
+      const sampler = fbm(valueNoise2D(d.seed), 4, 2, 0.5, d.heightScale, d.frequency);
+      const shifted = (x: number, z: number) => sampler(x - base.x, z - base.z) + base.y;
+      terrainRenderer = new TerrainRenderer(level.scene, shifted, {
+        chunkSize: d.chunkSize,
+        ring: d.ring,
+        baseResolution: d.baseResolution,
+      });
+    }
+
+    const foliageRenderer = new FoliageRenderer(level.scene);
+    const grassSpecies = {
+      id: "grass",
+      geometry: new THREE.ConeGeometry(0.12, 0.7, 4),
+      material: new THREE.MeshStandardMaterial({ color: 0x5c8a3a, roughness: 1 }),
+    };
+
+    const particleRenderer = new ParticleRenderer(level.scene);
+    // --------------------------------------------------------------------------------------------
 
     // Only Entities' own transforms are pickable — the grid and the gizmo helper were added
     // directly to the scene, not under any Entity's object3D, so they're excluded by construction
@@ -177,6 +206,28 @@ export function Viewport({ world, level, selectedId, onSelect, playing }: Viewpo
         orbit.update();
       }
 
+      // @3jse/render: stream the headless cores' output into the scene each frame.
+      const focus = followPose ? followPose.lookAt : orbit.target;
+      terrainRenderer?.update(focus.x, focus.z);
+      const meadow = level.allEntities.find((e) => e.hasComponent("FoliageField"));
+      if (meadow) {
+        const fd = meadow.getComponent<FoliageFieldData>("FoliageField")!;
+        const c = meadow.object3D!.position;
+        const half = fd.areaSize / 2;
+        foliageRenderer.set(
+          grassSpecies,
+          { minX: c.x - half, minZ: c.z - half, maxX: c.x + half, maxZ: c.z + half },
+          {
+            density: fd.density,
+            seed: fd.seed,
+            ground: terrainRenderer ? (x, z) => terrainRenderer!.heightAt(x, z) : () => 0,
+            constraints: { slopeMax: fd.slopeMax },
+          },
+          `${fd.seed}:${fd.density}:${fd.areaSize}:${c.x},${c.z}`,
+        );
+      }
+      particleRenderer.sync(particleSystem.pools);
+
       const selEntity = selectedIdRef.current ? level.getEntity(selectedIdRef.current) : undefined;
       const collider = selEntity?.object3D ? selEntity.getComponent<ColliderData>("Collider") : undefined;
       if (collider && selEntity?.object3D) {
@@ -211,6 +262,11 @@ export function Viewport({ world, level, selectedId, onSelect, playing }: Viewpo
       renderer.domElement.removeEventListener("click", handleClick);
       orbit.dispose();
       transform.dispose();
+      terrainRenderer?.dispose();
+      foliageRenderer.dispose();
+      particleRenderer.dispose();
+      grassSpecies.geometry.dispose();
+      (grassSpecies.material as THREE.Material).dispose();
       level.scene.remove(grid, transformHelper, colliderHelper);
       grid.geometry.dispose();
       (grid.material as THREE.Material).dispose();

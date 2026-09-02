@@ -13,6 +13,8 @@ import { buildCharacterRig, buildLocomotionClips } from "./proceduralCharacter.j
 import { pluginHost } from "./plugins.js";
 import { sequences } from "./sequences.js";
 import { installPerfRecorder } from "./perf.js";
+import { particleSystem } from "./vfxScene.js";
+import "@3jse/render"; // registers Terrain / FoliageField components
 
 /** Most-recent-first log of Cinematic event markers as CinematicSystem crosses them — read by
  *  the Sequencer panel, which has no rAF loop of its own to observe World.step ticks directly. */
@@ -55,6 +57,9 @@ export async function buildSampleWorld(): Promise<{ world: World; level: Level }
       },
     }),
   );
+
+  // @3jse/vfx particle system — Viewport.tsx renders its pools via @3jse/render's ParticleRenderer.
+  world.scheduler.register(particleSystem);
 
   const { level } = await buildThirdPersonTemplate({
     world,
@@ -134,6 +139,20 @@ export async function buildSampleWorld(): Promise<{ world: World; level: Level }
         ),
       );
       orbiter.addComponent("OrbitMarker", { radius: 3.5, speed: 0.8 });
+
+      // @3jse/render bridges: Viewport.tsx reads these components + the headless cores' output
+      // and maintains the THREE objects (docs/ENGINE_GAP_ANALYSIS.md §6 "the GPU/viewport half").
+      const sparks = level.createEntity("Sparks");
+      sparks.object3D!.position.set(-4, 0.5, 3);
+      sparks.addComponent("ParticleEmitter", { emitter: "sparks", emitting: true, burstOnStart: false });
+
+      const terrain = level.createEntity("Terrain");
+      terrain.object3D!.position.set(0, -0.2, -30);
+      terrain.addComponent("Terrain", { seed: 12, chunkSize: 24, ring: 2, baseResolution: 12, heightScale: 4, frequency: 0.05 });
+
+      const meadow = level.createEntity("Meadow");
+      meadow.object3D!.position.set(0, 0, -30);
+      meadow.addComponent("FoliageField", { species: "grass", seed: 5, density: 0.6, areaSize: 48, slopeMax: 0.7 });
     },
   });
 
