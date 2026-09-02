@@ -12,6 +12,7 @@ export {
   type Vec3,
   type RecordedCall,
 } from "./backend.js";
+export { WebAudioBackend, type WebAudioBackendOptions, type WAContext } from "./webaudio.js";
 export { createAudioSystem } from "./systems.js";
 export { AudioEventRouter, type AudioTrigger } from "./events.js";
 export {
