@@ -30,6 +30,7 @@ Use when the task is to build or change a `@3jse/*` **engine** package (or the e
    | Plugin manifest / host / extension-point versioning / package catalog | `@3jse/plugins` |
    | Publish pipeline: tree-shake, asset finalize, manifest, notices, static-host files | `@3jse/packaging` |
    | Audio: bus mixer, AudioSource/Listener/ReverbZone, event router, musical grid + MIDI/OSC | `@3jse/audio` |
+   | UI/HUD: retained widget tree, flexbox-subset layout, data binding, hit-test, renderer seam | `@3jse/ui` |
    | Vendored MIT ecosystem libs (mesh-bvh, troika text, postprocessing, …) | `@3jse/extras` |
    | Vendor registry + fetcher; Tier A wraps (poseidon/gaia/dryad/demiurge) | `@3jse/vendor`, `@3jse/water-poseidon` etc. |
 
