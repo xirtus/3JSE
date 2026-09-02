@@ -15,3 +15,4 @@ export {
 } from "./graph.js";
 export { compileToTSL, type CompileResult } from "./compile.js";
 export { evaluateGraph, type EvalInputs, type Value } from "./evaluate.js";
+export { splatTerrainGraph, waterGraph } from "./presets.js";

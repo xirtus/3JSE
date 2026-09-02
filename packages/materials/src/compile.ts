@@ -17,6 +17,11 @@ const INPUT_TSL: Record<string, string> = {
   time: "time",
 };
 
+/** Append a swizzle when an edge draws from a specific channel pin (texture .r/.g/.b/.a). */
+function withPin(expr: string, pin: string | undefined): string {
+  return pin && /^[rgbaxyzw]$/.test(pin) ? `${expr}.${pin}` : expr;
+}
+
 function litExpr(n: Extract<MatNode, { kind: "const" | "uniform" }>): string {
   const v = n.value;
   if (n.kind === "uniform") return `uniform(${JSON.stringify(v)}) /* ${n.name} */`;
@@ -71,7 +76,7 @@ export function compileToTSL(g: MaterialGraph): CompileResult {
         const arity = OP_ARITY[node.op];
         const args = ["a", "b", "c"].slice(0, arity).map((pin) => {
           const e = inputEdge(id, pin);
-          return e ? emit(e.from) : "TSL.float(0)";
+          return e ? withPin(emit(e.from), e.fromPin) : "TSL.float(0)";
         });
         expr = `TSL.${TSL_OP[node.op]}(${args.join(", ")})`;
         break;
@@ -88,7 +93,7 @@ export function compileToTSL(g: MaterialGraph): CompileResult {
   const slots: Record<string, string> = {};
   for (const slot of ["color", "roughness", "metalness", "emissive", "normal", "opacity"]) {
     const e = inputEdge(g.output, slot);
-    if (e) slots[slot] = emit(e.from);
+    if (e) slots[slot] = withPin(emit(e.from), e.fromPin);
   }
 
   lines.push("", "export function applyMaterial(material) {");

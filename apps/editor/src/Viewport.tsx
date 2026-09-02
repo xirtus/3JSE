@@ -5,8 +5,8 @@ import { TransformControls } from "three/addons/controls/TransformControls.js";
 import { INPUT_RESOURCE, type InputManager, type Level, type World } from "@3jse/runtime";
 import { CAMERA_FOLLOW_RESOURCE, type CameraPose } from "@3jse/character";
 import type { ColliderData } from "@3jse/physics-rapier";
-import { fbm, valueNoise2D } from "@3jse/terrain";
-import { TerrainRenderer, FoliageRenderer, ParticleRenderer, type TerrainData, type FoliageFieldData } from "@3jse/render";
+import { fbm, valueNoise2D, sampleSlope, createSplatMap, paintSplat } from "@3jse/terrain";
+import { TerrainRenderer, FoliageRenderer, ParticleRenderer, terrainSplatMaterial, type TerrainData, type FoliageFieldData } from "@3jse/render";
 import { getPerfRecorder } from "./perf.js";
 import { particleSystem } from "./vfxScene.js";
 
@@ -103,11 +103,35 @@ export function Viewport({ world, level, selectedId, onSelect, playing }: Viewpo
       const base = terrainEntity.object3D?.position ?? new THREE.Vector3();
       const sampler = fbm(valueNoise2D(d.seed), 4, 2, 0.5, d.heightScale, d.frequency);
       const shifted = (x: number, z: number) => sampler(x - base.x, z - base.z) + base.y;
+
+      // Splat material: grass base, rock on steep ground, sand in the low flats. Seeded by
+      // slope + height so it varies without hand-painting; the editor's brush would edit this.
+      const splatWorld = d.chunkSize * (d.ring * 2 + 1);
+      const splat = createSplatMap({ resolution: 96, layers: 3, worldSize: splatWorld, originX: base.x - splatWorld / 2, originZ: base.z - splatWorld / 2, baseLayer: 0 });
+      for (let i = 0; i < 96; i++) {
+        for (let j = 0; j < 96; j++) {
+          const wx = base.x - splatWorld / 2 + ((i + 0.5) / 96) * splatWorld;
+          const wz = base.z - splatWorld / 2 + ((j + 0.5) / 96) * splatWorld;
+          const slope = sampleSlope(shifted, wx, wz, 1);
+          if (slope > 0.5) paintSplat(splat, { x: wx, z: wz, radius: splatWorld / 96, layer: 1, strength: Math.min(1, (slope - 0.5) * 2), falloff: 0 });
+          else if (shifted(wx, wz) < base.y + d.heightScale * 0.15) paintSplat(splat, { x: wx, z: wz, radius: splatWorld / 96, layer: 2, strength: 0.6, falloff: 0 });
+        }
+      }
+      const solid = (hex: number) => {
+        const t = new THREE.DataTexture(new Uint8Array([(hex >> 16) & 255, (hex >> 8) & 255, hex & 255, 255]), 1, 1, THREE.RGBAFormat);
+        t.needsUpdate = true;
+        return t;
+      };
+      const splatMat = terrainSplatMaterial({
+        splat,
+        layers: [solid(0x5c7a3a), solid(0x6b6459), solid(0xc2b280)],
+      });
+
       terrainRenderer = new TerrainRenderer(level.scene, shifted, {
         chunkSize: d.chunkSize,
         ring: d.ring,
         baseResolution: d.baseResolution,
-      });
+      }, splatMat.material);
     }
 
     const foliageRenderer = new FoliageRenderer(level.scene);

@@ -65,7 +65,7 @@ export function evaluateGraph(g: MaterialGraph, inputs: EvalInputs = {}, slot = 
         break;
       case "texture": {
         const tex = inputs.textures?.[n.sampler];
-        out = tex ? tex(inputs.uv ?? [0, 0]).slice(0, 3) : [0, 0, 0];
+        out = tex ? tex(inputs.uv ?? [0, 0]).slice(0, 4) : [0, 0, 0, 1];
         break;
       }
       case "op":
@@ -79,11 +79,17 @@ export function evaluateGraph(g: MaterialGraph, inputs: EvalInputs = {}, slot = 
     return out;
   };
 
+  const CH: Record<string, number> = { r: 0, g: 1, b: 2, a: 3, x: 0, y: 1, z: 2, w: 3 };
+  const resolveInput = (id: string, pin: string): number[] => {
+    const e = inputEdge(id, pin);
+    if (!e) return [0];
+    const v = toVec(evalNode(e.from));
+    if (e.fromPin && e.fromPin in CH) return [v[CH[e.fromPin]!] ?? 0];
+    return v;
+  };
+
   const evalOp = (op: MatOp, id: string): Value => {
-    const args = ["a", "b", "c"].slice(0, OP_ARITY[op]).map((pin) => {
-      const e = inputEdge(id, pin);
-      return e ? toVec(evalNode(e.from)) : [0];
-    });
+    const args = ["a", "b", "c"].slice(0, OP_ARITY[op]).map((pin) => resolveInput(id, pin));
     if (op === "mix") {
       const [a, b] = broadcast(args[0]!, args[1]!);
       const t = args[2]![0]!;
@@ -119,5 +125,8 @@ export function evaluateGraph(g: MaterialGraph, inputs: EvalInputs = {}, slot = 
 
   const e = inputEdge(g.output, slot);
   if (!e) return slot === "color" ? [0, 0, 0] : 0;
-  return evalNode(e.from);
+  const raw = resolveInput(g.output, slot);
+  // colour-ish slots want a vec3; scalar slots want a number
+  if (slot === "roughness" || slot === "metalness" || slot === "opacity") return raw[0]!;
+  return raw.length >= 3 ? raw.slice(0, 3) : raw;
 }

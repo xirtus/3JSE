@@ -23,3 +23,11 @@ export {
   type ResidentChunk,
   type StreamDelta,
 } from "./streamer.js";
+export {
+  createSplatMap,
+  paintSplat,
+  sampleSplat,
+  splatToTexture,
+  type SplatMap,
+  type SplatBrush,
+} from "./splat.js";

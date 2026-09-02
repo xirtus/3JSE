@@ -6,6 +6,7 @@
 export { TerrainRenderer } from "./TerrainRenderer.js";
 export { FoliageRenderer, type FoliageSpecies } from "./FoliageRenderer.js";
 export { ParticleRenderer } from "./ParticleRenderer.js";
+export { terrainSplatMaterial, type TerrainSplatOptions, type TerrainSplatMaterial } from "./materials.js";
 export { type TerrainData, type FoliageFieldData } from "./components.js";
 
 // Registers Terrain / FoliageField as an import side effect.
