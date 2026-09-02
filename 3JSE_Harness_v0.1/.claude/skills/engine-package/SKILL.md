@@ -37,6 +37,7 @@ Use when the task is to build or change a `@3jse/*` **engine** package (or the e
    | Navigation: grid bake, A* + string-pull, flow field (group pathing), NavAgent | `@3jse/nav` |
    | Particles/VFX: CPU SoA sim, curves/gradients over life, ParticleEmitter component/system | `@3jse/vfx` |
    | THREE-side render bridges: terrain chunks / foliage InstancedMesh / particle Points from the headless cores | `@3jse/render` |
+   | `3jse` CLI: publish (runs @3jse/packaging + esbuild) / info | `@3jse/cli` |
    | Vendored MIT ecosystem libs (mesh-bvh, troika text, postprocessing, …) | `@3jse/extras` |
    | Vendor registry + fetcher; Tier A wraps (poseidon/gaia/dryad/demiurge) | `@3jse/vendor`, `@3jse/water-poseidon` etc. |
 

@@ -234,6 +234,25 @@ importers:
         specifier: ^2.1.0
         version: 2.1.9(@types/node@22.20.1)(lightningcss@1.33.0)
 
+  packages/cli:
+    dependencies:
+      '@3jse/packaging':
+        specifier: workspace:*
+        version: link:../packaging
+      '@3jse/plugins':
+        specifier: workspace:*
+        version: link:../plugins
+    devDependencies:
+      '@types/node':
+        specifier: ^22.0.0
+        version: 22.20.1
+      typescript:
+        specifier: ^5.7.0
+        version: 5.9.3
+      vitest:
+        specifier: ^2.1.0
+        version: 2.1.9(@types/node@22.20.1)(lightningcss@1.33.0)
+
   packages/extras:
     dependencies:
       maath:

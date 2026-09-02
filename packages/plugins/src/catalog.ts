@@ -44,6 +44,7 @@ export const PACKAGE_CATALOG: PackageEntry[] = [
   { id: "@3jse/foliage", capability: "Deterministic field scatter -> InstancedMesh instance data (slope/height/exclusion/spline constraints)", phase: 5, status: "partial", points: ["components", "systems"], official: true },
   { id: "@3jse/nav", capability: "Grid navigation bake, A* + string-pull, flow field for group pathing, NavAgent component/system", phase: 6, status: "partial", points: ["components", "systems"], official: true },
   { id: "@3jse/vfx", capability: "CPU particle sim (SoA, seeded), size/color curves over life, ParticleEmitter component/system", phase: 5, status: "shipped", points: ["components", "systems", "editorPanels"], official: true },
+  { id: "@3jse/cli", capability: "3jse command: publish (runs @3jse/packaging + esbuild-or-build.mjs), info (package catalog)", phase: 8, status: "partial", points: ["buildTargets"], official: true },
   { id: "@3jse/render", capability: "THREE bridge: terrain chunk BufferGeometry / foliage InstancedMesh / particle Points from @3jse/{terrain,foliage,vfx}", phase: 5, status: "partial", points: ["components", "systems"], official: true },
   { id: "@3jse/extras", capability: "Vendored MIT ecosystem libs (mesh-bvh, troika text, postprocessing…)", phase: 5, status: "shipped", points: [], official: true },
   { id: "@3jse/vendor", capability: "Vendor registry + fetcher; Tier A wraps (poseidon/gaia/dryad/demiurge)", phase: 5, status: "partial", points: [], official: true },
