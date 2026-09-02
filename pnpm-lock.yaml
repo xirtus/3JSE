@@ -35,12 +35,18 @@ importers:
       '@3jse/cinematics':
         specifier: workspace:*
         version: link:../../packages/cinematics
+      '@3jse/foliage':
+        specifier: workspace:*
+        version: link:../../packages/foliage
       '@3jse/graph':
         specifier: workspace:*
         version: link:../../packages/graph
       '@3jse/ir':
         specifier: workspace:*
         version: link:../../packages/ir
+      '@3jse/materials':
+        specifier: workspace:*
+        version: link:../../packages/materials
       '@3jse/packaging':
         specifier: workspace:*
         version: link:../../packages/packaging
@@ -62,9 +68,15 @@ importers:
       '@3jse/templates':
         specifier: workspace:*
         version: link:../../packages/templates
+      '@3jse/terrain':
+        specifier: workspace:*
+        version: link:../../packages/terrain
       '@3jse/vendor':
         specifier: workspace:*
         version: link:../../packages/vendor
+      '@3jse/vfx':
+        specifier: workspace:*
+        version: link:../../packages/vfx
       '@galacean/editor-ui':
         specifier: ^1.2.0
         version: 1.2.0(@types/react-dom@18.3.7(@types/react@18.3.31))(@types/react@18.3.31)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)

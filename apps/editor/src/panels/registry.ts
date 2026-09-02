@@ -5,6 +5,10 @@ import { InputMappingPanel } from "./InputMappingPanel.js";
 import { PhysicsPanel } from "./PhysicsPanel.js";
 import { GraphPanel } from "./GraphPanel.js";
 import { AtlasPanel } from "./AtlasPanel.js";
+import { MaterialGraphPanel } from "./MaterialGraphPanel.js";
+import { AnimationPanel } from "./AnimationPanel.js";
+import { TerrainPanel } from "./TerrainPanel.js";
+import { ParticlesPanel } from "./ParticlesPanel.js";
 import { CodeEditorPanel } from "./CodeEditorPanel.js";
 import { DebuggerPanel } from "./DebuggerPanel.js";
 import { OpenSourcePanel } from "./OpenSourcePanel.js";
@@ -33,35 +37,15 @@ export const panels: PanelDef[] = [
   { id: "atlas", title: "Atlas", region: "center", status: "active", component: AtlasPanel },
   // The node-graph machinery stays available underneath as the execution architecture / one lens.
   { id: "graph", title: "3JSE Graph", region: "center", status: "active", component: GraphPanel },
-  {
-    id: "material-graph",
-    title: "Material Graph",
-    region: "center",
-    status: "planned",
-    component: planned("Material/Shader Graph", "RENDERING.md"),
-  },
+  // docs/RENDERING.md — over the real @3jse/materials (graph -> TSL + CPU eval).
+  { id: "material-graph", title: "Material Graph", region: "center", status: "active", component: MaterialGraphPanel },
   { id: "code-editor", title: "Code Editor", region: "center", status: "active", component: CodeEditorPanel },
-  {
-    id: "animation",
-    title: "Animation",
-    region: "center",
-    status: "planned",
-    component: planned("Animation Tools", "ANIMATION.md"),
-  },
-  {
-    id: "terrain",
-    title: "Terrain / Water / Veg.",
-    region: "center",
-    status: "planned",
-    component: planned("Terrain / Water / Vegetation", "VENDOR_INTEGRATIONS.md"),
-  },
-  {
-    id: "particles",
-    title: "Particles",
-    region: "center",
-    status: "planned",
-    component: planned("Particle Editor", "PLUGIN_ARCHITECTURE.md"),
-  },
+  // docs/ANIMATION.md — over @3jse/animation (state machine + blend tree + retargeting).
+  { id: "animation", title: "Animation", region: "center", status: "active", component: AnimationPanel },
+  // docs/VENDOR_INTEGRATIONS.md — over @3jse/terrain + @3jse/foliage (mesher + streamer + scatter).
+  { id: "terrain", title: "Terrain / Water / Veg.", region: "center", status: "active", component: TerrainPanel },
+  // docs/EDITOR.md Particle Editor — over @3jse/vfx (CPU SoA sim).
+  { id: "particles", title: "Particles", region: "center", status: "active", component: ParticlesPanel },
   {
     id: "ui-editor",
     title: "UI / HUD",
