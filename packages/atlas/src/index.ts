@@ -84,3 +84,18 @@ export {
   type FeelABRow,
 } from "./feelAB.js";
 export { parseAtlasManifest, type AtlasManifest } from "./manifest.js";
+export {
+  defineRegion,
+  RegionRegistry,
+  regionRegistry,
+  worldLens,
+  type RegionSpec,
+} from "./world.js";
+export { styleLens, type StyleProfile } from "./style.js";
+export {
+  TraceRecorder,
+  traceLens,
+  pulseCounts,
+  type TraceEvent,
+} from "./trace.js";
+export { rigLens, type RigDef, type RigBone } from "./rig.js";

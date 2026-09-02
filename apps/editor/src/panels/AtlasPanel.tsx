@@ -10,6 +10,7 @@ import {
   performanceLens,
   providerLens,
   assetLens,
+  traceLens,
   DOMAIN_COLOR,
   HEALTH_COLOR,
   HEALTH_GLYPH,
@@ -20,6 +21,7 @@ import {
 } from "@3jse/atlas";
 import { NodeCanvas, type CanvasNode, type CanvasEdge } from "@3jse/graph";
 import { buildSampleAtlas, SAMPLE_EVIDENCE, applyAtlasKnob, readAtlasKnob } from "../sampleAtlas.js";
+import { traceRecorder } from "../sampleScene.js";
 import type { EditorContext } from "./types.js";
 
 const EDGE_STYLE: Record<AtlasEdge["kind"], { stroke: string; dash?: string }> = {
@@ -32,13 +34,14 @@ const EDGE_STYLE: Record<AtlasEdge["kind"], { stroke: string; dash?: string }> =
 
 const ACTIONS: AgentAction[] = ["explain", "modify", "tune", "optimize", "repair", "compare"];
 
-type LensId = "system" | "events" | "performance" | "providers" | "assets";
+type LensId = "system" | "events" | "performance" | "providers" | "assets" | "trace";
 const LENSES: { id: LensId; label: string }[] = [
   { id: "system", label: "System Map" },
   { id: "events", label: "Events" },
   { id: "performance", label: "Performance" },
   { id: "providers", label: "Providers" },
   { id: "assets", label: "Assets" },
+  { id: "trace", label: "Trace" },
 ];
 
 /**
@@ -73,9 +76,10 @@ export function AtlasPanel({ ctx }: { ctx: EditorContext }) {
       case "performance": return performanceLens(model);
       case "providers": return providerLens(model);
       case "assets": return assetLens(model);
+      case "trace": return traceLens(traceRecorder.window());
       default: return { nodes: model.nodes, edges: model.edges };
     }
-  }, [model, lens]);
+  }, [model, lens, rev]);
   const layout = useMemo(() => layoutAtlas(view), [view]);
   const results = useMemo(() => (query ? searchAtlas(model, query, 12) : []), [model, query]);
   const selected = model.nodes.find((n) => n.id === selectedId) ?? null;

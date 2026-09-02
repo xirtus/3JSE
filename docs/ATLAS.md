@@ -44,15 +44,15 @@ Model content = `sampleAtlas.ts`, the semantic declarations of the Third Person 
 
 | Piece | Module | Notes |
 |---|---|---|
-| Additional lenses | `lenses.ts` | `eventLens` (§5.4), `performanceLens` (§5.9), `providerLens` (§5.7), `assetLens` (§5.6), `stateMachineLens` (§5.3 — a system's declared `stateMachine` as state nodes + trigger-labelled edges), `gameplayFlowLens` (§5.2 — per-system `flow` beats stitched into one design sequence). Each a pure transform of the `AtlasModel`; the panel's lens switcher swaps which one feeds the map. |
+| Additional lenses | `lenses.ts` | `eventLens` (§5.4), `performanceLens` (§5.9), `providerLens` (§5.7), `assetLens` (§5.6), `stateMachineLens` (§5.3), `gameplayFlowLens` (§5.2), `worldLens` (§5.10 — `defineRegion` hierarchy), `styleLens` (§5.8 — a VISUAL PROFILE from `StyleProfile`), `traceLens` + `TraceRecorder` + `pulseCounts` (§5.5 / §26 — a windowed event trace, feeds the time scrubber), `rigLens` (§5.11 — bones grouped by limb + Motion + Animation). Each a pure transform of the `AtlasModel`; the panel's lens switcher swaps which one feeds the map. |
 | Node canvas | editor `AtlasPanel` via `@3jse/graph` `NodeCanvas` | The System Map now renders through a reusable pan / zoom / drag node canvas (`@3jse/graph`), dragged positions overriding the auto-layout per lens. |
 | A/B FeelSpec | `feelAB.ts` | `feelABTable` (both values + delta per dimension, sorted by \|Δ\|), `mergeFeel` (per-dimension A/B pick → merged intent, §16), `feelABSummary` (§12 preview line). |
 | `atlas/` project manifest | `manifest.ts` | `parseAtlasManifest(files)` over a virtual filesystem — loads `atlas/systems/*.json` → `AtlasSystemSpec[]` and `atlas/feelspec/*.json` → `FeelSpec[]`, reports malformed files instead of throwing, feeds `compileAtlas` directly (§44). JSON now; a YAML front-end is a swappable parse step. |
 
 ## Not built yet
 
-- Runtime Trace / Style / World / Rig lenses (§5.5, §5.8, §5.10, §5.11); runtime event pulses +
-  time scrubber (§26–27).
+- Runtime event *pulses* animating on the map + a wired time scrubber UI (§26–27) — the
+  data side (`TraceRecorder` / `pulseCounts`) is done; the animation + slider are editor work.
 - 2.5D / Three.js Atlas navigation (§18–19, §45–51) — deliberately deferred until the 2D core's
   pain points justify it (§63).
 - Feel Lab (§17), personal feel libraries (§15).

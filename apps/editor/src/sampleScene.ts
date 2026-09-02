@@ -9,6 +9,7 @@ import { World, type Level } from "@3jse/runtime";
 import { registerBuiltinSystems } from "@3jse/runtime/systems/builtins";
 import { buildThirdPersonTemplate } from "@3jse/templates";
 import { createCinematicSystem } from "@3jse/cinematics";
+import { TraceRecorder } from "@3jse/atlas";
 import { buildCharacterRig, buildLocomotionClips } from "./proceduralCharacter.js";
 import { pluginHost } from "./plugins.js";
 import { sequences } from "./sequences.js";
@@ -19,6 +20,10 @@ import "@3jse/render"; // registers Terrain / FoliageField components
 /** Most-recent-first log of Cinematic event markers as CinematicSystem crosses them — read by
  *  the Sequencer panel, which has no rAF loop of its own to observe World.step ticks directly. */
 export const cinematicEventLog: { name: string; time: number; at: number }[] = [];
+
+/** Editor-wide event trace — the Atlas Trace lens (§5.5) reads its window. Fed here from the
+ *  cinematic system; a real game would route every 3IR event through it. */
+export const traceRecorder = new TraceRecorder(512);
 
 /**
  * The editor's starting content is now the **shipped Third Person template**
@@ -51,9 +56,10 @@ export async function buildSampleWorld(): Promise<{ world: World; level: Level }
   // show event markers as they're crossed, without a React-side rAF loop of its own.
   world.scheduler.register(
     createCinematicSystem(sequences, {
-      onEvent: (name, _payload, time) => {
+      onEvent: (name, payload, time) => {
         cinematicEventLog.unshift({ name, time, at: Date.now() });
         cinematicEventLog.length = Math.min(cinematicEventLog.length, 20);
+        traceRecorder.record({ time, name, from: "Cinematics Director", payload });
       },
     }),
   );
