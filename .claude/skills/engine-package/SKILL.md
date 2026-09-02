@@ -34,6 +34,7 @@ Use when the task is to build or change a `@3jse/*` **engine** package (or the e
    | Material Graph -> TSL codegen + CPU reference evaluator + validation | `@3jse/materials` |
    | Terrain: heightfield sampling, chunk mesher, LOD, bounded-residency streamer | `@3jse/terrain` |
    | Foliage: deterministic field scatter -> InstancedMesh instance data | `@3jse/foliage` |
+   | Navigation: grid bake, A* + string-pull, flow field (group pathing), NavAgent | `@3jse/nav` |
    | Vendored MIT ecosystem libs (mesh-bvh, troika text, postprocessing, …) | `@3jse/extras` |
    | Vendor registry + fetcher; Tier A wraps (poseidon/gaia/dryad/demiurge) | `@3jse/vendor`, `@3jse/water-poseidon` etc. |
 
