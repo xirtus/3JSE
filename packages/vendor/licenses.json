@@ -2,7 +2,7 @@
   "version": 1,
   "generatedAt": "2026-08-25T06:59:21.275Z",
   "policy": "docs/VENDOR_INTEGRATIONS.md (Assemble-first posture)",
-  "notes": "verifiedBy values: 'human' (LICENSE file read at pinned revision), 'npm-registry' (registry metadata — recorded, not trusted), '' (unverified). Prefer MIT / Apache-2.0 / BSD / GPL-compatible imports; GPL imports are fine (3JSE is GPL-3.0) but their copyleft flows onward — see policy.",
+  "notes": "verifiedBy values: 'human' (LICENSE file read at pinned revision), 'npm-registry' (registry metadata \u2014 recorded, not trusted), '' (unverified). Prefer MIT / Apache-2.0 / BSD / GPL-compatible imports; GPL imports are fine (3JSE is GPL-3.0) but their copyleft flows onward \u2014 see policy.",
   "entries": [
     {
       "name": "@dimforge/rapier3d-compat",
@@ -22,7 +22,7 @@
       "repo": "https://github.com/galacean/editor-ui",
       "verifiedBy": "human",
       "scope": "workspace-dependency",
-      "note": "No license field in the npm package.json; repo LICENSE is MIT — human-verified (VENDOR_INTEGRATIONS.md case study)."
+      "note": "No license field in the npm package.json; repo LICENSE is MIT \u2014 human-verified (VENDOR_INTEGRATIONS.md case study)."
     },
     {
       "name": "@galacean/gui",
@@ -45,6 +45,16 @@
       "note": ""
     },
     {
+      "name": "@recast-navigation/three",
+      "version": "0.43.1",
+      "range": "^0.43.1",
+      "license": "MIT",
+      "repo": "https://github.com/isaac-mason/recast-navigation-js",
+      "verifiedBy": "npm-registry",
+      "scope": "optional-peer",
+      "note": "three.js bindings for recast-navigation (threeToSoloNavMesh, NavMeshHelper, CrowdHelper)."
+    },
+    {
       "name": "@vitejs/plugin-react",
       "version": "4.7.0",
       "range": "^4.3.4",
@@ -53,6 +63,172 @@
       "verifiedBy": "installed-package-json",
       "scope": "workspace-dependency",
       "note": ""
+    },
+    {
+      "name": "apate",
+      "pkgName": "apate",
+      "source": "github.com/owenyuwono/apate",
+      "license": "MIT",
+      "repo": "",
+      "verifiedBy": "",
+      "scope": "vendored-upstream",
+      "vendored": "packages/vendor/upstream/apate",
+      "note": ""
+    },
+    {
+      "name": "apate",
+      "source": "github.com/owenyuwono/apate",
+      "pinnedCommit": "ae62cac4ad8a27209c84dedad86b55afad27170a",
+      "license": "MIT",
+      "licenseNote": "",
+      "verifiedBy": "human",
+      "scope": "vendor-registry",
+      "tier": "reference"
+    },
+    {
+      "name": "babylon-inspector",
+      "source": "github.com/BabylonJS/Babylon.js",
+      "pinnedCommit": "",
+      "license": "Apache-2.0",
+      "licenseNote": "",
+      "verifiedBy": "human",
+      "scope": "vendor-registry",
+      "tier": "reference"
+    },
+    {
+      "name": "babylon-nme",
+      "source": "github.com/BabylonJS/Babylon.js",
+      "pinnedCommit": "",
+      "license": "Apache-2.0",
+      "licenseNote": "",
+      "verifiedBy": "human",
+      "scope": "vendor-registry",
+      "tier": "reference"
+    },
+    {
+      "name": "chiro",
+      "pkgName": "casting-abilities",
+      "source": "github.com/owenyuwono/chiro",
+      "license": "MIT",
+      "repo": "",
+      "verifiedBy": "",
+      "scope": "vendored-upstream",
+      "vendored": "packages/vendor/upstream/chiro",
+      "note": ""
+    },
+    {
+      "name": "chiro-elemental",
+      "source": "github.com/achrefelouafi/LinearAbiltyCastingThreeJS",
+      "pinnedCommit": "ba61847cb6887e5ccae9cd591e6390082cac5f05",
+      "license": "MIT",
+      "licenseNote": "",
+      "verifiedBy": "human",
+      "scope": "vendor-registry",
+      "tier": "B"
+    },
+    {
+      "name": "demiurge",
+      "pkgName": "demiurge",
+      "source": "github.com/owenyuwono/demiurge",
+      "license": "MIT",
+      "repo": "",
+      "verifiedBy": "",
+      "scope": "vendored-upstream",
+      "vendored": "packages/vendor/upstream/demiurge",
+      "note": ""
+    },
+    {
+      "name": "demiurge",
+      "source": "github.com/owenyuwono/demiurge",
+      "pinnedCommit": "cb3e1785f7f3e6e3e9b65df76133bbbce747c0be",
+      "license": "MIT",
+      "licenseNote": "",
+      "verifiedBy": "human",
+      "scope": "vendor-registry",
+      "tier": "A"
+    },
+    {
+      "name": "dryad",
+      "pkgName": "demicreatures",
+      "source": "github.com/owenyuwono/dryad",
+      "license": "MIT",
+      "repo": "",
+      "verifiedBy": "",
+      "scope": "vendored-upstream",
+      "vendored": "packages/vendor/upstream/dryad",
+      "note": ""
+    },
+    {
+      "name": "dryad",
+      "source": "github.com/owenyuwono/dryad",
+      "pinnedCommit": "e85729b779708c50b7d65ddd34d524f42da88705",
+      "license": "MIT",
+      "licenseNote": "",
+      "verifiedBy": "human",
+      "scope": "vendor-registry",
+      "tier": "A"
+    },
+    {
+      "name": "gaia",
+      "pkgName": "grassgen",
+      "source": "github.com/owenyuwono/gaia",
+      "license": "MIT",
+      "repo": "",
+      "verifiedBy": "",
+      "scope": "vendored-upstream",
+      "vendored": "packages/vendor/upstream/gaia",
+      "note": ""
+    },
+    {
+      "name": "gaia",
+      "source": "github.com/owenyuwono/gaia",
+      "pinnedCommit": "f23a32daca73d4d71d5b23dba3dee7e11f969f55",
+      "license": "MIT",
+      "licenseNote": "",
+      "verifiedBy": "human",
+      "scope": "vendor-registry",
+      "tier": "A"
+    },
+    {
+      "name": "hls-webgpu-terrain",
+      "pkgName": "webgpuplugins",
+      "source": "github.com/owenyuwono/hls-webgpu-terrain",
+      "license": "MIT",
+      "repo": "",
+      "verifiedBy": "",
+      "scope": "vendored-upstream",
+      "vendored": "packages/vendor/upstream/hls-webgpu-terrain",
+      "note": ""
+    },
+    {
+      "name": "hls-webgpu-terrain",
+      "source": "github.com/hlsvortex/HLS_WebGPUPlugins",
+      "pinnedCommit": "5e96256fde258faa41d5b1fc8275481093824519",
+      "license": "",
+      "licenseNote": "",
+      "verifiedBy": "",
+      "scope": "vendor-registry",
+      "tier": "B"
+    },
+    {
+      "name": "kimodo",
+      "source": "github.com/nv-tlabs/kimodo",
+      "pinnedCommit": "1aece8c124d73d255ceff5086d983b844c9f4e94",
+      "license": "Apache-2.0",
+      "licenseNote": "",
+      "verifiedBy": "human",
+      "scope": "vendor-registry",
+      "tier": "B"
+    },
+    {
+      "name": "kimodo-cpp",
+      "source": "github.com/localai-org/kimodo.cpp",
+      "pinnedCommit": "e55a42aaa32da84793dc0a8d01347575a1535cd5",
+      "license": "",
+      "licenseNote": "No LICENSE file in tree as of this pin. NOTICE present. Do not treat as Apache-2.0 by association with nv-tlabs/kimodo. Human must read NOTICE + any SPDX headers before staging.",
+      "verifiedBy": "",
+      "scope": "vendor-registry",
+      "tier": "B"
     },
     {
       "name": "maath",
@@ -65,6 +241,48 @@
       "note": ""
     },
     {
+      "name": "minos",
+      "pkgName": "",
+      "source": "github.com/owenyuwono/minos",
+      "license": "MIT",
+      "repo": "",
+      "verifiedBy": "",
+      "scope": "vendored-upstream",
+      "vendored": "packages/vendor/upstream/minos",
+      "note": ""
+    },
+    {
+      "name": "minos",
+      "source": "github.com/owenyuwono/minos",
+      "pinnedCommit": "ea8f76e20534b57a9412e2a87da9be00acc7c0f5",
+      "license": "MIT",
+      "licenseNote": "",
+      "verifiedBy": "human",
+      "scope": "vendor-registry",
+      "tier": "reference"
+    },
+    {
+      "name": "poseidon",
+      "pkgName": "fft-ocean-claude",
+      "source": "github.com/owenyuwono/poseidon",
+      "license": "MIT",
+      "repo": "",
+      "verifiedBy": "",
+      "scope": "vendored-upstream",
+      "vendored": "packages/vendor/upstream/poseidon",
+      "note": ""
+    },
+    {
+      "name": "poseidon",
+      "source": "github.com/owenyuwono/poseidon",
+      "pinnedCommit": "671053b812fcbffe8ecc4668eaa6ab7ffeb63287",
+      "license": "MIT",
+      "licenseNote": "",
+      "verifiedBy": "human",
+      "scope": "vendor-registry",
+      "tier": "A"
+    },
+    {
       "name": "postprocessing",
       "version": "6.39.4",
       "range": "^6.39.4",
@@ -73,6 +291,16 @@
       "verifiedBy": "installed-package-json",
       "scope": "workspace-dependency",
       "note": ""
+    },
+    {
+      "name": "quantum-core",
+      "source": "codepen.io/sabosugi/pen/01a02fca-0d14-7e50-a9b8-283d419ccaea",
+      "pinnedCommit": "",
+      "license": "",
+      "licenseNote": "CodePen snippet. No LICENSE file, no GitHub mirror found. Treat as all-rights-reserved until the author publishes a repo+license.",
+      "verifiedBy": "",
+      "scope": "vendor-registry",
+      "tier": "reference"
     },
     {
       "name": "react",
@@ -93,6 +321,16 @@
       "verifiedBy": "installed-package-json",
       "scope": "workspace-dependency",
       "note": ""
+    },
+    {
+      "name": "recast-navigation",
+      "version": "0.43.1",
+      "range": "^0.43.1",
+      "license": "MIT",
+      "repo": "https://github.com/isaac-mason/recast-navigation-js",
+      "verifiedBy": "npm-registry",
+      "scope": "optional-peer",
+      "note": "WASM port of Recast/Detour. Optional peer of @3jse/nav \u2014 createRecastNavMesh() adapts it; grid path works without it. Not yet installed; pin at install and human-verify LICENSE."
     },
     {
       "name": "three",
@@ -123,6 +361,48 @@
       "verifiedBy": "installed-package-json",
       "scope": "workspace-dependency",
       "note": ""
+    },
+    {
+      "name": "three-vfx",
+      "pkgName": "root",
+      "source": "github.com/owenyuwono/three-vfx",
+      "license": "",
+      "repo": "",
+      "verifiedBy": "",
+      "scope": "vendored-upstream",
+      "vendored": "packages/vendor/upstream/three-vfx",
+      "note": "no LICENSE file at pin"
+    },
+    {
+      "name": "three-vfx",
+      "source": "github.com/mustache-dev/Three-VFX",
+      "pinnedCommit": "c5533097adbccf22b4701f2f2527fb2fec951bd1",
+      "license": "MIT",
+      "licenseNote": "",
+      "verifiedBy": "pending",
+      "scope": "vendor-registry",
+      "tier": "B"
+    },
+    {
+      "name": "tiamat",
+      "pkgName": "fluid3",
+      "source": "github.com/owenyuwono/tiamat",
+      "license": "MIT",
+      "repo": "",
+      "verifiedBy": "",
+      "scope": "vendored-upstream",
+      "vendored": "packages/vendor/upstream/tiamat",
+      "note": ""
+    },
+    {
+      "name": "tiamat",
+      "source": "github.com/owenyuwono/tiamat",
+      "pinnedCommit": "e389a99192c5158fb3b95d9df5427feaf9d97fea",
+      "license": "MIT",
+      "licenseNote": "LICENSE file is standard MIT; GitHub detector fails on a leading BOM. Human must flip verifiedBy before Tier A.",
+      "verifiedBy": "pending",
+      "scope": "vendor-registry",
+      "tier": "B"
     },
     {
       "name": "troika-three-text",
@@ -165,126 +445,6 @@
       "note": ""
     },
     {
-      "name": "zod",
-      "version": "3.23.8",
-      "range": "^3.24.0",
-      "license": "MIT",
-      "repo": "https://github.com/colinhacks/zod",
-      "verifiedBy": "installed-package-json",
-      "scope": "workspace-dependency",
-      "note": ""
-    },
-    {
-      "name": "apate",
-      "pkgName": "apate",
-      "source": "github.com/owenyuwono/apate",
-      "license": "MIT",
-      "repo": "",
-      "verifiedBy": "",
-      "scope": "vendored-upstream",
-      "vendored": "packages/vendor/upstream/apate",
-      "note": ""
-    },
-    {
-      "name": "chiro",
-      "pkgName": "casting-abilities",
-      "source": "github.com/owenyuwono/chiro",
-      "license": "MIT",
-      "repo": "",
-      "verifiedBy": "",
-      "scope": "vendored-upstream",
-      "vendored": "packages/vendor/upstream/chiro",
-      "note": ""
-    },
-    {
-      "name": "demiurge",
-      "pkgName": "demiurge",
-      "source": "github.com/owenyuwono/demiurge",
-      "license": "MIT",
-      "repo": "",
-      "verifiedBy": "",
-      "scope": "vendored-upstream",
-      "vendored": "packages/vendor/upstream/demiurge",
-      "note": ""
-    },
-    {
-      "name": "dryad",
-      "pkgName": "demicreatures",
-      "source": "github.com/owenyuwono/dryad",
-      "license": "MIT",
-      "repo": "",
-      "verifiedBy": "",
-      "scope": "vendored-upstream",
-      "vendored": "packages/vendor/upstream/dryad",
-      "note": ""
-    },
-    {
-      "name": "gaia",
-      "pkgName": "grassgen",
-      "source": "github.com/owenyuwono/gaia",
-      "license": "MIT",
-      "repo": "",
-      "verifiedBy": "",
-      "scope": "vendored-upstream",
-      "vendored": "packages/vendor/upstream/gaia",
-      "note": ""
-    },
-    {
-      "name": "hls-webgpu-terrain",
-      "pkgName": "webgpuplugins",
-      "source": "github.com/owenyuwono/hls-webgpu-terrain",
-      "license": "MIT",
-      "repo": "",
-      "verifiedBy": "",
-      "scope": "vendored-upstream",
-      "vendored": "packages/vendor/upstream/hls-webgpu-terrain",
-      "note": ""
-    },
-    {
-      "name": "minos",
-      "pkgName": "",
-      "source": "github.com/owenyuwono/minos",
-      "license": "MIT",
-      "repo": "",
-      "verifiedBy": "",
-      "scope": "vendored-upstream",
-      "vendored": "packages/vendor/upstream/minos",
-      "note": ""
-    },
-    {
-      "name": "poseidon",
-      "pkgName": "fft-ocean-claude",
-      "source": "github.com/owenyuwono/poseidon",
-      "license": "MIT",
-      "repo": "",
-      "verifiedBy": "",
-      "scope": "vendored-upstream",
-      "vendored": "packages/vendor/upstream/poseidon",
-      "note": ""
-    },
-    {
-      "name": "three-vfx",
-      "pkgName": "root",
-      "source": "github.com/owenyuwono/three-vfx",
-      "license": "",
-      "repo": "",
-      "verifiedBy": "",
-      "scope": "vendored-upstream",
-      "vendored": "packages/vendor/upstream/three-vfx",
-      "note": "no LICENSE file at pin"
-    },
-    {
-      "name": "tiamat",
-      "pkgName": "fluid3",
-      "source": "github.com/owenyuwono/tiamat",
-      "license": "MIT",
-      "repo": "",
-      "verifiedBy": "",
-      "scope": "vendored-upstream",
-      "vendored": "packages/vendor/upstream/tiamat",
-      "note": ""
-    },
-    {
       "name": "webgpu-ocean-mpm",
       "pkgName": "",
       "source": "github.com/owenyuwono/webgpu-ocean-mpm",
@@ -294,126 +454,6 @@
       "scope": "vendored-upstream",
       "vendored": "packages/vendor/upstream/webgpu-ocean-mpm",
       "note": ""
-    },
-    {
-      "name": "poseidon",
-      "source": "github.com/owenyuwono/poseidon",
-      "pinnedCommit": "671053b812fcbffe8ecc4668eaa6ab7ffeb63287",
-      "license": "MIT",
-      "licenseNote": "",
-      "verifiedBy": "human",
-      "scope": "vendor-registry",
-      "tier": "A"
-    },
-    {
-      "name": "gaia",
-      "source": "github.com/owenyuwono/gaia",
-      "pinnedCommit": "f23a32daca73d4d71d5b23dba3dee7e11f969f55",
-      "license": "MIT",
-      "licenseNote": "",
-      "verifiedBy": "human",
-      "scope": "vendor-registry",
-      "tier": "A"
-    },
-    {
-      "name": "dryad",
-      "source": "github.com/owenyuwono/dryad",
-      "pinnedCommit": "e85729b779708c50b7d65ddd34d524f42da88705",
-      "license": "MIT",
-      "licenseNote": "",
-      "verifiedBy": "human",
-      "scope": "vendor-registry",
-      "tier": "A"
-    },
-    {
-      "name": "demiurge",
-      "source": "github.com/owenyuwono/demiurge",
-      "pinnedCommit": "cb3e1785f7f3e6e3e9b65df76133bbbce747c0be",
-      "license": "MIT",
-      "licenseNote": "",
-      "verifiedBy": "human",
-      "scope": "vendor-registry",
-      "tier": "A"
-    },
-    {
-      "name": "tiamat",
-      "source": "github.com/owenyuwono/tiamat",
-      "pinnedCommit": "e389a99192c5158fb3b95d9df5427feaf9d97fea",
-      "license": "MIT",
-      "licenseNote": "LICENSE file is standard MIT; GitHub detector fails on a leading BOM. Human must flip verifiedBy before Tier A.",
-      "verifiedBy": "pending",
-      "scope": "vendor-registry",
-      "tier": "B"
-    },
-    {
-      "name": "apate",
-      "source": "github.com/owenyuwono/apate",
-      "pinnedCommit": "ae62cac4ad8a27209c84dedad86b55afad27170a",
-      "license": "MIT",
-      "licenseNote": "",
-      "verifiedBy": "human",
-      "scope": "vendor-registry",
-      "tier": "reference"
-    },
-    {
-      "name": "minos",
-      "source": "github.com/owenyuwono/minos",
-      "pinnedCommit": "ea8f76e20534b57a9412e2a87da9be00acc7c0f5",
-      "license": "MIT",
-      "licenseNote": "",
-      "verifiedBy": "human",
-      "scope": "vendor-registry",
-      "tier": "reference"
-    },
-    {
-      "name": "chiro-elemental",
-      "source": "github.com/achrefelouafi/LinearAbiltyCastingThreeJS",
-      "pinnedCommit": "ba61847cb6887e5ccae9cd591e6390082cac5f05",
-      "license": "MIT",
-      "licenseNote": "",
-      "verifiedBy": "human",
-      "scope": "vendor-registry",
-      "tier": "B"
-    },
-    {
-      "name": "three-vfx",
-      "source": "github.com/mustache-dev/Three-VFX",
-      "pinnedCommit": "c5533097adbccf22b4701f2f2527fb2fec951bd1",
-      "license": "MIT",
-      "licenseNote": "",
-      "verifiedBy": "pending",
-      "scope": "vendor-registry",
-      "tier": "B"
-    },
-    {
-      "name": "quantum-core",
-      "source": "codepen.io/sabosugi/pen/01a02fca-0d14-7e50-a9b8-283d419ccaea",
-      "pinnedCommit": "",
-      "license": "",
-      "licenseNote": "CodePen snippet. No LICENSE file, no GitHub mirror found. Treat as all-rights-reserved until the author publishes a repo+license.",
-      "verifiedBy": "",
-      "scope": "vendor-registry",
-      "tier": "reference"
-    },
-    {
-      "name": "kimodo",
-      "source": "github.com/nv-tlabs/kimodo",
-      "pinnedCommit": "1aece8c124d73d255ceff5086d983b844c9f4e94",
-      "license": "Apache-2.0",
-      "licenseNote": "",
-      "verifiedBy": "human",
-      "scope": "vendor-registry",
-      "tier": "B"
-    },
-    {
-      "name": "kimodo-cpp",
-      "source": "github.com/localai-org/kimodo.cpp",
-      "pinnedCommit": "e55a42aaa32da84793dc0a8d01347575a1535cd5",
-      "license": "",
-      "licenseNote": "No LICENSE file in tree as of this pin. NOTICE present. Do not treat as Apache-2.0 by association with nv-tlabs/kimodo. Human must read NOTICE + any SPDX headers before staging.",
-      "verifiedBy": "",
-      "scope": "vendor-registry",
-      "tier": "B"
     },
     {
       "name": "webgpu-ocean-mpm",
@@ -426,34 +466,14 @@
       "tier": "B"
     },
     {
-      "name": "hls-webgpu-terrain",
-      "source": "github.com/hlsvortex/HLS_WebGPUPlugins",
-      "pinnedCommit": "5e96256fde258faa41d5b1fc8275481093824519",
-      "license": "",
-      "licenseNote": "",
-      "verifiedBy": "",
-      "scope": "vendor-registry",
-      "tier": "B"
-    },
-    {
-      "name": "babylon-nme",
-      "source": "github.com/BabylonJS/Babylon.js",
-      "pinnedCommit": "",
-      "license": "Apache-2.0",
-      "licenseNote": "",
-      "verifiedBy": "human",
-      "scope": "vendor-registry",
-      "tier": "reference"
-    },
-    {
-      "name": "babylon-inspector",
-      "source": "github.com/BabylonJS/Babylon.js",
-      "pinnedCommit": "",
-      "license": "Apache-2.0",
-      "licenseNote": "",
-      "verifiedBy": "human",
-      "scope": "vendor-registry",
-      "tier": "reference"
+      "name": "zod",
+      "version": "3.23.8",
+      "range": "^3.24.0",
+      "license": "MIT",
+      "repo": "https://github.com/colinhacks/zod",
+      "verifiedBy": "installed-package-json",
+      "scope": "workspace-dependency",
+      "note": ""
     }
   ]
 }

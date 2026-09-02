@@ -34,7 +34,7 @@ Use when the task is to build or change a `@3jse/*` **engine** package (or the e
    | Material Graph -> TSL codegen + CPU reference evaluator + validation | `@3jse/materials` |
    | Terrain: heightfield sampling, chunk mesher, LOD, bounded-residency streamer | `@3jse/terrain` |
    | Foliage: deterministic field scatter -> InstancedMesh instance data | `@3jse/foliage` |
-   | Navigation: grid bake, A* + string-pull, flow field (group pathing), NavAgent | `@3jse/nav` |
+   | Navigation: grid bake / A* + string-pull / flow field / NavAgent / PolyNavMesh seam (recast-navigation adapter) | `@3jse/nav` |
    | Particles/VFX: CPU SoA sim, curves/gradients over life, ParticleEmitter component/system | `@3jse/vfx` |
    | THREE-side render bridges: terrain chunks / foliage InstancedMesh / particle Points from the headless cores | `@3jse/render` |
    | `3jse` CLI: publish (runs @3jse/packaging + esbuild) / info | `@3jse/cli` |

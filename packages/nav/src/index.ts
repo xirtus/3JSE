@@ -21,6 +21,13 @@ export {
 } from "./pathfind.js";
 export { createNavAgentSystem } from "./systems.js";
 export { NAV_RESOURCE, type NavAgentData } from "./components.js";
+export {
+  createRecastNavMesh,
+  gridAsPolyNavMesh,
+  type PolyNavMesh,
+  type RecastNavMeshQuery,
+  type Vec3 as NavVec3,
+} from "./polymesh.js";
 
 // Registers NavAgent as an import side effect.
 import "./components.js";
