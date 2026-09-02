@@ -266,6 +266,19 @@ importers:
         specifier: ^2.1.0
         version: 2.1.9(@types/node@22.20.1)(lightningcss@1.33.0)
 
+  packages/foliage:
+    dependencies:
+      '@3jse/terrain':
+        specifier: workspace:*
+        version: link:../terrain
+    devDependencies:
+      typescript:
+        specifier: ^5.7.0
+        version: 5.9.3
+      vitest:
+        specifier: ^2.1.0
+        version: 2.1.9(@types/node@22.20.1)(lightningcss@1.33.0)
+
   packages/foliage-gaia:
     dependencies:
       three:
@@ -519,6 +532,19 @@ importers:
       '@types/three':
         specifier: ^0.185.0
         version: 0.185.4
+      typescript:
+        specifier: ^5.7.0
+        version: 5.9.3
+      vitest:
+        specifier: ^2.1.0
+        version: 2.1.9(@types/node@22.20.1)(lightningcss@1.33.0)
+
+  packages/terrain:
+    dependencies:
+      '@3jse/runtime':
+        specifier: workspace:*
+        version: link:../runtime
+    devDependencies:
       typescript:
         specifier: ^5.7.0
         version: 5.9.3

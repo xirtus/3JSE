@@ -32,6 +32,8 @@ Use when the task is to build or change a `@3jse/*` **engine** package (or the e
    | Audio: bus mixer, AudioSource/Listener/ReverbZone, event router, musical grid + MIDI/OSC | `@3jse/audio` |
    | UI/HUD: retained widget tree, flexbox-subset layout, data binding, hit-test, renderer seam | `@3jse/ui` |
    | Material Graph -> TSL codegen + CPU reference evaluator + validation | `@3jse/materials` |
+   | Terrain: heightfield sampling, chunk mesher, LOD, bounded-residency streamer | `@3jse/terrain` |
+   | Foliage: deterministic field scatter -> InstancedMesh instance data | `@3jse/foliage` |
    | Vendored MIT ecosystem libs (mesh-bvh, troika text, postprocessing, …) | `@3jse/extras` |
    | Vendor registry + fetcher; Tier A wraps (poseidon/gaia/dryad/demiurge) | `@3jse/vendor`, `@3jse/water-poseidon` etc. |
 
