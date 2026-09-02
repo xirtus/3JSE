@@ -17,6 +17,7 @@ import { SequencerPanel } from "./SequencerPanel.js";
 import { ProfilerPanel } from "./ProfilerPanel.js";
 import { PackagingPanel } from "./PackagingPanel.js";
 import { AgentPanel } from "./AgentPanel.js";
+import { AiProvidersPanel } from "./AiProvidersPanel.js";
 import { ContentBrowserPanel } from "./ContentBrowserPanel.js";
 import { planned } from "./planned.js";
 import type { PanelDef } from "./types.js";
@@ -103,6 +104,9 @@ export const panels: PanelDef[] = [
   },
   { id: "physics-editor", title: "Physics", region: "right", status: "active", component: PhysicsPanel },
   { id: "agent", title: "Agent", region: "right", status: "active", component: AgentPanel },
+  // docs/AI_AGENT_API.md — pick an LLM provider + paste a key; unlocks Atlas "Ask agent" and
+  // the Agent panel's "Plan with AI". Keys are localStorage-only (apps/editor/src/llm/store.ts).
+  { id: "ai-providers", title: "AI Providers", region: "right", status: "active", component: AiProvidersPanel },
 
   // bottom — cross-cutting tools
   { id: "console", title: "Console", region: "bottom", status: "active", component: ConsolePanel },

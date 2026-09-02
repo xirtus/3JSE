@@ -44,6 +44,9 @@ importers:
       '@3jse/ir':
         specifier: workspace:*
         version: link:../../packages/ir
+      '@3jse/llm':
+        specifier: workspace:*
+        version: link:../../packages/llm
       '@3jse/materials':
         specifier: workspace:*
         version: link:../../packages/materials
@@ -360,6 +363,15 @@ importers:
       '@3jse/runtime':
         specifier: workspace:*
         version: link:../runtime
+      vitest:
+        specifier: ^2.1.0
+        version: 2.1.9(@types/node@22.20.1)(lightningcss@1.33.0)
+
+  packages/llm:
+    devDependencies:
+      typescript:
+        specifier: ^5.7.0
+        version: 5.9.3
       vitest:
         specifier: ^2.1.0
         version: 2.1.9(@types/node@22.20.1)(lightningcss@1.33.0)

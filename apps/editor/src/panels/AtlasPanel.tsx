@@ -23,6 +23,8 @@ import {
 import { NodeCanvas, type CanvasNode, type CanvasEdge } from "@3jse/graph";
 import { buildSampleAtlas, SAMPLE_EVIDENCE, applyAtlasKnob, readAtlasKnob } from "../sampleAtlas.js";
 import { traceRecorder } from "../sampleScene.js";
+import { activeLlmConfig, activeLlmLabel, subscribeLlm } from "../llm/store.js";
+import { askPlanner } from "../llm/plan.js";
 import type { EditorContext } from "./types.js";
 
 const EDGE_STYLE: Record<AtlasEdge["kind"], { stroke: string; dash?: string }> = {
@@ -70,6 +72,12 @@ export function AtlasPanel({ ctx }: { ctx: EditorContext }) {
   // plus a rAF play toggle that sweeps it across the recorded span so events light up in order.
   const [playhead, setPlayhead] = useState<number | null>(null);
   const [tracePlay, setTracePlay] = useState(false);
+  // "Ask agent" → live LLM (when a provider is configured in the AI Providers panel).
+  const [asking, setAsking] = useState(false);
+  const [planText, setPlanText] = useState<string | null>(null);
+  const [, forceLlm] = useState(0);
+  useEffect(() => subscribeLlm(() => forceLlm((n) => n + 1)), []);
+  const llmLabel = activeLlmLabel();
 
   const model = useMemo(
     () => compileAtlas({ systems: registry.list(), evidence: SAMPLE_EVIDENCE }),
@@ -138,17 +146,40 @@ export function AtlasPanel({ ctx }: { ctx: EditorContext }) {
     setRev((r) => r + 1);
   }
 
-  function askAgent() {
-    if (!selected) return;
+  async function askAgent() {
+    if (!selected || asking) return;
     const pkg = exportAgentContext(model, selected.id, intent || "(no intent given)", { action });
     const preview = previewChange(model, selected.id);
     const blob = JSON.stringify({ context: pkg, preview }, null, 2);
     ctx.pushLog("info", `Atlas → agent (${action}) on ${selected.id}: ${preview.affected.length} systems, ${preview.fileCount} files, risk ${preview.risk}.`);
-    ctx.pushLog("info", blob);
+
+    const cfg = activeLlmConfig();
+    if (!cfg) {
+      // No provider wired — keep the original behaviour: dump the scoped task to the log +
+      // clipboard so it can be pasted into any chat. The AI Providers panel wires a model.
+      ctx.pushLog("info", blob);
+      try {
+        void navigator.clipboard?.writeText(blob);
+      } catch {
+        /* clipboard blocked — the log copy above is the fallback */
+      }
+      setPlanText("No AI provider configured. Open the AI Providers panel to pick one — the scoped task was copied to the clipboard and logged so you can paste it into any chat.");
+      return;
+    }
+
+    setAsking(true);
+    setPlanText(`Asking ${cfg.model}…`);
     try {
-      void navigator.clipboard?.writeText(blob);
-    } catch {
-      /* clipboard blocked — the log copy above is the fallback */
+      const res = await askPlanner(cfg, { context: blob, intent, action });
+      const usage = res.usage?.outputTokens != null ? ` · ${res.usage.outputTokens} out tok` : "";
+      ctx.pushLog("info", `Atlas agent (${res.model}, ${res.ms} ms${usage}):\n${res.text}`);
+      setPlanText(res.text);
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : String(e);
+      ctx.pushLog("error", `Atlas agent call failed: ${msg}`);
+      setPlanText(`Call failed: ${msg}`);
+    } finally {
+      setAsking(false);
     }
   }
 
@@ -238,6 +269,9 @@ export function AtlasPanel({ ctx }: { ctx: EditorContext }) {
             setIntent={setIntent}
             onKnob={knobChange}
             onAsk={askAgent}
+            asking={asking}
+            planText={planText}
+            llmLabel={llmLabel}
           />
         )}
       </div>
@@ -305,6 +339,9 @@ function NodeInspector({
   setIntent,
   onKnob,
   onAsk,
+  asking,
+  planText,
+  llmLabel,
 }: {
   node: AtlasNode;
   model: ReturnType<typeof compileAtlas>;
@@ -316,6 +353,9 @@ function NodeInspector({
   setIntent: (s: string) => void;
   onKnob: (systemId: string, knob: string, value: number) => void;
   onAsk: () => void;
+  asking: boolean;
+  planText: string | null;
+  llmLabel: string | null;
 }) {
   const spec = registry.get(node.id);
   return (
@@ -380,7 +420,37 @@ function NodeInspector({
           style={{ width: "100%", marginTop: 4, background: "#1c1c1e", color: "#eee", border: "1px solid #3a3a3c", borderRadius: 4, padding: 4 }}
         />
         <PreviewLine model={model} id={node.id} />
-        <Button size="xs" onClick={onAsk} style={{ marginTop: 4 }}>Build scoped task → log + clipboard</Button>
+        <Button size="xs" onClick={onAsk} disabled={asking} style={{ marginTop: 4 }}>
+          {asking
+            ? "Asking…"
+            : llmLabel
+              ? `Ask ${llmLabel}`
+              : "Build scoped task → log + clipboard"}
+        </Button>
+        {!llmLabel && (
+          <p style={{ color: "#8a8a8e", margin: "4px 0 0", fontSize: 11 }}>
+            No AI provider yet — set one in the <strong>AI Providers</strong> panel to get a plan back here.
+          </p>
+        )}
+        {planText && (
+          <pre
+            style={{
+              whiteSpace: "pre-wrap",
+              wordBreak: "break-word",
+              background: "#141416",
+              border: "1px solid #2a2a2c",
+              borderRadius: 4,
+              padding: 6,
+              marginTop: 6,
+              maxHeight: 320,
+              overflow: "auto",
+              color: "#dedee1",
+              fontSize: 11,
+            }}
+          >
+            {planText}
+          </pre>
+        )}
       </div>
     </div>
   );

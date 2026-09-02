@@ -30,12 +30,19 @@ Closed the "install + polish tail" from the last RESUME — all reuse-first:
 
 `BUILD_TASKS.md` rows A.4, G.15 updated; G.16–G.19 added.
 
-## What's left — both genuinely blocked
+## LLM planning — now wired (2026-09-02d)
 
-1. **Live LLM planning** behind Atlas "Ask agent" — needs an actual LLM. The §28 scoped-context
-   export + §30 change preview are real and wired to the log + clipboard; the planning loop is
-   deliberately not faked (same posture as `AI_AGENT_API.md`'s PLAN stage).
-2. **Phase 0 items 1–2** — a mid-range Windows laptop for the perf-floor capture; a Rust
+`@3jse/llm` + the editor **AI Providers** panel: pick OpenAI / Anthropic / DeepSeek / Gemini /
+OpenRouter / Groq / Mistral / xAI / Ollama / any OpenAI-compatible endpoint, paste a key (stored
+in `localStorage` only, sent straight to the provider), Test. Atlas "Ask agent" and the Agent
+panel's "Plan with AI" now call the configured model and print the plan. **What's left of it:**
+the agent **ACT** stage — executing the returned plan's tool calls automatically — stays
+human-driven until `AI_AGENT_API.md`'s trust tiers are built. That's a deliberate design gate,
+not a missing dependency.
+
+## What's left — genuinely blocked
+
+1. **Phase 0 items 1–2** — a mid-range Windows laptop for the perf-floor capture; a Rust
    toolchain + a running Tauri shell for the desktop-shell smoke test. Hardware-bound.
 
 ## Notes for next time

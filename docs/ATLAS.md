@@ -34,8 +34,10 @@ evidence — and is never the source of program logic. The node-graph machinery 
 `apps/editor/src/panels/AtlasPanel.tsx` (center tab **Atlas**, active). Hand-rolled SVG system
 map (no react-flow — same posture as `GraphCanvas`): layered layout, domain-colored nodes,
 typed edges, health badges, focus dimming on select. Right pane: the node inspector with live
-knob inputs, search, and the §28/§30 agent-scoping section (assembles the scoped task package →
-editor log + clipboard; no live LLM is wired, same honesty as the Agent Panel).
+knob inputs, search, and the §28/§30 agent-scoping section. "Ask agent" assembles the scoped
+task package and, when a provider is configured in the **AI Providers** panel (`@3jse/llm`),
+sends it to that model and prints the plan inline; with no provider it falls back to the editor
+log + clipboard so the task can be pasted into any chat.
 
 Model content = `sampleAtlas.ts`, the semantic declarations of the Third Person template
 (`@3jse/templates`) — §63 "apply it to one existing 3JSE game".
@@ -60,7 +62,8 @@ appends live.
 - 2.5D / Three.js Atlas navigation (§18–19, §45–51) — deliberately deferred until the 2D core's
   pain points justify it (§63).
 - Feel Lab (§17), personal feel libraries (§15).
-- Live LLM planning behind "Ask agent" — the scoped-context export is real; the planning loop
-  is the same future work as `AI_AGENT_API.md`'s PLAN stage.
+- Agent **ACT** stage behind "Ask agent" — the model now returns a plan (via `@3jse/llm` + the
+  AI Providers panel), but executing that plan's tool calls stays human-driven until
+  `AI_AGENT_API.md`'s trust tiers exist.
 - FeelSpec YAML on disk (the manifest loader takes JSON today).
 - Provider swap workflow UI (§34) and git/history integration (§33).

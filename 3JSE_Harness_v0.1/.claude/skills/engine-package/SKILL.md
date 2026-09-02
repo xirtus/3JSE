@@ -36,6 +36,7 @@ Use when the task is to build or change a `@3jse/*` **engine** package (or the e
    | Foliage: deterministic field scatter -> InstancedMesh instance data | `@3jse/foliage` |
    | Navigation: grid bake / A* + string-pull / flow field / NavAgent / PolyNavMesh seam | `@3jse/nav` |
    | Polygon navmesh bake from THREE geometry via recast-navigation-js -> PolyNavMesh | `@3jse/nav-recast` |
+   | Provider-agnostic LLM chat client (OpenAI / Anthropic / DeepSeek / Gemini / OpenRouter / Groq / Ollama / any OpenAI-compatible) | `@3jse/llm` |
    | Particles/VFX: CPU SoA sim, curves/gradients over life, ParticleEmitter component/system | `@3jse/vfx` |
    | THREE-side render bridges: terrain chunks / foliage InstancedMesh / particle Points from the headless cores | `@3jse/render` |
    | `3jse` CLI: publish (runs @3jse/packaging + esbuild) / info | `@3jse/cli` |

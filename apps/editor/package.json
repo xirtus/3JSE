@@ -19,6 +19,7 @@
     "@3jse/foliage": "workspace:*",
     "@3jse/graph": "workspace:*",
     "@3jse/ir": "workspace:*",
+    "@3jse/llm": "workspace:*",
     "@3jse/materials": "workspace:*",
     "@3jse/packaging": "workspace:*",
     "@3jse/physics-rapier": "workspace:*",
