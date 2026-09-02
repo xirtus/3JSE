@@ -24,7 +24,7 @@ export const PACKAGE_CATALOG: PackageEntry[] = [
   { id: "@3jse/assets", capability: "glTF/GLB import, thumbnails, metadata, character detection", phase: 1, status: "shipped", points: ["importers"], official: true },
   { id: "@3jse/project", capability: "Project save/load in the PROJECT_FORMAT tree", phase: 1, status: "shipped", points: [], official: true },
   { id: "@3jse/character", capability: "Character controller + camera rig (thirdPerson/topDown/firstPerson/orbit presets)", phase: 2, status: "shipped", points: ["components", "systems"], official: true },
-  { id: "@3jse/animation", capability: "Animation state machine + blend tree + TwoBoneIK", phase: 2, status: "shipped", points: ["components", "systems"], official: true },
+  { id: "@3jse/animation", capability: "Animation state machine + blend tree + TwoBoneIK + clip retargeting", phase: 2, status: "shipped", points: ["components", "systems"], official: true },
   { id: "@3jse/physics-rapier", capability: "Rapier physics integration", phase: 2, status: "shipped", points: ["components", "systems", "resources"], official: true },
   { id: "@3jse/save", capability: "Save games (tagged-component snapshots)", phase: 2, status: "shipped", points: ["components"], official: true },
   { id: "@3jse/spawning", capability: "Spawn points + object pooling", phase: 2, status: "shipped", points: ["components", "systems"], official: true },
