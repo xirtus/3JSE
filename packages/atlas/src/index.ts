@@ -73,6 +73,8 @@ export {
   performanceLens,
   providerLens,
   assetLens,
+  stateMachineLens,
+  gameplayFlowLens,
   type LensGraph,
 } from "./lenses.js";
 export {

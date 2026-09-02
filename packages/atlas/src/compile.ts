@@ -31,6 +31,8 @@ export interface AtlasNode {
   feelSpec?: string;
   mechanic?: string;
   parent?: string;
+  stateMachine?: AtlasSystemSpec["stateMachine"];
+  flow?: string[];
   /** flattened knob snapshot: name -> current value (§21 node interior, §3.1 direct tuning) */
   knobs: Record<string, number | boolean | string>;
   /** measured cost, ms/frame, when evidence supplied it (§5.9 performance lens) */
@@ -129,6 +131,8 @@ export function compileAtlas(input: CompileInput): AtlasModel {
       feelSpec: s.feelSpec,
       mechanic: s.mechanic,
       parent: s.parent,
+      stateMachine: s.stateMachine,
+      flow: s.flow,
       knobs,
       cpuMs: ev?.cpuMs,
     });

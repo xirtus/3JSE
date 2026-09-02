@@ -66,6 +66,16 @@ export interface AtlasSystemSpec {
   mechanic?: string;
   /** free-form parent id for progressive disclosure (§2.2) — a MECHANIC under a SYSTEM, etc. */
   parent?: string;
+  /** optional state machine this system runs (§5.3 State Machine View). Only declared where a
+   *  state machine is genuinely meaningful — "used only where state machines actually are". */
+  stateMachine?: {
+    initial: string;
+    states: string[];
+    transitions: { from: string; to: string; on?: string; when?: string }[];
+  };
+  /** ordered player-facing beats this system contributes to (§5.2 Gameplay Flow View) —
+   *  design flow, not control flow. */
+  flow?: string[];
 }
 
 /** Registry of semantic systems. A module-scope default instance mirrors @3jse/runtime's

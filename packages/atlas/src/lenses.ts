@@ -88,3 +88,82 @@ function stripLinks(n: AtlasNode): AtlasNode {
   // structural link lists so a layout doesn't try to lay them out.
   return { ...n, requires: [], dependents: [] };
 }
+
+/**
+ * State Machine view (§5.3): one system's declared `stateMachine` as a graph of state nodes and
+ * transition edges (labelled with the trigger event / condition). Returns an empty graph if the
+ * system has no state machine — "used only where state machines actually are meaningful".
+ */
+export function stateMachineLens(model: AtlasModel, systemId: string): LensGraph {
+  const sys = model.nodes.find((n) => n.id === systemId);
+  const sm = sys?.stateMachine;
+  if (!sm) return { nodes: [], edges: [] };
+
+  const nodes: AtlasNode[] = sm.states.map((state) => ({
+    id: `state:${state}`,
+    type: "event",
+    label: state,
+    domain: sys!.domain,
+    status: state === sm.initial ? "healthy" : "unknown",
+    healthReasons: state === sm.initial ? ["initial state"] : [],
+    owns: [], requires: [], dependents: [], emits: [], listens: [],
+    providers: [], assets: [], tests: [], knobs: {},
+  }));
+
+  let seq = 0;
+  const edges: AtlasEdge[] = sm.transitions.map((t) => ({
+    id: `t${seq++}`,
+    source: `state:${t.from}`,
+    target: `state:${t.to}`,
+    kind: "event",
+    label: t.on ?? t.when ?? "",
+  }));
+  return { nodes, edges };
+}
+
+/**
+ * Gameplay Flow view (§5.2): the ordered player-facing beats each system declares (`flow`),
+ * stitched into one left-to-right sequence — design flow, not control flow. A beat shared by
+ * several systems is one node; consecutive beats in any system's list become an edge.
+ */
+export function gameplayFlowLens(model: AtlasModel): LensGraph {
+  const beatOrder: string[] = [];
+  const contributors = new Map<string, Set<string>>();
+  const pairs: [string, string][] = [];
+
+  for (const s of model.nodes) {
+    const flow = s.flow ?? [];
+    flow.forEach((beat, i) => {
+      if (!beatOrder.includes(beat)) beatOrder.push(beat);
+      if (!contributors.has(beat)) contributors.set(beat, new Set());
+      contributors.get(beat)!.add(s.id);
+      if (i > 0) pairs.push([flow[i - 1]!, beat]);
+    });
+  }
+
+  const seenPair = new Set<string>();
+  const uniquePairs = pairs.filter(([a, b]) => {
+    const k = `${a}->${b}`;
+    if (seenPair.has(k)) return false;
+    seenPair.add(k);
+    return true;
+  });
+
+  const nodes: AtlasNode[] = beatOrder.map((beat) => ({
+    id: `beat:${beat}`,
+    type: "event",
+    label: beat,
+    domain: "gameplay",
+    status: "unknown",
+    healthReasons: [[...(contributors.get(beat) ?? [])].join(", ")],
+    owns: [], requires: [], dependents: [], emits: [], listens: [],
+    providers: [], assets: [], tests: [], knobs: {},
+  }));
+  const edges: AtlasEdge[] = uniquePairs.map(([a, b], i) => ({
+    id: `f${i}`,
+    source: `beat:${a}`,
+    target: `beat:${b}`,
+    kind: "dependency",
+  }));
+  return { nodes, edges };
+}
