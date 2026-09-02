@@ -4,8 +4,9 @@ import type { ParticlePool } from "@3jse/vfx";
 /**
  * One THREE.Points per @3jse/vfx ParticlePool. The CPU sim (SoA integration, spawn, kill,
  * curves) is all in @3jse/vfx; this only streams `pool.buffers()` into GPU attributes each
- * frame. For very large counts, swap this class for a GPU-compute path (three-vfx, vendored in
- * @3jse/extras) — same `sync(pools)` call site.
+ * frame. For large counts, use {@link GpuParticleRenderer} instead — same `sync(pools)` call
+ * site, but per-particle size + the soft sprite run in a TSL node graph and the streams land in
+ * storage buffers.
  */
 export class ParticleRenderer {
   private readonly points = new Map<string, THREE.Points>();

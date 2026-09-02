@@ -26,6 +26,7 @@ Three.js's `WebGPURenderer` is the primary target; WebGL2 is the automatic fallb
 | Texture compression | KTX2/Basis universal, transcoded per-target format at build time (`ASSET_PIPELINE.md`, `BUILD_DEPLOYMENT.md`) |
 | Streaming | Distance/sector-based sublevel and asset streaming (`WORLD_SYSTEM.md`), with a priority queue keyed to camera frustum and movement direction |
 | GPU compute | TSL compute nodes (`RENDERING.md`) for particle simulation and GPU-driven foliage placement, opt-in per project |
+| Particle rendering | Two `@3jse/render` paths behind one `sync(pools)` call site: `ParticleRenderer` (`THREE.PointsMaterial`) and `GpuParticleRenderer` (`PointsNodeMaterial` — per-particle size + soft sprite in a TSL graph, streams into storage buffers). @3jse/vfx stays the headless simulation authority for both; a full GPU-compute re-sim is the "GPU compute" row above, still opt-in future work |
 
 ## Quality tiers
 

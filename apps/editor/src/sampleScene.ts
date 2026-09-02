@@ -21,9 +21,20 @@ import "@3jse/render"; // registers Terrain / FoliageField components
  *  the Sequencer panel, which has no rAF loop of its own to observe World.step ticks directly. */
 export const cinematicEventLog: { name: string; time: number; at: number }[] = [];
 
-/** Editor-wide event trace — the Atlas Trace lens (§5.5) reads its window. Fed here from the
- *  cinematic system; a real game would route every 3IR event through it. */
+/** Editor-wide event trace — the Atlas Trace lens (§5.5) reads its window. Fed live from the
+ *  cinematic system (below); a real game would route every 3IR event through it. Seeded with a
+ *  short representative burst so the Trace lens + time scrubber have something to sweep before
+ *  any sequence has played. */
 export const traceRecorder = new TraceRecorder(512);
+for (const e of [
+  { time: 0.0, name: "input.move", from: "InputManager", to: ["CharacterController"] },
+  { time: 0.12, name: "character.grounded", from: "CharacterController", to: ["CameraRig", "AnimationSystem"] },
+  { time: 0.35, name: "input.jump", from: "InputManager", to: ["CharacterController"] },
+  { time: 0.4, name: "character.airborne", from: "CharacterController", to: ["AnimationSystem"] },
+  { time: 0.92, name: "physics.contact", from: "PhysicsWorld", to: ["CharacterController"] },
+  { time: 1.05, name: "character.land", from: "CharacterController", to: ["CameraRig", "AnimationSystem"] },
+  { time: 1.6, name: "input.move", from: "InputManager", to: ["CharacterController"] },
+]) traceRecorder.record(e);
 
 /**
  * The editor's starting content is now the **shipped Third Person template**
@@ -64,7 +75,7 @@ export async function buildSampleWorld(): Promise<{ world: World; level: Level }
     }),
   );
 
-  // @3jse/vfx particle system — Viewport.tsx renders its pools via @3jse/render's ParticleRenderer.
+  // @3jse/vfx particle system — Viewport.tsx renders its pools via @3jse/render's GpuParticleRenderer.
   world.scheduler.register(particleSystem);
 
   const { level } = await buildThirdPersonTemplate({

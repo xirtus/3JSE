@@ -6,7 +6,7 @@ import { INPUT_RESOURCE, type InputManager, type Level, type World } from "@3jse
 import { CAMERA_FOLLOW_RESOURCE, type CameraPose } from "@3jse/character";
 import type { ColliderData } from "@3jse/physics-rapier";
 import { fbm, valueNoise2D, sampleSlope, createSplatMap, paintSplat } from "@3jse/terrain";
-import { TerrainRenderer, FoliageRenderer, ParticleRenderer, terrainSplatMaterial, type TerrainData, type FoliageFieldData } from "@3jse/render";
+import { TerrainRenderer, FoliageRenderer, GpuParticleRenderer, terrainSplatMaterial, type TerrainData, type FoliageFieldData } from "@3jse/render";
 import { getPerfRecorder } from "./perf.js";
 import { particleSystem } from "./vfxScene.js";
 
@@ -141,7 +141,7 @@ export function Viewport({ world, level, selectedId, onSelect, playing }: Viewpo
       material: new THREE.MeshStandardMaterial({ color: 0x5c8a3a, roughness: 1 }),
     };
 
-    const particleRenderer = new ParticleRenderer(level.scene);
+    const particleRenderer = new GpuParticleRenderer(level.scene);
     // --------------------------------------------------------------------------------------------
 
     // Only Entities' own transforms are pickable — the grid and the gizmo helper were added

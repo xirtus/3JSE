@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Button } from "@galacean/editor-ui";
 import {
   compileAtlas,
@@ -11,6 +11,7 @@ import {
   providerLens,
   assetLens,
   traceLens,
+  pulseCounts,
   DOMAIN_COLOR,
   HEALTH_COLOR,
   HEALTH_GLYPH,
@@ -65,21 +66,65 @@ export function AtlasPanel({ ctx }: { ctx: EditorContext }) {
   const [lens, setLens] = useState<LensId>("system");
   // bump to recompile after a knob edit so the inspector reflects live values
   const [rev, setRev] = useState(0);
+  // Trace lens time scrubber: playhead in seconds (null = show the whole window / "Live"),
+  // plus a rAF play toggle that sweeps it across the recorded span so events light up in order.
+  const [playhead, setPlayhead] = useState<number | null>(null);
+  const [tracePlay, setTracePlay] = useState(false);
 
   const model = useMemo(
     () => compileAtlas({ systems: registry.list(), evidence: SAMPLE_EVIDENCE }),
     [registry, rev],
   );
+
+  const traceSpan = lens === "trace" ? traceRecorder.span : null;
+  // Events revealed up to the playhead (or all of them when Live). traceLens indexes `evt:i`
+  // off this same array, so the pulse set below can address nodes by position.
+  const traceWindow = useMemo(
+    () => (lens === "trace" ? traceRecorder.window(-Infinity, playhead ?? Infinity) : []),
+    [lens, playhead, rev],
+  );
+  // Nodes to pulse: event fires within 0.3s behind the playhead.
+  const pulse = useMemo(() => {
+    if (lens !== "trace" || playhead == null) return null;
+    const set = new Set<string>();
+    traceWindow.forEach((e, i) => {
+      if (playhead - e.time >= 0 && playhead - e.time <= 0.3) set.add(`evt:${i}`);
+    });
+    return set;
+  }, [lens, playhead, traceWindow]);
+
   const view: LensGraph = useMemo(() => {
     switch (lens) {
       case "events": return eventLens(model);
       case "performance": return performanceLens(model);
       case "providers": return providerLens(model);
       case "assets": return assetLens(model);
-      case "trace": return traceLens(traceRecorder.window());
+      case "trace": return traceLens(traceWindow);
       default: return { nodes: model.nodes, edges: model.edges };
     }
-  }, [model, lens, rev]);
+  }, [model, lens, rev, traceWindow]);
+
+  // Sweep the playhead across the span while playing (≈ real-time over event seconds).
+  useEffect(() => {
+    if (lens !== "trace" || !tracePlay) return;
+    const span = traceRecorder.span;
+    if (!span || span.end <= span.start) { setTracePlay(false); return; }
+    let raf = 0;
+    let last = performance.now();
+    setPlayhead((p) => (p == null || p >= span.end ? span.start : p));
+    const tick = (now: number) => {
+      const dt = (now - last) / 1000;
+      last = now;
+      setPlayhead((p) => {
+        const next = (p ?? span.start) + dt;
+        if (next >= span.end) { setTracePlay(false); return span.end; }
+        return next;
+      });
+      raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [lens, tracePlay]);
   const layout = useMemo(() => layoutAtlas(view), [view]);
   const results = useMemo(() => (query ? searchAtlas(model, query, 12) : []), [model, query]);
   const selected = model.nodes.find((n) => n.id === selectedId) ?? null;
@@ -131,6 +176,17 @@ export function AtlasPanel({ ctx }: { ctx: EditorContext }) {
               </button>
             ))}
           </div>
+          {lens === "trace" && (
+            <TraceScrubber
+              span={traceSpan}
+              playhead={playhead}
+              playing={tracePlay}
+              counts={pulseCounts(traceWindow)}
+              onSeek={(t) => { setTracePlay(false); setPlayhead(t); }}
+              onTogglePlay={() => setTracePlay((p) => !p)}
+              onLive={() => { setTracePlay(false); setPlayhead(null); }}
+            />
+          )}
           <input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
@@ -159,6 +215,7 @@ export function AtlasPanel({ ctx }: { ctx: EditorContext }) {
             layout={layout}
             selectedId={selectedId}
             onSelect={setSelectedId}
+            pulse={pulse}
           />
         </div>
         <Legend />
@@ -193,11 +250,13 @@ function SystemMap({
   layout,
   selectedId,
   onSelect,
+  pulse,
 }: {
   model: LensGraph;
   layout: ReturnType<typeof layoutAtlas>;
   selectedId: string | null;
   onSelect: (id: string) => void;
+  pulse?: Set<string> | null;
 }) {
   // Node positions: auto-layout, overridden by any the user has dragged (per lens/session).
   const [moved, setMoved] = useState<Record<string, { x: number; y: number }>>({});
@@ -206,14 +265,15 @@ function SystemMap({
   const canvasNodes: CanvasNode[] = model.nodes.flatMap((n) => {
     const b = pos(n.id);
     if (!b) return [];
-    const hue = DOMAIN_COLOR[n.domain];
+    const lit = pulse?.has(n.id) ?? false;
+    const hue = lit ? "#fde047" : DOMAIN_COLOR[n.domain];
     return [{
       id: n.id,
       x: b.x, y: b.y, width: layout.nodes[n.id]?.width ?? 200, height: layout.nodes[n.id]?.height ?? 84,
       title: n.label,
       subtitle: n.domain,
       accent: hue,
-      badge: `${HEALTH_GLYPH[n.status]} ${n.status}${n.cpuMs != null ? ` · ${n.cpuMs.toFixed(2)} ms` : ""}`,
+      badge: `${lit ? "◉ " : ""}${HEALTH_GLYPH[n.status]} ${n.status}${n.cpuMs != null ? ` · ${n.cpuMs.toFixed(2)} ms` : ""}`,
       bodyLines: n.tests.length ? [`${n.tests.length} test path(s)`] : ["no tests"],
     }];
   });
@@ -332,6 +392,74 @@ function PreviewLine({ model, id }: { model: ReturnType<typeof compileAtlas>; id
     <p style={{ color: "#8a8a8e", margin: "6px 0 0" }}>
       Affects {p.affected.length} system(s), {p.fileCount} file(s), {p.testCount} test path(s) · risk <strong style={{ color: p.risk === "high" ? "#ef4444" : p.risk === "medium" ? "#f59e0b" : "#22c55e" }}>{p.risk}</strong>
     </p>
+  );
+}
+
+function TraceScrubber({
+  span,
+  playhead,
+  playing,
+  counts,
+  onSeek,
+  onTogglePlay,
+  onLive,
+}: {
+  span: { start: number; end: number } | null;
+  playhead: number | null;
+  playing: boolean;
+  counts: Record<string, number>;
+  onSeek: (t: number) => void;
+  onTogglePlay: () => void;
+  onLive: () => void;
+}) {
+  if (!span || span.end <= span.start) {
+    return (
+      <div style={{ fontSize: 11, color: "#8a8a8e", padding: "4px 2px" }}>
+        No trace events yet — play a sequence in the Sequencer to record runtime events.
+      </div>
+    );
+  }
+  const at = playhead ?? span.end;
+  const top = Object.entries(counts).sort((a, b) => b[1] - a[1]).slice(0, 5);
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: 4, padding: "4px 2px" }}>
+      <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+        <button
+          onClick={onTogglePlay}
+          style={{ fontSize: 11, padding: "2px 8px", borderRadius: 4, border: "1px solid #3a3a3c", background: "#1c1c1e", color: "#eee", cursor: "pointer" }}
+        >
+          {playing ? "❚❚ Pause" : "▶ Play"}
+        </button>
+        <input
+          type="range"
+          min={span.start}
+          max={span.end}
+          step={(span.end - span.start) / 500 || 0.001}
+          value={at}
+          onChange={(e) => onSeek(Number(e.target.value))}
+          style={{ flex: 1 }}
+        />
+        <span style={{ fontVariantNumeric: "tabular-nums", fontSize: 11, color: "#cfcfd2", minWidth: 64, textAlign: "right" }}>
+          {at.toFixed(2)}s
+        </span>
+        <button
+          onClick={onLive}
+          title="Show the whole recorded window"
+          style={{ fontSize: 11, padding: "2px 8px", borderRadius: 4, border: "1px solid #3a3a3c", background: playhead == null ? "#3a3a3c" : "#1c1c1e", color: playhead == null ? "#fff" : "#aaa", cursor: "pointer" }}
+        >
+          ● Live
+        </button>
+      </div>
+      {top.length > 0 && (
+        <div style={{ display: "flex", gap: 8, flexWrap: "wrap", fontSize: 10, color: "#9a9a9e" }}>
+          {top.map(([sys, n]) => (
+            <span key={sys}>
+              <span style={{ color: "#fde047" }}>●</span> {sys} <strong style={{ color: "#cfcfd2" }}>{n}</strong>
+            </span>
+          ))}
+        </div>
+      )}
+    </div>
   );
 }
 

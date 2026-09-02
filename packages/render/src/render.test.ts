@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import * as THREE from "three/webgpu";
 import { valueNoise2D, fbm } from "@3jse/terrain";
 import { ParticlePool, type EmitterDef } from "@3jse/vfx";
-import { TerrainRenderer, FoliageRenderer, ParticleRenderer } from "./index.js";
+import { TerrainRenderer, FoliageRenderer, ParticleRenderer, GpuParticleRenderer } from "./index.js";
 
 // THREE objects construct fine in node (no GPU needed) — same as @3jse/runtime's tests.
 // These assert the object lifecycle: create / update / remove / dispose.
@@ -74,5 +74,38 @@ describe("ParticleRenderer", () => {
 
     r.sync(new Map()); // pool removed
     expect(r.group.children.length).toBe(0);
+  });
+});
+
+describe("GpuParticleRenderer", () => {
+  const def: EmitterDef = {
+    maxParticles: 200, rate: 0, burst: 0,
+    life: { min: 1, max: 1 }, speed: { min: 1, max: 1 }, direction: [0, 1, 0], spread: 0,
+    gravity: [0, 0, 0], drag: 0,
+    sizeOverLife: [{ t: 0, v: 1 }], colorOverLife: [{ t: 0, color: [1, 1, 1] }], seed: 1,
+  };
+
+  it("streams position/color/size into storage attributes on a node material, prunes pools", () => {
+    const scene = new THREE.Scene();
+    const r = new GpuParticleRenderer(scene);
+    const pool = new ParticlePool(def);
+    pool.emit(40);
+    const pools = new Map([["fx1", pool]]);
+
+    r.sync(pools);
+    const pts = r.group.children[0] as THREE.Points;
+    expect(pts.material).toBeInstanceOf(THREE.PointsNodeMaterial);
+    expect(pts.geometry.getAttribute("position")).toBeInstanceOf(THREE.StorageBufferAttribute);
+    expect(pts.geometry.getAttribute("size").count).toBe(40);
+    expect(r.count("fx1")).toBe(40);
+
+    pool.emit(40); // grows -> attributes reallocated, no throw
+    r.sync(pools);
+    expect(r.count("fx1")).toBe(80);
+
+    r.sync(new Map());
+    expect(r.group.children.length).toBe(0);
+    r.dispose();
+    expect(r.group.parent).toBeNull();
   });
 });

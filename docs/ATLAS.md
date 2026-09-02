@@ -49,10 +49,14 @@ Model content = `sampleAtlas.ts`, the semantic declarations of the Third Person 
 | A/B FeelSpec | `feelAB.ts` | `feelABTable` (both values + delta per dimension, sorted by \|Δ\|), `mergeFeel` (per-dimension A/B pick → merged intent, §16), `feelABSummary` (§12 preview line). |
 | `atlas/` project manifest | `manifest.ts` | `parseAtlasManifest(files)` over a virtual filesystem — loads `atlas/systems/*.json` → `AtlasSystemSpec[]` and `atlas/feelspec/*.json` → `FeelSpec[]`, reports malformed files instead of throwing, feeds `compileAtlas` directly (§44). JSON now; a YAML front-end is a swappable parse step. |
 
+The Trace lens has a wired time scrubber (§26–27): a play/pause rAF sweep and a seek slider over
+the recorder's span, revealing event nodes up to the playhead and pulsing (`◉`, bright accent)
+the ones that fired in the last 0.3 s, with a per-system density strip from `pulseCounts`.
+`AtlasPanel.tsx` → `TraceScrubber`; `sampleScene.ts` seeds a short burst and the CinematicSystem
+appends live.
+
 ## Not built yet
 
-- Runtime event *pulses* animating on the map + a wired time scrubber UI (§26–27) — the
-  data side (`TraceRecorder` / `pulseCounts`) is done; the animation + slider are editor work.
 - 2.5D / Three.js Atlas navigation (§18–19, §45–51) — deliberately deferred until the 2D core's
   pain points justify it (§63).
 - Feel Lab (§17), personal feel libraries (§15).
