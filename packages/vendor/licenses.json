@@ -45,14 +45,24 @@
       "note": ""
     },
     {
+      "name": "@recast-navigation/core",
+      "version": "0.43.1",
+      "range": "^0.43.1",
+      "license": "MIT",
+      "repo": "https://github.com/isaac-mason/recast-navigation-js",
+      "verifiedBy": "installed-package-json",
+      "scope": "dependency",
+      "note": "Recast/Detour WASM core. Direct dep of @3jse/nav-recast; pulls @recast-navigation/wasm (0.43.1, MIT). License field 'MIT' in installed package.json."
+    },
+    {
       "name": "@recast-navigation/three",
       "version": "0.43.1",
       "range": "^0.43.1",
       "license": "MIT",
       "repo": "https://github.com/isaac-mason/recast-navigation-js",
-      "verifiedBy": "npm-registry",
-      "scope": "optional-peer",
-      "note": "three.js bindings for recast-navigation (threeToSoloNavMesh, NavMeshHelper, CrowdHelper)."
+      "verifiedBy": "installed-package-json",
+      "scope": "dependency",
+      "note": "three.js bindings for recast-navigation (threeToSoloNavMesh, NavMeshHelper, CrowdHelper). Direct dep of @3jse/nav-recast; pulls @recast-navigation/generators (0.43.1, MIT). License field 'MIT' in installed package.json."
     },
     {
       "name": "@vitejs/plugin-react",
@@ -167,6 +177,16 @@
       "verifiedBy": "human",
       "scope": "vendor-registry",
       "tier": "A"
+    },
+    {
+      "name": "esbuild",
+      "version": "0.24.2",
+      "range": "^0.24.2",
+      "license": "MIT",
+      "repo": "https://github.com/evanw/esbuild",
+      "verifiedBy": "installed-package-json",
+      "scope": "dependency",
+      "note": "JS/TS bundler. Direct dep of @3jse/cli — `3jse publish` bundles the generated bootstrap. License field 'MIT' in installed package.json (packages/cli/node_modules/esbuild @ 0.24.2)."
     },
     {
       "name": "gaia",
@@ -328,9 +348,9 @@
       "range": "^0.43.1",
       "license": "MIT",
       "repo": "https://github.com/isaac-mason/recast-navigation-js",
-      "verifiedBy": "npm-registry",
-      "scope": "optional-peer",
-      "note": "WASM port of Recast/Detour. Optional peer of @3jse/nav \u2014 createRecastNavMesh() adapts it; grid path works without it. Not yet installed; pin at install and human-verify LICENSE."
+      "verifiedBy": "installed-package-json",
+      "scope": "dependency",
+      "note": "WASM port of Recast/Detour (isaac-mason). Now installed under @3jse/nav-recast as @recast-navigation/core + /three (0.43.1, both MIT); @3jse/nav's grid path still works without it. createRecastNavMesh() / bakeRecastNavMesh() adapt it."
     },
     {
       "name": "three",
