@@ -39,6 +39,7 @@ export const PACKAGE_CATALOG: PackageEntry[] = [
   { id: "@3jse/packaging", capability: "Publish pipeline: tree-shake, asset finalize, manifest, third-party notices, static-host files", phase: 8, status: "shipped", points: ["buildTargets"], official: true },
   { id: "@3jse/audio", capability: "Bus mixer, AudioSource/Listener/ReverbZone components, event router, musical grid + MIDI/OSC bridge", phase: 4, status: "partial", points: ["components", "systems"], official: true },
   { id: "@3jse/ui", capability: "UI/HUD: retained widget tree, flexbox-subset layout, data binding to World state, hit-test, renderer seam", phase: 4, status: "partial", points: ["components"], official: true },
+  { id: "@3jse/materials", capability: "Material Graph -> Three.js TSL codegen + CPU reference evaluator + graph validation", phase: 5, status: "partial", points: ["materialNodes", "editorPanels"], official: true },
   { id: "@3jse/extras", capability: "Vendored MIT ecosystem libs (mesh-bvh, troika text, postprocessing…)", phase: 5, status: "shipped", points: [], official: true },
   { id: "@3jse/vendor", capability: "Vendor registry + fetcher; Tier A wraps (poseidon/gaia/dryad/demiurge)", phase: 5, status: "partial", points: [], official: true },
   { id: "@3jse/water-poseidon", capability: "WebGPU spectral ocean (wraps owenyuwono/poseidon)", phase: 5, status: "partial", points: ["components", "systems"], official: true },
