@@ -29,7 +29,7 @@ export const PACKAGE_CATALOG: PackageEntry[] = [
   { id: "@3jse/save", capability: "Save games (tagged-component snapshots)", phase: 2, status: "shipped", points: ["components"], official: true },
   { id: "@3jse/spawning", capability: "Spawn points + object pooling", phase: 2, status: "shipped", points: ["components", "systems"], official: true },
   { id: "@3jse/templates", capability: "Starter templates (Third Person, Top-Down, First Person)", phase: 6, status: "partial", points: [], official: true },
-  { id: "@3jse/networking", capability: "Netcode: replication, authority, prediction, RPC", phase: 6, status: "partial", points: ["components", "systems"], official: true },
+  { id: "@3jse/networking", capability: "Netcode: replication, authority, prediction, RPC, priority/bandwidth model, lag compensation, WebSocket transport", phase: 6, status: "partial", points: ["components", "systems"], official: true },
   { id: "@3jse/cinematics", capability: "Timeline / sequencer runtime", phase: 5, status: "shipped", points: ["components", "systems"], official: true },
   { id: "@3jse/playground", capability: "Shareable-URL snippet sandbox", phase: 3, status: "partial", points: [], official: true },
   { id: "@3jse/replay", capability: "Input recording + deterministic replay", phase: 5, status: "shipped", points: [], official: true },

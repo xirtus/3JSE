@@ -21,7 +21,7 @@ Use when the task is to build or change a `@3jse/*` **engine** package (or the e
    | Save games (tagged-component snapshots) | `@3jse/save` |
    | Spawn points + object pooling | `@3jse/spawning` |
    | Starter templates (Third Person, …) | `@3jse/templates` |
-   | Netcode: replication, authority, prediction, RPC | `@3jse/networking` |
+   | Netcode: replication, authority, prediction, RPC, priority/bandwidth, lag comp, WebSocket transport | `@3jse/networking` |
    | Timeline / sequencer runtime | `@3jse/cinematics` |
    | Shareable-URL snippet sandbox | `@3jse/playground` |
    | Input recording + deterministic replay | `@3jse/replay` |

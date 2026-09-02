@@ -18,8 +18,15 @@ export {
   type EntitySnapshot,
 } from "./replication.js";
 export { LoopbackPair, type Transport } from "./transport.js";
+export { WebSocketTransport, type WebSocketLike, type WebSocketTransportOptions } from "./websocket.js";
 export { PredictedController, type PredictionConfig } from "./prediction.js";
 export { defineRpc, RpcHub, type RpcDef, type RpcEnvelope, type RpcDirection, type RpcSender } from "./rpc.js";
+export {
+  PriorityAccumulator,
+  type RepEntity,
+  type RepConnection,
+} from "./priority.js";
+export { HistoryBuffer, type Snapshot3D } from "./lagcomp.js";
 
 // Registers Authority / NetId against @3jse/runtime's ComponentRegistry as a side effect.
 import "./replication.js";
