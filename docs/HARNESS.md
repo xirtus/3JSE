@@ -60,7 +60,7 @@ The harness owns **coordination and institutional knowledge**. External provider
 - **Worker model — keep it small.** Five roles: Director, Gameplay, Graphics, Assets/References, QA/Performance. Most specialization loads as Skills, not as dozens of persistent personas.
 - **Context routing.** Only load skills relevant to the capabilities the current task actually needs. Never inject the entire library into context.
 - **Canonical directories.**
-  - `.agents/skills/` — canonical skill source (24 skills)
+  - `.agents/skills/` — canonical skill source (28 skills)
   - `.agents/registry/` — provider / capability / mechanic / security registries
   - `.agents/recipes/` — reusable game archetypes (5 recipes)
   - `.agents/hooks/` — deterministic quality gates
@@ -83,7 +83,7 @@ For any request to create, upgrade, finish, polish, debug, or extend a game:
 
 ## Skill catalog (24)
 
-`3jse-director` · `capability-resolver` · `vendor-router` · `asset-broker` · `reference-broker` · `safe-repo-inspector` · `project-learning` · `mechanics-harness` · `engine-package` · `threejs-runtime` · `webgpu` · `gltf-pipeline` · `gameplay-qa` · `visual-qa` · `performance-qa` · `provider-poseidon` · `provider-gaia` · `provider-dryad` · `provider-tiamat` · `provider-demiurge` · `provider-apate` · `provider-map3d` · `provider-react-three-map` · `provider-3dtiles`
+`3jse-director` · `capability-resolver` · `vendor-router` · `asset-broker` · `reference-broker` · `safe-repo-inspector` · `project-learning` · `mechanics-harness` · `engine-package` · `threejs-runtime` · `webgpu` · `gltf-pipeline` · `gameplay-qa` · `visual-qa` · `performance-qa` · `provider-poseidon` · `provider-gaia` · `provider-dryad` · `provider-tiamat` · `provider-demiurge` · `provider-apate` · `provider-map3d` · `provider-react-three-map` · `provider-3dtiles` · `world-field` · `splat-integration` · `causal-authoring` · `field-qa`
 
 `mechanics-harness` (feel-as-numbers / headless checks / invariant soak / player-agent QA, from the reference games) and `engine-package` (conventions for building the `@3jse/*` engine packages themselves, as opposed to games) are both loaded on demand.
 
@@ -107,6 +107,21 @@ For any request to create, upgrade, finish, polish, debug, or extend a game:
 | threejs-game-skills (`majidmanzarpour/threejs-game-skills`) | D | harness reference | Director loop, visual gate, completion gates — 3JSE uses reuse-first ordering. |
 
 Modes matter: `provider` may be integrated; `reference_implementation` is studied/ported selectively; `harness_reference` is studied for patterns only.
+
+## Causal field doctrine (Gaussian splat + field integration)
+
+The harness now carries the field/splat integration plan (`docs/GAUSSIAN_CAUSAL_FIELD_PLAN.md`) and its source ledger (`docs/FIELD_SOURCES.md`). The one-sentence bet:
+
+> **A baked response card is evaluated on a coarse causal field, then projected into Gaussians, Rapier, vendor VFX/audio, and agent-visible semantics.**
+
+Non-negotiables added by that work:
+
+- **The causal field is authoritative.** Gaussians, rigid-body contact, VFX, audio, navigation, and agent semantics are projections of it at each subsystem's resolution. Headless always makes sense; the renderer is never required for field correctness.
+- **State ≠ response coefficients.** State changes every tick; response coefficients/cards are baked/inferred/slowly-changing. Store compact indices/latents into shared response palettes.
+- **Field resolution ≠ render resolution.** One field cell may drive thousands of Gaussians; field-step cost never scales with render count. Never default to `one Gaussian = one simulated particle`.
+- **Systems, not scripted outcomes.** Implement causes (`addHeat`, `addMoisture`, transport, response evaluation), never `SetTreeOnFire`-style named events.
+
+New capability IDs registered (routing to no provider yet — provider mappings land only after safe-repo intake verifies a source and its license): `gaussian_splat_rendering`, `gaussian_splat_streaming`, `gaussian_splat_dynamic`, `world_field`, `causal_field`, `material_response`, `material_estimation`, `semantic_splats`, `field_physics`, `constitutive_mixture`, `phase_change`, `combustion`, `granular_response`, `field_to_collision`, `field_to_navigation`, `field_agent_ops`, `splat_relighting`. Candidate sources (FieryGS, PhysTalk, OmniPhysGS, PIDG, GASP, PhysGaussian, VoMP, PhysGS, GaussianProperty, Feature Splatting, LangSplat, Gaussian Grouping, Brush, Gaussian Splat Playground, KHR_gaussian_splatting, GOF/2DGS, MatSpray/GI-GS/3DGRUT, NanoGaussian/LightGaussian/gsplat/SuperSplat) are recorded in `docs/FIELD_SOURCES.md` as `pattern_port` / `authoring_only` / `provider_reference` with unverified commits/licenses until the Safe Repository Inspector actually audits them — none enters the provider registry first.
 
 ## Recipes (5)
 
@@ -187,5 +202,6 @@ The harness's practices today prefigure the engine's machinery tomorrow:
 | Project Learning Distiller | Durable learnings → engine-side agent project understanding (`AI_AGENT_API.md`) |
 | Three.js Runtime skill | `RUNTIME.md` |
 | glTF pipeline skill | `ASSET_PIPELINE.md` glTF-first posture |
+| `world-field` / `splat-integration` / `causal-authoring` / `field-qa` skills | `GAUSSIAN_CAUSAL_FIELD_PLAN.md` — the field is the primitive; Gaussians/Rapier/VFX/agent semantics are projections |
 
 The harness is the first working slice of the engine's AI-native layer — and the engine's design documents are, in part, the harness's practices promoted from convention into construction.

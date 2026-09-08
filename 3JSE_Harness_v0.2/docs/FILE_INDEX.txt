@@ -17,7 +17,9 @@
 .agents/skills/3jse-director/SKILL.md
 .agents/skills/asset-broker/SKILL.md
 .agents/skills/capability-resolver/SKILL.md
+.agents/skills/causal-authoring/SKILL.md
 .agents/skills/engine-package/SKILL.md
+.agents/skills/field-qa/SKILL.md
 .agents/skills/gameplay-qa/SKILL.md
 .agents/skills/gltf-pipeline/SKILL.md
 .agents/skills/mechanics-harness/SKILL.md
@@ -34,10 +36,12 @@
 .agents/skills/provider-tiamat/SKILL.md
 .agents/skills/reference-broker/SKILL.md
 .agents/skills/safe-repo-inspector/SKILL.md
+.agents/skills/splat-integration/SKILL.md
 .agents/skills/threejs-runtime/SKILL.md
 .agents/skills/vendor-router/SKILL.md
 .agents/skills/visual-qa/SKILL.md
 .agents/skills/webgpu/SKILL.md
+.agents/skills/world-field/SKILL.md
 .claude/clean-code-baseline.json
 .claude/hooks/block-destructive-git.mjs
 .claude/hooks/clean-code-guard.mjs
@@ -45,7 +49,9 @@
 .claude/skills/3jse-director/SKILL.md
 .claude/skills/asset-broker/SKILL.md
 .claude/skills/capability-resolver/SKILL.md
+.claude/skills/causal-authoring/SKILL.md
 .claude/skills/engine-package/SKILL.md
+.claude/skills/field-qa/SKILL.md
 .claude/skills/gameplay-qa/SKILL.md
 .claude/skills/gltf-pipeline/SKILL.md
 .claude/skills/mechanics-harness/SKILL.md
@@ -62,10 +68,12 @@
 .claude/skills/provider-tiamat/SKILL.md
 .claude/skills/reference-broker/SKILL.md
 .claude/skills/safe-repo-inspector/SKILL.md
+.claude/skills/splat-integration/SKILL.md
 .claude/skills/threejs-runtime/SKILL.md
 .claude/skills/vendor-router/SKILL.md
 .claude/skills/visual-qa/SKILL.md
 .claude/skills/webgpu/SKILL.md
+.claude/skills/world-field/SKILL.md
 3JSE_HARNESS_SPEC.md
 AGENTS.md
 CLAUDE.md
