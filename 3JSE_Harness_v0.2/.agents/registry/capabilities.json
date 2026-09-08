@@ -14,6 +14,23 @@
     "agents_on_real_maps": ["agentmaps"],
     "collab_scene_editing": ["jollypixel-editor"],
     "director_loop": ["majid-threejs-game-skills"],
-    "provider_neutral_adapters": ["gamestudio-harness"]
+    "provider_neutral_adapters": ["gamestudio-harness"],
+    "gaussian_splat_rendering": [],
+    "gaussian_splat_streaming": [],
+    "gaussian_splat_dynamic": [],
+    "world_field": [],
+    "causal_field": [],
+    "material_response": [],
+    "material_estimation": [],
+    "semantic_splats": [],
+    "field_physics": [],
+    "constitutive_mixture": [],
+    "phase_change": [],
+    "combustion": [],
+    "granular_response": [],
+    "field_to_collision": [],
+    "field_to_navigation": [],
+    "field_agent_ops": [],
+    "splat_relighting": []
   }
 }
