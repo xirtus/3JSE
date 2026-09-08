@@ -1,0 +1,15 @@
+{
+  "name": "@3jse/field-world-experiment",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Headless Gaussian causal-field experiments (GAUSSIAN_CAUSAL_FIELD_PLAN.md). Not a shipped engine package; the @3jse/field promotion happens only after these gates pass.",
+  "scripts": {
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.0",
+    "vitest": "^2.1.0"
+  }
+}
