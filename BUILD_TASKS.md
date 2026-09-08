@@ -168,3 +168,34 @@ depth + the GPU/viewport/service half — see the "Left:" note per §6 item.
 | G.18 | **GPU particle render path** — `@3jse/render` `GpuParticleRenderer`: drop-in for `ParticleRenderer` (same `sync(pools)` call site) using `PointsNodeMaterial` — per-particle size + soft sprite in a TSL node graph, streams into `StorageBufferAttribute`s. `@3jse/vfx` stays the headless sim authority; full GPU-compute re-sim deferred by design. Editor Viewport uses it. | done — +1 test (4); reuse-first (three-vfx rejected — R3F-coupled, owns its own sim) | `packages/render/src/GpuParticleRenderer.ts`; `apps/editor/src/Viewport.tsx` | `198eeeb` |
 | G.19 | **TSL splat terrain material + paint tools** — `@3jse/terrain` `splat.ts` (`createSplatMap` / `paintSplat` brush / `sampleSplat` / `splatToTexture`), `@3jse/materials` `presets.ts` (`splatTerrainGraph` / `waterGraph`), `@3jse/render` `terrainSplatMaterial` (RGBA `DataTexture` + TSL channel-mix). Fixed a latent `edge.fromPin` (`.r/.g/.b/.a`) bug in **both** the CPU evaluator and the TSL codegen. Editor terrain renders slope/height-seeded splat. | done — +14 tests (terrain 15, materials 13, render 4) | `packages/{terrain,materials,render}/src/*`; `apps/editor/src/Viewport.tsx` | `4aeac50` |
 | G.20 | **In-app LLM providers — the model behind PLAN** — new `@3jse/llm` (provider-agnostic chat client: OpenAI / Anthropic / DeepSeek / Gemini / OpenRouter / Groq / Mistral / xAI / Ollama / any OpenAI-compatible; two wire protocols `openai-chat` + `anthropic-messages`; `fetch` injected for tests). Editor **AI Providers** panel — pick a provider, paste a key, pick a model, Test; keys in `localStorage` only, sent straight to the provider. Atlas "Ask agent" + Agent panel "Plan with AI" now call the configured model and print the plan (ACT still human-driven). | done — +11 tests (@3jse/llm 6, editor store 5) | `packages/llm/`; `apps/editor/src/llm/{store,plan}.ts`; `apps/editor/src/panels/{AiProvidersPanel,AtlasPanel,AgentPanel}.tsx` | (this commit) |
+
+---
+
+## Gaussian Causal Field track  (`docs/GAUSSIAN_CAUSAL_FIELD_PLAN.md`)
+
+One bet: **a baked response card is evaluated on a coarse causal field, then projected
+into Gaussians, Rapier, VFX/audio, and agent-visible semantics.** The field is
+authoritative; state ≠ response coefficients; field resolution ≠ render resolution.
+Executed in dependency order on branch `gaussian-causal-field`.
+
+| # | Task | Status | Evidence | Commit |
+|---|---|---|---|---|
+| C.1 | Plan + source ledger — plan under `docs/`, `docs/FIELD_SOURCES.md` (Source·Commit·License·Runtime stack·Disposition·Artifact·Why useful·Why not imported), no engine code | done | `docs/GAUSSIAN_CAUSAL_FIELD_PLAN.md`, `docs/FIELD_SOURCES.md` | `2a8103a` |
+| C.2 | Register 17 field/splat capability ids (empty provider routing until intake verifies a source) | done | `3JSE_Harness_v0.2/.agents/registry/capabilities.json`; verify PASS | `bff07af` |
+| C.3 | 4 skills — `world-field`, `splat-integration`, `causal-authoring`, `field-qa` + mirrors synced + `docs/HARNESS.md` updated (24→28 skills, field doctrine, convergence row) | done | `3JSE_Harness_v0.2/.agents/skills/*`; verify PASS | `8c3eae6` |
+| C.4 | 3 recipes — `causal-snow`, `causal-trail`, `emergent-forest-fire` + `templates/FIELD_QA_GATES.md` | done | `3JSE_Harness_v0.2/.agents/recipes/*`; HARNESS recipes 5→8 | `aa8b7cc` |
+| C.5 | Experiment 01 — field schema + headless sampler (`experiments/field-world` workspace pkg; `WorldSampleState`, `ResponseCard`, `FieldChunk`, trilinear sampler, synthetic cold/warm field, serialization round-trip) | done | `experiments/field-world/src/{types,field,responseCard,synthetic}.ts`; 4 tests | `7aeb7d7` |
+| C.6 | Experiment 02 — dual resolution: field step iterates cells only; visual density ≠ causal result; resolution change ≠ scene rebuild | done | `exp02-dual-resolution.ts`; 3 tests | `b95e6dd` |
+| C.7 | Experiment 03 — live splat projection (headless): cluster-level projection buffer, splat asset untouched, no per-splat loop | done | `exp03-projection.ts`; 2 tests | `00495a8` |
+| C.8 | Experiment 04 — causal snow: one card spans powder→packed→wet→slush→crust driving visible + mechanical + FX change, no material swap | done | `exp04-snow.ts`; 6 tests | `c239280` |
+| C.9 | Experiment 05 — causal trail/mud: same infrastructure; one rainfall drives darker/glossier + dust↓ + splash↑ + bearing↓; shaded stays wet | done | `exp05-trail.ts`; 3 tests | `ecfc963` |
+| C.10 | Experiment 06 — emergent forest fire: downwind spot fire from ember + state + response, with lineage; no `SetTreeOnFire` | done | `exp06-fire.ts`; 4 tests | `5f5be4e` |
+| C.11 | Experiment 07 — bounded agent field ops (`FieldOps`: query/sample/describe/setState/addHeat/addMoisture/applyForce/paintResponse/inspectUncertainty/captureState), no raw buffer | done | `exp07-agent-ops.ts`; 5 tests | `f2f3b67` |
+| C.12 | Game integration (Experiment 08) into a real Xirtus Mountain sector | deferred | no mountain sector exists in this repo yet; sequenced after prior gates per plan §23 | — |
+| C.x | `@3jse/field` package promotion | deferred | promote only when experiment interface is evidenced, not guessed (plan §34) | — |
+
+**Track gate:** `pnpm gate` (verify:harness + typecheck + test + editor build) exits 0;
+`@3jse/field-world-experiment` 27/27 tests; evidence
+`evidence/field-world-experiments-2026-09-08.md`. Remaining renderer-dependent work:
+a Gaussian backend (Three-native GS / Brush) to make Experiment 03 a headed visual
+gate.
