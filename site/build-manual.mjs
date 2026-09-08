@@ -13,13 +13,19 @@ const GROUPS = [
   ["Systems", ["PHYSICS","ANIMATION","AUDIO","RENDERING","NETWORKING","PERFORMANCE"]],
   ["Pipeline & Distribution", ["ASSET_PIPELINE","PROJECT_FORMAT","BUILD_DEPLOYMENT","TEMPLATES"]],
   ["Platform", ["AI_AGENT_API","PLUGIN_ARCHITECTURE","VENDOR_INTEGRATIONS","VENDOR_PROJECT_MODULES","VERSE_COMPATIBILITY"]],
+  ["Harness", ["HARNESS"]],
   ["Atlas", ["3JSE_ATLAS_FULL_PLAN","ATLAS"]],
-  ["Planning", ["ROADMAP"]],
+  ["Planning", ["ROADMAP","REFERENCE_GAMES","ENGINE_GAP_ANALYSIS"]],
   ["Project", ["WEBSITE","SHOP"]],
 ];
 
 const anchor = (file) => file.toLowerCase().replace(/_/g, "-");
 const slugify = (s) => s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+
+// Only auto-link references to docs that are actually baked — a reference to a
+// file that is not in GROUPS (e.g. harness-internal AGENTS.md / SECURITY.md)
+// stays plain code text instead of becoming a dead link.
+const BAKED = new Set(GROUPS.flatMap(([, names]) => names));
 
 function inline(text) {
   let out = text
@@ -30,8 +36,15 @@ function inline(text) {
     .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
   // auto-link FILE.md references (both inside code spans and parenthetical)
   const fileAnchor = (name) => anchor(name.replace(/\.md$/, ""));
-  out = out.replace(/<code>([A-Z][A-Z0-9_]+\.md)<\/code>/g, (m, name) => `<a href="#${fileAnchor(name)}" class="xref"><code>${name}</code></a>`);
-  out = out.replace(/\(([A-Z][A-Z0-9_]+\.md)\)/g, (m, name) => `(<a href="#${fileAnchor(name)}" class="xref">${name}</a>)`);
+  const isBaked = (name) => BAKED.has(name.replace(/\.md$/, ""));
+  const xrefCode = (name) =>
+    isBaked(name)
+      ? `<a href="#${fileAnchor(name)}" class="xref"><code>${name}</code></a>`
+      : `<code>${name}</code>`;
+  out = out.replace(/<code>([A-Z][A-Z0-9_]+\.md)<\/code>/g, (m, name) => xrefCode(name));
+  out = out.replace(/\(([A-Z][A-Z0-9_]+\.md)\)/g, (m, name) =>
+    isBaked(name) ? `(<a href="#${fileAnchor(name)}" class="xref">${name}</a>)` : `(${name})`
+  );
   return out;
 }
 

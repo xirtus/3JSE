@@ -6,7 +6,7 @@
 <title>3JSE — The WebGPU-native Game Engine</title>
 <meta name="description" content="3JSE is the open-source, AI-native game engine for the open web. TypeScript, WebGPU, visual scripting, and an editor that boots instantly — the next Godot, the answer to Unreal for a web-first future.">
 <meta property="og:title" content="3JSE — The WebGPU-native Game Engine">
-<meta property="og:description" content="Built around Three.js. Designed for TypeScript, visual scripting, and AI agents. One game, four frontends.">
+<meta property="og:description" content="Built around Three.js. Designed for TypeScript, visual scripting, and AI agents. One game, four frontends — plus the Atlas visual layer and the AI Harness that builds it.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://3jse.com">
 <meta property="og:image" content="https://3jse.com/assets/img/3jse-banner.svg">
@@ -27,6 +27,7 @@
     </a>
     <nav class="nav">
       <a href="#about">The Engine</a>
+      <a href="#flagships">Atlas + Harness</a>
       <a href="#frontends">Four Frontends</a>
       <a href="#compare">vs. The Giants</a>
       <a href="#editor">The Editor</a>
@@ -55,7 +56,7 @@
       <div class="hero-copy">
         <span class="hero-kicker">Open Source · WebGPU · TypeScript</span>
         <h1>The <span class="grad">WebGPU-native</span> Game Engine</h1>
-        <p class="hero-sub">Built around Three.js. Designed for TypeScript, visual scripting, and AI agents — one game, four frontends. Boot the editor in a browser tab. Ship your game as a URL.</p>
+        <p class="hero-sub">Built around Three.js. Designed for TypeScript, visual scripting, and AI agents — one game, four frontends, the Atlas visual layer on top, and an AI Harness that builds it. Boot the editor in a browser tab. Ship your game as a URL.</p>
         <div class="hero-ctas">
           <a class="btn btn-primary" href="manual.html">📖 Read the design manual</a>
           <a class="btn btn-ghost" href="https://github.com/xirtus/3JSE" target="_blank" rel="noopener">★ Star on GitHub</a>
@@ -135,6 +136,33 @@
           <p>Three.js is a pinned dependency, not a vendored fork. Your engine upgrades like any other npm package — for the lifetime of your game.</p>
         </div>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FLAGSHIPS: Atlas + AI Harness ============ -->
+<section class="section" id="flagships">
+  <div class="section-head">
+    <div class="section-kicker">The two flagship products</div>
+    <h2>Atlas for understanding. The Harness for building.</h2>
+    <p>Two systems that exist <strong>today</strong>, not on a roadmap: the Atlas semantic layer turns a game into something you can see, navigate, and tune — and the AI Harness turns a coding agent into the editor itself.</p>
+  </div>
+  <div class="grid-2">
+    <div class="card flagship">
+      <span class="emoji">🧭</span>
+      <h3>3JSE Atlas</h3>
+      <p>Code is for agents. <strong>Graphs are for understanding.</strong> FeelSpec is for intent and tuning. The viewport is a witness.</p>
+      <p>Atlas is <strong>generated from the real project</strong> — declared semantic metadata plus static and runtime evidence — and is never the source of program logic. It shows <em>meaning</em>, not implementation: <code>Player → Movement → Jump → Camera</code>, not <code>Event → Branch → Cast → Tick</code>.</p>
+      <p><strong>Working today:</strong> the Atlas Semantic Core (<code>@3jse/atlas</code>, headless, 31 tests) — system contracts, typed graph compiler, FeelSpec resolution, deterministic layered layout, live knob editing wired straight to real component fields, agent task-context export with blast radius, and health as a pure function of harness evidence.</p>
+      <div class="foot"><a href="manual.html#3jse-atlas-full-plan">The full Atlas plan →</a> · <a href="manual.html#atlas">Implementation status →</a></div>
+    </div>
+    <div class="card flagship">
+      <span class="emoji">🤖</span>
+      <h3>The AI Harness</h3>
+      <p>3JSE is not an editor. <strong>The coding agent is the editor.</strong> Visual tools are added only when repeated work proves they are necessary.</p>
+      <p>An agent-native Three.js/WebGPU development system: the <strong>reuse ladder</strong> (working code → curated providers → licensed assets → custom code, last), a tiered provider registry, capability routing, deterministic quality gates, and evidence-first completion.</p>
+      <p><strong>Working today (v0.2):</strong> one Director + 24 skills, 14 curated providers, and guard rails — a destructive-git guard, a clean-code ratchet, a git-ignored WIP bench — with hard gameplay, visual, and performance gates on every claim.</p>
+      <div class="foot"><a href="manual.html#harness">Read HARNESS.md →</a> · <a href="https://github.com/xirtus/3JSE" target="_blank" rel="noopener">GitHub →</a></div>
     </div>
   </div>
 </section>
@@ -283,7 +311,7 @@
   <div class="section-head">
     <div class="section-kicker">The design manual</div>
     <h2>Every decision. Every bet. Written down.</h2>
-    <p>The complete 29-document design manual — written to be read by humans <em>and</em> by the AI agents that will help build the engine.</p>
+    <p>The complete 32-document design manual — written to be read by humans <em>and</em> by the AI agents that will help build the engine.</p>
   </div>
   <div class="grid-3">
     <a class="card doc-card" href="manual.html#vision"><span class="doc-file">VISION.md</span><span class="emoji">🔭</span><h3>The Vision</h3><p>Why 3JSE exists, the core bet, and what success looks like.</p></a>
@@ -291,13 +319,14 @@
     <a class="card doc-card" href="manual.html#gameplay-ir"><span class="doc-file">GAMEPLAY_IR.md</span><span class="emoji">🧬</span><h3>The Gameplay IR</h3><p>The single representation every frontend compiles to.</p></a>
     <a class="card doc-card" href="manual.html#editor"><span class="doc-file">EDITOR.md</span><span class="emoji">🖥️</span><h3>The Editor</h3><p>All 22 dockable panels, browser or Tauri, one codebase.</p></a>
     <a class="card doc-card" href="manual.html#ai-agent-api"><span class="doc-file">AI_AGENT_API.md</span><span class="emoji">🤖</span><h3>The AI Agent API</h3><p>Observe → plan → act → verify. Trust tiers included.</p></a>
+    <a class="card doc-card" href="manual.html#harness"><span class="doc-file">HARNESS.md</span><span class="emoji">🎛️</span><h3>The AI Harness</h3><p>The agent-native development system: reuse doctrine, providers, guard rails, evidence gates.</p></a>
     <a class="card doc-card" href="manual.html#3jse-atlas-full-plan"><span class="doc-file">3JSE_ATLAS_FULL_PLAN.md</span><span class="emoji">🗺️</span><h3>The Atlas Plan</h3><p>Semantic game atlas, FeelSpec, and the agent-native visual interface — the Blueprint/Verse alternative.</p></a>
     <a class="card doc-card" href="manual.html#atlas"><span class="doc-file">ATLAS.md</span><span class="emoji">🧭</span><h3>Atlas — Implementation Status</h3><p>The semantic core that's already built: graph compiler, FeelSpec, layout, live knobs.</p></a>
     <a class="card doc-card" href="manual.html#roadmap"><span class="doc-file">ROADMAP.md</span><span class="emoji">🗺️</span><h3>The Roadmap</h3><p>Eight phases, dependency-ordered, from spikes to ecosystem.</p></a>
   </div>
   <div class="cta-band">
     <h3>Read the full manual</h3>
-    <p>29 documents, fully cross-linked, on one page. Physics, rendering, networking, the object model, Verse compatibility, the vendor registry, the Atlas plan — everything.</p>
+    <p>32 documents, fully cross-linked, on one page. Physics, rendering, networking, the object model, Verse compatibility, the vendor registry, the harness, the Atlas plan — everything.</p>
     <a class="btn btn-primary" href="manual.html">📖 Open the design manual</a>
   </div>
 </section>
