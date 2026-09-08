@@ -123,13 +123,16 @@ Non-negotiables added by that work:
 
 New capability IDs registered (routing to no provider yet — provider mappings land only after safe-repo intake verifies a source and its license): `gaussian_splat_rendering`, `gaussian_splat_streaming`, `gaussian_splat_dynamic`, `world_field`, `causal_field`, `material_response`, `material_estimation`, `semantic_splats`, `field_physics`, `constitutive_mixture`, `phase_change`, `combustion`, `granular_response`, `field_to_collision`, `field_to_navigation`, `field_agent_ops`, `splat_relighting`. Candidate sources (FieryGS, PhysTalk, OmniPhysGS, PIDG, GASP, PhysGaussian, VoMP, PhysGS, GaussianProperty, Feature Splatting, LangSplat, Gaussian Grouping, Brush, Gaussian Splat Playground, KHR_gaussian_splatting, GOF/2DGS, MatSpray/GI-GS/3DGRUT, NanoGaussian/LightGaussian/gsplat/SuperSplat) are recorded in `docs/FIELD_SOURCES.md` as `pattern_port` / `authoring_only` / `provider_reference` with unverified commits/licenses until the Safe Repository Inspector actually audits them — none enters the provider registry first.
 
-## Recipes (5)
+## Recipes (8)
 
 - **Third-Person Platformer** — character controller, camera, ground detection.
 - **Surf / Kite / Wake Game** — ocean/waves → Poseidon, rigged humanoid, board/kite/tow mechanics.
 - **Open-World Hub (Sector-Based Metaspace)** — connected sectors over one enormous always-live world.
 - **Isometric / Overhead Tactics** — orthographic camera, tile/graph selection, movement ranges.
 - **Geospatial Surveillance / Social Simulation** — map/GIS, OSM city data, R3F geographic overlays.
+- **Causal Snow** — one continuous response model through powder → packed → wet → slush → crust, no material swap.
+- **Causal Trail / Mud** — one moisture update drives appearance, tire response, bearing strength, dust, splash, rut.
+- **Emergent Forest Fire** — propagation emerges from field state + neighbor transport, no `SetTreeOnFire`.
 
 ## Quality gates and evidence-first completion
 

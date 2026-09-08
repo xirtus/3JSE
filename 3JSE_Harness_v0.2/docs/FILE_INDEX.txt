@@ -1,7 +1,10 @@
 .agents/hooks/post-asset-import.sh
 .agents/hooks/pre-finish.sh
 .agents/recipes/arcade-racer.md
+.agents/recipes/causal-snow.md
+.agents/recipes/causal-trail.md
 .agents/recipes/colony-sim.md
+.agents/recipes/emergent-forest-fire.md
 .agents/recipes/frogger-endless.md
 .agents/recipes/musical-hopper.md
 .agents/recipes/open-world-hub.md
@@ -90,6 +93,7 @@ scripts/sync-claude-skills.mjs
 scripts/verify-harness.mjs
 templates/ASSET_REGISTRY.example.json
 templates/EVIDENCE_REPORT.example.md
+templates/FIELD_QA_GATES.md
 templates/PROJECT_3JSE.md
 wip/.gitignore
 wip/README.md
