@@ -1,7 +1,7 @@
 import type { ConsoleEntry, PerfReport } from "./runtime.js";
 
 /**
- * Generates the 3JSE Harness evidence report (3JSE_Harness_v0.1/templates/EVIDENCE_REPORT.example.md)
+ * Generates the 3JSE Harness evidence report (3JSE_Harness_v0.2/templates/EVIDENCE_REPORT.example.md)
  * from a headless run's structured outputs. This is docs/HARNESS.md's convergence row made real:
  * "Evidence report fields -> runtime.getConsole / runtime.getPerf / runtime.captureFrame — the
  * verify step as engine APIs." The harness no longer hand-writes the Build/runtime and Performance

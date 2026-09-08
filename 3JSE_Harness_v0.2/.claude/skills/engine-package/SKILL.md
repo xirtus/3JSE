@@ -84,5 +84,5 @@ A game task uses `templates/EVIDENCE_REPORT.example.md` (core loop, screenshots,
 - `pnpm -r typecheck` clean (includes `apps/editor`).
 - `pnpm -r test` green — if it's red for an infrastructural reason (a package's vitest globbing vendored files), fix that first; a red workspace gate hides real regressions.
 - `pnpm --filter @3jse/editor build` still succeeds if runtime/any editor dep changed.
-- `node 3JSE_Harness_v0.1/scripts/verify-harness.mjs` PASS.
+- `node 3JSE_Harness_v0.2/scripts/verify-harness.mjs` PASS.
 - New package added to this skill's rung-0 table and to `docs/FILE_INDEX.txt` if it's a harness file (engine packages under `packages/` are not).

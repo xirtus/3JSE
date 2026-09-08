@@ -4,8 +4,8 @@ You are building 3JSE: a tandem project with three tracks — the **3JSE Harness
 
 ## Step 0 — Load the constitution, in order
 
-1. `3JSE_Harness_v0.1/CLAUDE.md` — your operating mode: **UNDERSTAND → RESOLVE → ASSEMBLE → BUILD → PLAYTEST → REPAIR → VERIFY**. No unnecessary approval loops for ordinary reversible edits.
-2. `3JSE_Harness_v0.1/AGENTS.md` — the canonical instructions: mandatory route, non-negotiable rules, evidence requirements.
+1. `3JSE_Harness_v0.2/CLAUDE.md` — your operating mode: **UNDERSTAND → RESOLVE → ASSEMBLE → BUILD → PLAYTEST → REPAIR → VERIFY**. No unnecessary approval loops for ordinary reversible edits.
+2. `3JSE_Harness_v0.2/AGENTS.md` — the canonical instructions: mandatory route, non-negotiable rules, evidence requirements.
 3. `docs/ROADMAP.md` — the sequencing contract. Phases are dependency-ordered; you do not start a phase before its prerequisites, and you do not leave a phase before its exit criteria are met.
 4. `docs/HARNESS.md` and `docs/3JSE_ATLAS_FULL_PLAN.md` — the two living tracks.
 5. `docs/REFERENCE_GAMES.md` — six working games whose systems are reusable reference implementations. **Do not rebuild what they already prove.** Reuse their rigs, animations, physics models, QA tooling, and licenses first.
@@ -19,7 +19,7 @@ For every capability you implement: run the **3jse-director** workflow, resolve 
 
 ## The three tracks
 
-- **Harness track** — keep `3JSE_Harness_v0.1/` green at all times. Every change: update `docs/FILE_INDEX.txt`, keep canonical skills and the `.claude/` mirror in agreement, run `node scripts/verify-harness.mjs`. Extend the harness only where real work proves a gap (bootstrap discipline: audit → highest-leverage gap → improve → verify).
+- **Harness track** — keep `3JSE_Harness_v0.2/` green at all times. Every change: update `docs/FILE_INDEX.txt`, keep canonical skills and the `.claude/` mirror in agreement, run `node scripts/verify-harness.mjs`. Extend the harness only where real work proves a gap (bootstrap discipline: audit → highest-leverage gap → improve → verify).
 - **Engine track** — start at Phase 0. Satisfy each phase's exit criteria with evidence before moving on. Phase 0's four de-risking spikes come first: the 3IR round-trip prototype, the ECS-over-Object3D spike (10k entities @ 60fps), the Verse Level-3 research memo, and the Tauri-vs-Electron editor-shell decision. Nothing downstream is authorized until Phase 0 closes.
 - **Atlas track** — the first implementation task is specified in `docs/3JSE_ATLAS_FULL_PLAN.md` §63: the **Atlas Semantic Core** (defineSystem, graph compiler, FeelSpec parser, React Flow system map, node inspector, direct knob editing, agent task-context exporter, test/provider/asset metadata, simple runtime health). Apply it to **3jsurf first** — its systems map cleanly and its `tools/` already produce the evidence Atlas displays. Let real pain points decide which 3D visualizations come next; do not build the 3D Atlas layer to prove it uses Three.js.
 
@@ -33,7 +33,7 @@ Adopt the `mechanics-harness` skill as the standard for every gameplay system:
 4. **Heuristic player agents** — drive the real game, classify every death as player error or unfair system fault. **Unfair deaths are bugs.**
 5. **Single-term debug isolation** — a debug mask answering "what is painting that?" in one screenshot.
 
-Every milestone ends with a written **gate sentence** and a composed gate test that proves it (the dambeavers pattern). Every broad task ends with an evidence report using `3JSE_Harness_v0.1/templates/EVIDENCE_REPORT.example.md`: playable loop exercised · build/typecheck · console errors · gameplay test · screenshots · frame-rate/draw-calls · asset/provider ledger · known limitations. **No claim of AAA/premium/complete without fresh evidence.**
+Every milestone ends with a written **gate sentence** and a composed gate test that proves it (the dambeavers pattern). Every broad task ends with an evidence report using `3JSE_Harness_v0.2/templates/EVIDENCE_REPORT.example.md`: playable loop exercised · build/typecheck · console errors · gameplay test · screenshots · frame-rate/draw-calls · asset/provider ledger · known limitations. **No claim of AAA/premium/complete without fresh evidence.**
 
 ## Non-negotiables (from the constitution)
 
@@ -62,7 +62,7 @@ Create and maintain `BUILD_TASKS.md` at the project root (the dambeavers TASKS.m
 
 ## First session, concretely
 
-1. Run `node 3JSE_Harness_v0.1/scripts/verify-harness.mjs` and confirm green before touching anything.
+1. Run `node 3JSE_Harness_v0.2/scripts/verify-harness.mjs` and confirm green before touching anything.
 2. Inventory the reference games against the Phase 0 spikes (the 3jsurf headless tools already satisfy half of the ECS/IR spike's spirit — study them first).
 3. Execute Phase 0 spikes in order: 3IR round-trip prototype → ECS-over-Object3D benchmark → Verse memo → editor-shell decision. Each ends with a written memo or benchmark, not vibes.
 4. Report: routing ledger for each spike, evidence produced, updated BUILD_TASKS.md, and the go/no-go decisions that unblock Phase 1.

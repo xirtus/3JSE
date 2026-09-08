@@ -8,7 +8,7 @@ The answer is not "Unreal's UI redrawn in a browser tab." Unreal's strengths —
 
 ## Tandem with the Harness
 
-This design package is one half of a tandem project. The other half — **3JSE Harness v0.1** — already exists and works today: an agent-native development system that turns a general coding agent into a reference-first Three.js/WebGPU game-development agent (`HARNESS.md`, source in `3JSE_Harness_v0.1/`). The harness is where the AI-native bet on this page is tested against reality first; the engine this document describes is where those practices become first-class machinery. The harness's governing idea — *the coding agent is the editor; visual tools are added only when repeated work proves them necessary* — is the through-line for every "AI-native" claim made here.
+This design package is one half of a tandem project. The other half — **3JSE Harness v0.1** — already exists and works today: an agent-native development system that turns a general coding agent into a reference-first Three.js/WebGPU game-development agent (`HARNESS.md`, source in `3JSE_Harness_v0.2/`). The harness is where the AI-native bet on this page is tested against reality first; the engine this document describes is where those practices become first-class machinery. The harness's governing idea — *the coding agent is the editor; visual tools are added only when repeated work proves them necessary* — is the through-line for every "AI-native" claim made here.
 
 ## The core bet
 

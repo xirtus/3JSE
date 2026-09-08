@@ -1,8 +1,8 @@
-# 3JSE Harness — v0.1
+# 3JSE Harness — v0.2
 
 ## What this is
 
-The 3JSE Harness is an **agent-native Three.js/WebGPU game-development harness** that turns a general coding agent — Claude Code today, other coding agents by design — into a reference-first game-development agent. It is the **today-half** of the 3JSE project: a working system, not a design document. Source lives in `3JSE_Harness_v0.1/` — canonical agent instructions under `.agents/`, a Claude Code adapter under `.claude/`, deterministic scripts under `scripts/`.
+The 3JSE Harness is an **agent-native Three.js/WebGPU game-development harness** that turns a general coding agent — Claude Code today, other coding agents by design — into a reference-first game-development agent. It is the **today-half** of the 3JSE project: a working system, not a design document. Source lives in `3JSE_Harness_v0.2/` — canonical agent instructions under `.agents/`, a Claude Code adapter under `.claude/`, deterministic scripts under `scripts/`.
 
 It supplies eight things:
 
@@ -21,7 +21,7 @@ It supplies eight things:
 
 | Track | Status | What it is |
 |---|---|---|
-| **3JSE Harness** (this page) | **Working today, v0.1** | Agent-native development system: coordination, routing, reuse doctrine, quality gates, evidence requirements. |
+| **3JSE Harness** (this page) | **Working today, v0.2** | Agent-native development system: coordination, routing, reuse doctrine, quality gates, evidence requirements, guard rails. |
 | **3JSE Engine** (`VISION.md` → `ROADMAP.md`) | Design package | The platform the harness's games converge on: object model, Gameplay IR, editor, Agent API, deployment. |
 
 The harness's governing idea is deliberately the inverse of a traditional engine:
@@ -65,7 +65,9 @@ The harness owns **coordination and institutional knowledge**. External provider
   - `.agents/recipes/` — reusable game archetypes (5 recipes)
   - `.agents/hooks/` — deterministic quality gates
   - `.claude/skills/` — Claude Code mirror/adapter of `.agents/skills/`
+  - `.claude/hooks/` — Claude Code guard hooks (destructive-git, clean-code)
   - `evidence/` — reports, screenshots, metrics, playtest notes
+  - `wip/` — git-ignored local bench: verification captures, probes, handoff notes
 
 ## The mandatory route for broad game tasks
 
@@ -125,6 +127,17 @@ A broad game task is **not complete because code compiled**. Four gates must pas
 
 The evidence report records: playable loop exercised · build/typecheck status · console/runtime errors · gameplay test result · screenshots/visual inspection · frame-rate/draw-call/memory observations · external asset/provider ledger · known limitations.
 
+## Guard rails (v0.2)
+
+Adopted from the [vibe game engine web-starter-kit](https://github.com/vibegameengine/web-starter-kit) (MIT), whose agent rules carry the measured incident that produced each of them:
+
+- **Agent operating rules** (`AGENTS.md`) — commit early on a branch · never delete work wholesale · the bench is not evidence · do not ask what you can answer yourself · write down lessons and falsified findings · comments record measurements/sources/dead-ends only · no Markdown via shell · compress the machine channel, never the user's · read the code before reaching for a frame · measure in a lab, never a playable scene · visual verification is headed · never remove a provider to hide a bug.
+- **Destructive-git guard** (`.claude/hooks/block-destructive-git.mjs`, PreToolUse, opt-in) — refuses the git commands that destroy uncommitted work; safe forms pass.
+- **Clean-code ratchet** (`.claude/hooks/clean-code-guard.mjs`, PostToolUse, opt-in) — reports files that got worse than `.claude/clean-code-baseline.json` records; never the debt already there.
+- **WIP workspace** (`wip/`, git-ignored) — verification captures stay local; the scripts that produce measurements are committed as tools.
+
+The guards are policy about agent conduct, not capabilities to route — the reuse doctrine and provider registry are untouched.
+
 ## Supply-chain security
 
 Assemble-first means intake is security-critical.
@@ -145,6 +158,9 @@ Execution-oriented: no unnecessary approval loops for ordinary reversible edits 
 - `scripts/resolve-capability.mjs` — query a capability against the registry.
 - `scripts/sync-claude-skills.mjs` — mirror canonical skills into the Claude adapter.
 - `scripts/inspect-project.mjs` — snapshot a repo's stack before proposing architecture.
+- `scripts/clean-code-baseline.mjs [--scope <dir>]` — records today's clean-code numbers so the guard reports regressions only.
+- `scripts/lib/cleanCode.mjs` — the shared measurement the guard and the baseline script both call.
+- `.claude/settings.example.json` — opt-in wiring for the two guard hooks.
 - `templates/PROJECT_3JSE.md` — project manifest: experience goal, core-loop contract, required capabilities, selected providers.
 - `templates/ASSET_REGISTRY.example.json` — provenance ledger per asset.
 - `templates/EVIDENCE_REPORT.example.md` — the completion report shape.

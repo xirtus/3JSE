@@ -8,7 +8,7 @@ const src = path.join(root, '.agents/skills');
 // The second is the repo-root .claude/skills tree — only written when the harness is
 // checked out inside the 3JSE monorepo (detected by a sibling pnpm-workspace.yaml).
 // That second mirror is what makes the harness skills apply to packages/* and apps/*
-// work, not just edits under 3JSE_Harness_v0.1/.
+// work, not just edits under 3JSE_Harness_v0.2/.
 const targets = [path.join(root, '.claude/skills')];
 const repoRoot = path.resolve(root, '..');
 if (fs.existsSync(path.join(repoRoot, 'pnpm-workspace.yaml'))) {

@@ -142,7 +142,7 @@ An endless frogger journey into a recursive psychedelic garden — then a full t
 
 ## What the harness incorporates now
 
-The following are *already incorporated* into `3JSE_Harness_v0.1/`:
+The following are *already incorporated* into `3JSE_Harness_v0.2/`:
 
 - **Mechanics registry** (`mechanics.json`) — six new entries: `surf_feel` (3jsurf's measured numbers + scaling laws), `first_person_surf` (breaking-waves' parametric compositing + live knobs), `arcade_racing` (zendrive's demand-capacity model + drift feel), `hop_grammar` (pulsehop's intent-relative input + rhythm), `endless_hopper` (mendalhop's unfairness-free core + time powers + ghost replay), `systemic_sim` (dambeavers' laws: sim-authoritative, systems-not-scripts, gate sentences).
 - **Recipes** — four new: `arcade-racer.md` (zendrive), `musical-hopper.md` (pulsehop), `frogger-endless.md` (mendalhop), `colony-sim.md` (dambeavers); `surf-game.md` updated to cite 3jsurf as its canonical reference implementation and breaking-waves as the first-person variant.

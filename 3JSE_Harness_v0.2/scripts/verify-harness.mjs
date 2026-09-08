@@ -1,5 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import { spawnSync } from 'node:child_process';
 import { listHarnessFiles } from './build-file-index.mjs';
 
 const root = path.resolve(import.meta.dirname, '..');
@@ -11,6 +12,14 @@ const must = [
   'AGENTS.md', 'CLAUDE.md', '3JSE_HARNESS_SPEC.md',
   '.agents/registry/providers.json', '.agents/registry/capabilities.json',
   '.agents/skills/3jse-director/SKILL.md',
+  // Guard rails (adopted from the vibe web-starter-kit, MIT).
+  '.claude/settings.example.json',
+  '.claude/hooks/block-destructive-git.mjs',
+  '.claude/hooks/clean-code-guard.mjs',
+  '.claude/clean-code-baseline.json',
+  'scripts/lib/cleanCode.mjs',
+  'scripts/clean-code-baseline.mjs',
+  'wip/README.md',
 ];
 for (const rel of must) {
   if (!fs.existsSync(path.join(root, rel))) fail('MISSING', rel);
@@ -21,6 +30,15 @@ const registry = {};
 for (const rel of ['providers.json', 'capabilities.json', 'mechanics.json', 'blocked-sources.json']) {
   try {
     registry[rel] = JSON.parse(fs.readFileSync(path.join(root, '.agents/registry', rel), 'utf8'));
+  } catch (e) {
+    fail('INVALID JSON', rel, e.message);
+  }
+}
+
+// 2b. Guard-rail JSON parses.
+for (const rel of ['.claude/settings.example.json', '.claude/clean-code-baseline.json']) {
+  try {
+    JSON.parse(fs.readFileSync(path.join(root, rel), 'utf8'));
   } catch (e) {
     fail('INVALID JSON', rel, e.message);
   }
@@ -91,6 +109,40 @@ if (fs.existsSync(path.join(repoRoot, 'pnpm-workspace.yaml')) && fs.existsSync(c
         fail('REPO MIRROR HAS EXTRA SKILL (not in canonical)', name);
       }
     }
+  }
+}
+
+// 7. Destructive-git guard smoke test: refuses the destructive family, lets the
+//    safe forms and plain prose through. The guard reads a PreToolUse payload on
+//    stdin, exactly as Claude Code sends it; running it as a subprocess keeps
+//    the test honest about the plumbing.
+const guardCases = [
+  // [command, must-deny]
+  ['git checkout -- src/index.ts', true],
+  ['git checkout main', true],
+  ['git restore .', true],
+  ['git clean -fd', true],
+  ['git stash', true],
+  ['git reset --hard HEAD~1', true],
+  ['git switch --force main', true],
+  ['git worktree remove ../other', true],
+  ['X=$(git checkout main)', true],
+  ['git checkout -b feature/x', false],
+  ['git switch -c feature/y', false],
+  ['git stash list', false],
+  ['git reset --soft HEAD~1', false],
+  ['git status', false],
+  ['git log --oneline', false],
+];
+for (const [command, mustDeny] of guardCases) {
+  const res = spawnSync(process.execPath, [path.join(root, '.claude/hooks/block-destructive-git.mjs')], {
+    input: JSON.stringify({ tool_input: { command } }),
+    encoding: 'utf8',
+  });
+  if (res.error) { fail('GUARD FAILED TO RUN', command, res.error.message); continue; }
+  const denied = res.stdout.includes('permissionDecision":"deny');
+  if (denied !== mustDeny) {
+    fail('GUARD MISJUDGED', JSON.stringify(command), `expected ${mustDeny ? 'deny' : 'allow'}, got ${denied ? 'deny' : 'allow'}`);
   }
 }
 

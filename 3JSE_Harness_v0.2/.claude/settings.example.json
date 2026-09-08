@@ -12,24 +12,13 @@
         ]
       }
     ],
-    "Stop": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "node 3JSE_Harness_v0.2/scripts/verify-harness.mjs >/dev/null 2>&1 || echo '3JSE: harness verify FAILED — run `pnpm verify:harness` and fix before finishing.'"
-          }
-        ]
-      }
-    ],
     "PostToolUse": [
       {
         "matcher": "Write|Edit|MultiEdit",
         "hooks": [
           {
             "type": "command",
-            "command": "node tools/hook-asset-provenance.mjs"
+            "command": "node \"$CLAUDE_PROJECT_DIR/3JSE_Harness_v0.2/.claude/hooks/clean-code-guard.mjs\""
           }
         ]
       }

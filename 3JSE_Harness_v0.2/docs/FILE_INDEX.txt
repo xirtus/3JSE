@@ -38,6 +38,10 @@
 .agents/skills/vendor-router/SKILL.md
 .agents/skills/visual-qa/SKILL.md
 .agents/skills/webgpu/SKILL.md
+.claude/clean-code-baseline.json
+.claude/hooks/block-destructive-git.mjs
+.claude/hooks/clean-code-guard.mjs
+.claude/settings.example.json
 .claude/skills/3jse-director/SKILL.md
 .claude/skills/asset-broker/SKILL.md
 .claude/skills/capability-resolver/SKILL.md
@@ -70,10 +74,14 @@ SECURITY.md
 bootstrap-claude-prompt.md
 docs/FILE_INDEX.txt
 scripts/build-file-index.mjs
+scripts/clean-code-baseline.mjs
 scripts/inspect-project.mjs
+scripts/lib/cleanCode.mjs
 scripts/resolve-capability.mjs
 scripts/sync-claude-skills.mjs
 scripts/verify-harness.mjs
 templates/ASSET_REGISTRY.example.json
 templates/EVIDENCE_REPORT.example.md
 templates/PROJECT_3JSE.md
+wip/.gitignore
+wip/README.md

@@ -4,18 +4,18 @@ This repo is **two tracks, one bet** (`docs/HARNESS.md`):
 
 | Track | Where | What |
 |---|---|---|
-| **3JSE Harness** | `3JSE_Harness_v0.1/` | Agent-native development system — reuse doctrine, provider/capability registries, quality gates, evidence rules. Working today. |
+| **3JSE Harness** | `3JSE_Harness_v0.2/` | Agent-native development system — reuse doctrine, provider/capability registries, quality gates, evidence rules. Working today. |
 | **3JSE Engine** | `packages/*`, `apps/editor`, `docs/` | The `@3jse/*` runtime + editor the harness's games converge on. Built in dependency order (`docs/ROADMAP.md`). |
 
 The harness governs how work is done in this repo. It is not scoped to
-`3JSE_Harness_v0.1/` — it applies to every `packages/*` and `apps/*` change too.
+`3JSE_Harness_v0.2/` — it applies to every `packages/*` and `apps/*` change too.
 
 ## Load the constitution first
 
 For any non-trivial task, read in order:
 
-1. `3JSE_Harness_v0.1/AGENTS.md` — canonical instructions: mandatory route, non-negotiables, evidence requirements.
-2. `3JSE_Harness_v0.1/CLAUDE.md` — operating mode: **UNDERSTAND → RESOLVE → ASSEMBLE → BUILD → PLAYTEST → REPAIR → VERIFY**.
+1. `3JSE_Harness_v0.2/AGENTS.md` — canonical instructions: mandatory route, non-negotiables, evidence requirements.
+2. `3JSE_Harness_v0.2/CLAUDE.md` — operating mode: **UNDERSTAND → RESOLVE → ASSEMBLE → BUILD → PLAYTEST → REPAIR → VERIFY**.
 3. `docs/ROADMAP.md` — the phase sequencing contract. Do not start a phase before its prerequisites; do not leave one before its exit criteria are met with evidence.
 4. `BUILD_TASKS.md` — the live task ledger. Update it at the end of every session.
 
@@ -28,7 +28,7 @@ Before implementing any non-trivial system or asset, route through, in order, an
 
 0. Current project implementation — existing working code in the repo always wins.
 1. Current project asset.
-2. Curated provider / shared asset (`3JSE_Harness_v0.1/.agents/registry/providers.json`).
+2. Curated provider / shared asset (`3JSE_Harness_v0.2/.agents/registry/providers.json`).
 3. Proven reference implementation (`docs/REFERENCE_GAMES.md`; code > test > demo > video > screenshot > docs > prose).
 4. Licensed external asset — with recorded provenance and license.
 5. Procedural generation provider.
@@ -61,23 +61,30 @@ pnpm gate          # verify:harness + typecheck + test + editor build
 pnpm verify:harness # deterministic harness self-check only
 ```
 
+## Guard rails
+
+- A `block-destructive-git` PreToolUse hook is **live in this repo**: `git checkout` (without `-b`), `restore`, `clean`, `stash`, `reset --hard`, `switch --force`, and `worktree remove` are refused — safe forms pass. Revert by writing the reverse edit, or commit the work to a branch first. Commit early and often, on a branch — never straight to `main`.
+- Verification captures go in git-ignored `wip/` (`3JSE_Harness_v0.2/wip/`), never `docs/` or commits. The script that produced a measurement is a tool — commit it.
+- Write lessons as you go: product lessons to `docs/`, portable harness lessons to `3JSE_Harness_v0.2/docs/`. Falsified findings, with the number that falsified them, are worth more than successes.
+- Visual evidence is headed-only; system measurements happen in a lab, never a playable scene.
+
 CI: `tools/ci/github-ci.yml` runs `pnpm gate` on push/PR. It lives outside
 `.github/workflows/` until pushed with a `workflow`-scoped credential — see the
 header of that file to activate it.
 
 Every broad task ends with an evidence report
-(`3JSE_Harness_v0.1/templates/EVIDENCE_REPORT.example.md` → `evidence/`):
+(`3JSE_Harness_v0.2/templates/EVIDENCE_REPORT.example.md` → `evidence/`):
 playable loop exercised · build/typecheck · console errors · gameplay test ·
 screenshots · frame-rate/draw-calls · asset/provider ledger · known limitations.
 
 ## Harness track — keep green at all times
 
-Every change under `3JSE_Harness_v0.1/`:
-- regenerate `docs/FILE_INDEX.txt` via `node 3JSE_Harness_v0.1/scripts/build-file-index.mjs`,
-- keep `.agents/skills/` canonical and the two mirrors (`3JSE_Harness_v0.1/.claude/skills/`
+Every change under `3JSE_Harness_v0.2/`:
+- regenerate `docs/FILE_INDEX.txt` via `node 3JSE_Harness_v0.2/scripts/build-file-index.mjs`,
+- keep `.agents/skills/` canonical and the two mirrors (`3JSE_Harness_v0.2/.claude/skills/`
   and repo-root `.claude/skills/`) in agreement — regenerate with
-  `node 3JSE_Harness_v0.1/scripts/sync-claude-skills.mjs`,
+  `node 3JSE_Harness_v0.2/scripts/sync-claude-skills.mjs`,
 - run `pnpm verify:harness`.
 
 The repo-root `.claude/skills/` tree is a generated mirror — **do not hand-edit it**.
-Edit `3JSE_Harness_v0.1/.agents/skills/`, then re-run the sync script.
+Edit `3JSE_Harness_v0.2/.agents/skills/`, then re-run the sync script.
