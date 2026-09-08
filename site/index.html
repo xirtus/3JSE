@@ -162,7 +162,7 @@
     <div class="card">
       <span class="emoji">🕸️</span>
       <h3>3JSE Graph</h3>
-      <p>Full visual scripting for gameplay — not a toy, not materials-only. Compiles to the same IR as hand-written TypeScript.</p>
+      <p>Full visual scripting for gameplay — not a toy, not materials-only. Compiles to the same IR as hand-written TypeScript; the <a href="manual.html#3jse-atlas-full-plan">Atlas plan</a> adds the semantic layer on top.</p>
       <div class="foot">designers connect graphs</div>
     </div>
     <div class="card">
@@ -267,7 +267,7 @@
         <div class="phase"><h3><span class="num">P0</span>Technical experiments</h3><p>De-risk the bets: IR round-trip, ECS-over-Object3D performance, editor shell.</p></div>
         <div class="phase"><h3><span class="num">P1</span>Editor MVP</h3><p>Build a scene visually with zero hand-written code.</p></div>
         <div class="phase"><h3><span class="num">P2</span>Gameplay Engine</h3><p>Components, prefabs, physics, input, saves, animation — a real game.</p></div>
-        <div class="phase"><h3><span class="num">P3</span>3JSE Graph</h3><p>Visual scripting that compiles to the same IR as TypeScript.</p></div>
+        <div class="phase"><h3><span class="num">P3</span>3JSE Graph</h3><p>Visual scripting that compiles to the same IR as TypeScript — the Atlas plan supersedes the node-wiring canvas, keeping the compiler deliverables.</p></div>
         <div class="phase"><h3><span class="num">P4</span>AI-native authoring</h3><p>The Agent API loop — an engine an AI can operate.</p></div>
         <div class="phase"><h3><span class="num">P5</span>Professional tools</h3><p>Terrain, cinematics, VFX graphs, navigation.</p></div>
         <div class="phase"><h3><span class="num">P6</span>Ecosystem</h3><p>Templates, package sharing, multiplayer.</p></div>
@@ -283,7 +283,7 @@
   <div class="section-head">
     <div class="section-kicker">The design manual</div>
     <h2>Every decision. Every bet. Written down.</h2>
-    <p>The complete 24-document design manual — written to be read by humans <em>and</em> by the AI agents that will help build the engine.</p>
+    <p>The complete 29-document design manual — written to be read by humans <em>and</em> by the AI agents that will help build the engine.</p>
   </div>
   <div class="grid-3">
     <a class="card doc-card" href="manual.html#vision"><span class="doc-file">VISION.md</span><span class="emoji">🔭</span><h3>The Vision</h3><p>Why 3JSE exists, the core bet, and what success looks like.</p></a>
@@ -291,11 +291,13 @@
     <a class="card doc-card" href="manual.html#gameplay-ir"><span class="doc-file">GAMEPLAY_IR.md</span><span class="emoji">🧬</span><h3>The Gameplay IR</h3><p>The single representation every frontend compiles to.</p></a>
     <a class="card doc-card" href="manual.html#editor"><span class="doc-file">EDITOR.md</span><span class="emoji">🖥️</span><h3>The Editor</h3><p>All 22 dockable panels, browser or Tauri, one codebase.</p></a>
     <a class="card doc-card" href="manual.html#ai-agent-api"><span class="doc-file">AI_AGENT_API.md</span><span class="emoji">🤖</span><h3>The AI Agent API</h3><p>Observe → plan → act → verify. Trust tiers included.</p></a>
+    <a class="card doc-card" href="manual.html#3jse-atlas-full-plan"><span class="doc-file">3JSE_ATLAS_FULL_PLAN.md</span><span class="emoji">🗺️</span><h3>The Atlas Plan</h3><p>Semantic game atlas, FeelSpec, and the agent-native visual interface — the Blueprint/Verse alternative.</p></a>
+    <a class="card doc-card" href="manual.html#atlas"><span class="doc-file">ATLAS.md</span><span class="emoji">🧭</span><h3>Atlas — Implementation Status</h3><p>The semantic core that's already built: graph compiler, FeelSpec, layout, live knobs.</p></a>
     <a class="card doc-card" href="manual.html#roadmap"><span class="doc-file">ROADMAP.md</span><span class="emoji">🗺️</span><h3>The Roadmap</h3><p>Eight phases, dependency-ordered, from spikes to ecosystem.</p></a>
   </div>
   <div class="cta-band">
     <h3>Read the full manual</h3>
-    <p>24 documents, fully cross-linked, on one page. Physics, rendering, networking, the object model, Verse compatibility, the vendor registry — everything.</p>
+    <p>29 documents, fully cross-linked, on one page. Physics, rendering, networking, the object model, Verse compatibility, the vendor registry, the Atlas plan — everything.</p>
     <a class="btn btn-primary" href="manual.html">📖 Open the design manual</a>
   </div>
 </section>
