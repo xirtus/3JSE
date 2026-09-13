@@ -14,10 +14,7 @@ The invariant under test (plan §38):
 
 | Path | Experiment (plan §) |
 |---|---|
-| `src/types.ts` | Design schema — `WorldSampleState`, `ResponseCardRef`, `SemanticRef` (§2.1) |
-| `src/field.ts` | `FieldChunk` + `WorldField`: sampling, gradient, query, write (§8) |
-| `src/responseCard.ts` | `ResponseCard`, expert basis, `W(state,env)` → weights, projections (§7) |
-| `src/synthetic.ts` | Synthetic cold/warm transition field + deterministic serialization (§16, §32) |
+| `@3jse/field` (promoted) | `WorldSampleState`, `FieldChunk`, `WorldField`, `ResponseCard`, serialization, `FieldOps` (§2.1, §7, §8, §16, §32) |
 | `src/experiments/exp01-schema.ts` | Field schema + headless sampler (§16) |
 | `src/experiments/exp02-dual-resolution.ts` | Visible count ≠ causal count (§17) |
 | `src/experiments/exp03-projection.ts` | Field → projection buffer (§18) |

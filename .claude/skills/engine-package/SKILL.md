@@ -16,7 +16,7 @@ Use when the task is to build or change a `@3jse/*` **engine** package (or the e
    | glTF/GLB import, thumbnails, metadata, character detection | `@3jse/assets` |
    | Project save/load in the `PROJECT_FORMAT.md` tree | `@3jse/project` |
    | Character controller + camera rig | `@3jse/character` |
-   | Animation state machine + blend tree + TwoBoneIK | `@3jse/animation` |
+   | Animation state machine + blend tree + TwoBoneIK + leg-chain foot locking + contact labels + offline foot-slide removal | `@3jse/animation` |
    | Rapier physics integration | `@3jse/physics-rapier` |
    | Save games (tagged-component snapshots) | `@3jse/save` |
    | Spawn points + object pooling | `@3jse/spawning` |
@@ -40,6 +40,7 @@ Use when the task is to build or change a `@3jse/*` **engine** package (or the e
    | Particles/VFX: CPU SoA sim, curves/gradients over life, ParticleEmitter component/system | `@3jse/vfx` |
    | THREE-side render bridges: terrain chunks / foliage InstancedMesh / particle Points from the headless cores | `@3jse/render` |
    | `3jse` CLI: publish (runs @3jse/packaging + esbuild) / info | `@3jse/cli` |
+   | Authoritative causal field: chunks/state channels/response+semantic indices, sampling, serialization, bounded agent FieldOps, World resource | `@3jse/field` |
    | Vendored MIT ecosystem libs (mesh-bvh, troika text, postprocessing, …) | `@3jse/extras` |
    | Vendor registry + fetcher; Tier A wraps (poseidon/gaia/dryad/demiurge) | `@3jse/vendor`, `@3jse/water-poseidon` etc. |
 

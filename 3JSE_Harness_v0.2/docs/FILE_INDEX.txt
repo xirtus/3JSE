@@ -1,3 +1,4 @@
+.DS_Store
 .agents/hooks/post-asset-import.sh
 .agents/hooks/pre-finish.sh
 .agents/recipes/arcade-racer.md

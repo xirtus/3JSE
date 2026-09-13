@@ -494,6 +494,16 @@
       "verifiedBy": "installed-package-json",
       "scope": "workspace-dependency",
       "note": ""
+    },
+    {
+      "name": "genoview-inverse-kinematics",
+      "source": "github.com/orangeduck/GenoView-InverseKinematics",
+      "pinnedCommit": "3b9920c7dd5436c5bc05f045002a64f085c69a9d",
+      "license": "MIT",
+      "licenseNote": "Article 'Inverse Kinematics and Foot Locking' (theorangeduck.com/page/inverse-kinematics-foot-locking, 2026-07-30). Ported (not vendored) into @3jse/animation's legChain/footLocking/contactLabels/offlineFootLock modules; MIT LICENSE read at pinned revision.",
+      "verifiedBy": "human",
+      "scope": "vendor-registry",
+      "tier": "reference"
     }
   ]
 }

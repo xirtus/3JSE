@@ -28,6 +28,40 @@ export {
   type Vec3,
 } from "./retarget.js";
 
+export {
+  solveLegChain,
+  forwardKinematics,
+  makeSkeleton,
+  type BoneTransform,
+  type Skeleton,
+  type LegBoneIndices,
+  type LegChainOptions,
+  type LegChainResult,
+} from "./legChain.js";
+
+export {
+  createFootLockingState,
+  updateFootLockingState,
+  type FootLockingState,
+  type FootLockingParams,
+} from "./footLocking.js";
+
+export {
+  annotateContacts,
+  toeVelocities,
+  thresholdContacts,
+  majorityVote,
+  gaussianSmooth,
+  type ContactAnnotationOptions,
+} from "./contactLabels.js";
+
+export {
+  offlineFootLock,
+  type OfflineFootLockInput,
+  type OfflineFootLockOptions,
+  type OfflineFootLockResult,
+} from "./offlineFootLock.js";
+
 // Registers AnimationController against @3jse/runtime's ComponentRegistry as a side effect —
 // same convention as every other @3jse/* package's builtin components.
 import "./components.js";

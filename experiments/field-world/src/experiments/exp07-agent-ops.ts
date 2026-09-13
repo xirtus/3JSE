@@ -1,106 +1,24 @@
 // Experiment 07 — Bounded agent field ops (plan §22). Agents operate on the field
-// through a small typed command surface (PhysTalk lesson): query / sample /
-// describe / setState / addHeat / addMoisture / applyForce / paintResponse /
-// inspectUncertainty / captureState. No raw buffer access, no `SetTreeOnFire`.
-// Agents describe causes and constraints; the field determines consequences.
+// through a small typed command surface (PhysTalk lesson). `FieldOps` now lives in
+// @3jse/field (promoted after the interface was evidenced by exp01–06); the
+// fire-specific chemistry below stays here as the demo consumer — agents describe
+// causes and constraints; the field determines consequences.
 
 import {
-  AABB,
   cellCount,
-  cellPosition,
   createChunk,
   createWorldField,
-  queryField,
   readChannel,
-  sampleField,
-  serializeChunk,
   writeChannel,
-  writeField,
-  WorldField,
-  WorldSample,
-  Vec3,
-  FieldChunk,
   FIELD_STRIDE,
-} from "../index.js";
+  FieldOps,
+  type AABB,
+  type FieldChunk,
+  type Vec3,
+  type WorldField,
+} from "@3jse/field";
 
-export type FieldOpResult = { cellsWritten: number };
-
-/** Bounded, typed command surface over a WorldField. The only mutation path. */
-export class FieldOps {
-  constructor(readonly field: WorldField) {}
-
-  query(region: AABB, predicate?: (s: WorldSample) => boolean): WorldSample[] {
-    return queryField(this.field, region, predicate ?? (() => true));
-  }
-
-  sample(position: Vec3): WorldSample | null {
-    return sampleField(this.field, position);
-  }
-
-  describe() {
-    const chunk = firstChunk(this.field);
-    let tempSum = 0;
-    let moistureSum = 0;
-    let fuelSum = 0;
-    const n = cellCount(chunk.resolution);
-    for (let i = 0; i < n; i++) {
-      tempSum += readChannel(chunk, "temperature", i);
-      moistureSum += readChannel(chunk, "moisture", i);
-      fuelSum += readChannel(chunk, "fuel", i);
-    }
-    return {
-      cellCount: n,
-      avgTemperature: tempSum / n,
-      avgMoisture: moistureSum / n,
-      avgFuel: fuelSum / n,
-    };
-  }
-
-  setState(region: AABB, op: (s: WorldSample["state"]) => WorldSample["state"]): FieldOpResult {
-    return { cellsWritten: writeField(this.field, region, op) };
-  }
-
-  addHeat(region: AABB, amount: number): FieldOpResult {
-    return this.setState(region, (s) => ({ ...s, temperature: s.temperature + amount }));
-  }
-
-  addMoisture(region: AABB, amount: number): FieldOpResult {
-    return this.setState(region, (s) => ({ ...s, moisture: Math.min(1, s.moisture + amount) }));
-  }
-
-  applyForce(region: AABB, force: Vec3): FieldOpResult {
-    return this.setState(region, (s) => ({ ...s, velocity: force }));
-  }
-
-  paintResponse(region: AABB, paletteId: number): FieldOpResult {
-    const chunk = firstChunk(this.field);
-    let n = 0;
-    const total = cellCount(chunk.resolution);
-    for (let i = 0; i < total; i++) {
-      const p = cellPosition(chunk, i);
-      if (!aabbContains(region, p)) continue;
-      chunk.responseIndex[i] = paletteId;
-      n++;
-    }
-    return { cellsWritten: n };
-  }
-
-  inspectUncertainty() {
-    return { confidence: 1, note: "synthetic field — no inferred priors yet" };
-  }
-
-  captureState() {
-    return serializeChunk(firstChunk(this.field));
-  }
-}
-
-function aabbContains(b: AABB, p: Vec3): boolean {
-  return p[0] >= b.min[0] && p[0] <= b.max[0] && p[1] >= b.min[1] && p[1] <= b.max[1] && p[2] >= b.min[2] && p[2] <= b.max[2];
-}
-
-function firstChunk(field: WorldField): FieldChunk {
-  return [...field.chunks.values()][0]!;
-}
+export { FieldOps };
 
 export interface FireIgnition {
   step: number;
@@ -207,6 +125,10 @@ export function buildForestField(): WorldField {
     writeChannel(chunk, "velocityX", i, 1);
   }
   return createWorldField([chunk]);
+}
+
+function firstChunk(field: WorldField): FieldChunk {
+  return [...field.chunks.values()][0]!;
 }
 
 export function runExp07() {

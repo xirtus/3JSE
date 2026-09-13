@@ -84,6 +84,7 @@ hold the module in-graph) was preserved and re-verified on-screen.
 |---|---|---|---|---|
 | 5.1 | `@3jse/water-poseidon` / `@3jse/terrain-demiurge` / `@3jse/foliage-gaia` / `@3jse/flora-dryad` | partial (pre-existing) — pure generation cores re-exported from vendored MIT upstreams; WebGPU/TSL material + InstancedMesh/chunk-mesher runtime Systems + paint tools **not** built. Sequenced in `docs/ENGINE_GAP_ANALYSIS.md` §6 item 6 (after packaging/audio/UI/material-graph). | `packages/{water-poseidon,terrain-demiurge,foliage-gaia,flora-dryad}` | — |
 | 5.2 | Cinematics/Sequencer, particle/VFX graph, retargeting/IK, full Profiler, replay, automated test framework | **Sequencer + Profiler panels done** — `@3jse/cinematics` (7 tests; external `time` write = seek); editor **Sequencer** panel (live Cinematic list, Play/Pause/scrub bound to the component, track summary, event-marker log; demo `sunSweep` sequence) and **Profiler** panel (real `runtime.getPerf` from `@3jse/agent` fed by the live render loop — avg/min/max ms, est FPS, scene census, per-component usage). `@3jse/replay` + TwoBoneIK pre-existing. VFX-graph + animation-retargeting UI still todo. | `packages/cinematics`, `apps/editor/src/panels/{SequencerPanel,ProfilerPanel}.tsx` | (uncommitted) |
+| 5.3 | IK foot locking — leg-chain solver + cubic-inertialization foot locking + contact-time annotation + offline (PBD) foot-slide removal, ported into `@3jse/animation` (theorangeduck "Inverse Kinematics and Foot Locking", MIT, pinned `3b9920c`) | **done** — `@3jse/animation` 41 tests (+18 this session: legChain 4, footLocking 5, contactLabels 5, offlineFootLock 2, plus the field package's own 6); headless, layered-on-top utility convention (like TwoBoneIK/retarget); provenance in `packages/vendor/licenses.json` | `packages/animation/src/{legChain,footLocking,contactLabels,offlineFootLock}.ts`; `evidence/ik-foot-locking-and-field-2026-09-13.md` | (uncommitted) |
 
 ---
 
@@ -192,10 +193,10 @@ Executed in dependency order on branch `gaussian-causal-field`.
 | C.10 | Experiment 06 — emergent forest fire: downwind spot fire from ember + state + response, with lineage; no `SetTreeOnFire` | done | `exp06-fire.ts`; 4 tests | `5f5be4e` |
 | C.11 | Experiment 07 — bounded agent field ops (`FieldOps`: query/sample/describe/setState/addHeat/addMoisture/applyForce/paintResponse/inspectUncertainty/captureState), no raw buffer | done | `exp07-agent-ops.ts`; 5 tests | `f2f3b67` |
 | C.12 | Game integration (Experiment 08) into a real Xirtus Mountain sector | deferred | no mountain sector exists in this repo yet; sequenced after prior gates per plan §23 | — |
-| C.x | `@3jse/field` package promotion | deferred | promote only when experiment interface is evidenced, not guessed (plan §34) | — |
+| C.x | `@3jse/field` package promotion | **done** — promoted the evidenced core (types/field/responseCard/synthetic + `FieldOps`) to `@3jse/field` (6 tests); `experiments/field-world` now imports the core from the package (single source of truth, 27 tests still green); 4 superseded bench files removed (content preserved in the package + git history) | `evidence/ik-foot-locking-and-field-2026-09-13.md`; `packages/field/` | (uncommitted) |
+| C.13 | `@3jse/field` runtime integration — World resource (`CausalField`) + `attachCausalField`/`getCausalField` + `@3jse/field` entry in `@3jse/plugins` catalog + engine-package skill rung-0 row | **done** — `World` holds the field as a resource; a test attaches/samples/mutates via `FieldOps` against a real `@3jse/runtime` World | `packages/field/src/{worldResource,field.test}.ts`; `packages/plugins/src/catalog.ts` | (uncommitted) |
 
 **Track gate:** `pnpm gate` (verify:harness + typecheck + test + editor build) exits 0;
-`@3jse/field-world-experiment` 27/27 tests; evidence
-`evidence/field-world-experiments-2026-09-08.md`. Remaining renderer-dependent work:
-a Gaussian backend (Three-native GS / Brush) to make Experiment 03 a headed visual
-gate.
+`@3jse/field` 6/6 + `@3jse/field-world-experiment` 27/27 tests. Remaining renderer-dependent work:
+a Gaussian backend (Three-native GS / Brush) behind the plan §6.2 `GaussianBackend` seam to make
+Experiment 03 a headed visual gate — deliberately not built (plan §35.1).
