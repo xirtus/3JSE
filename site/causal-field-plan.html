@@ -1,0 +1,933 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>3JSE · Causal Field Architecture — Gaussian Plan</title>
+<meta name="description" content="3JSE does not build a Gaussian physics engine. It builds a multiresolution causal field whose baked response coefficients project into Gaussians, Rapier, continuum, audio, semantics and agents." />
+<style>
+:root {
+  --c-bg: #0c0d11;
+  --c-surface: #15171d;
+  --c-surface2: #1a1d26;
+  --c-border: #262b36;
+  --c-border2: #333a49;
+  --c-text: #d7d9de;
+  --c-dim: #b0b4ba;
+  --c-faint: #6d7686;
+  --cyan: #22d3ee;
+  --violet: #818cf8;
+  --magenta: #e879f9;
+  --ok: #34d399;
+  --warn: #e0a83e;
+  --bad: #e05a5a;
+  --grad: linear-gradient(90deg, #22d3ee, #818cf8 50%, #e879f9);
+  --grad-soft: linear-gradient(135deg, rgba(34,211,238,.14), rgba(129,140,248,.14) 50%, rgba(232,121,249,.14));
+  --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --radius: 14px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; scroll-padding-top: 72px; }
+body {
+  background: var(--c-bg);
+  color: var(--c-text);
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+::selection { background: rgba(129,140,248,.35); }
+a { color: var(--cyan); text-decoration: none; }
+a:hover { color: #8be9f6; }
+h1, h2, h3, h4 { line-height: 1.2; letter-spacing: -0.015em; color: #f2f4f8; }
+code, .mono { font-family: var(--mono); }
+code {
+  font-size: 12.5px;
+  background: var(--c-surface2);
+  border: 1px solid var(--c-border);
+  border-radius: 5px;
+  padding: 1px 6px;
+  color: #9fd8ff;
+}
+pre {
+  background: #0a0c12;
+  border: 1px solid var(--c-border);
+  border-radius: 10px;
+  padding: 14px 16px;
+  overflow-x: auto;
+  margin: 14px 0;
+}
+pre code { background: none; border: none; padding: 0; color: #aeb8cc; font-size: 12.3px; line-height: 1.55; display: block; }
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: var(--c-bg); }
+::-webkit-scrollbar-thumb { background: #2c3242; border-radius: 6px; border: 2px solid var(--c-bg); }
+
+.site-header {
+  position: fixed; inset: 0 0 auto 0; z-index: 100;
+  background: rgba(12,13,17,.88);
+  backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--c-border);
+}
+.hdr {
+  max-width: 1360px; margin: 0 auto;
+  display: flex; align-items: center; gap: 16px;
+  padding: 0 20px; height: 56px;
+}
+.brand { display: flex; align-items: center; gap: 10px; color: var(--c-text); }
+.brand-mark {
+  width: 22px; height: 22px; border-radius: 6px;
+  background: var(--grad);
+}
+.brand-name { font-weight: 800; font-size: 17px; letter-spacing: .04em; }
+.brand-tag { font-size: 12px; color: var(--c-faint); border-left: 1px solid var(--c-border2); padding-left: 10px; }
+.nav { display: flex; gap: 2px; margin-left: auto; flex-wrap: wrap; }
+.nav a {
+  padding: 5px 10px; border-radius: 8px;
+  color: var(--c-dim); font-size: 12.5px; font-weight: 500;
+}
+.nav a:hover { color: var(--c-text); background: var(--c-surface2); }
+
+.layout {
+  max-width: 1360px; margin: 0 auto;
+  padding: 78px 20px 60px;
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  gap: 28px;
+  align-items: start;
+}
+.side {
+  position: sticky; top: 72px;
+  max-height: calc(100vh - 88px);
+  overflow-y: auto;
+  padding-right: 4px;
+}
+.side h3 {
+  font-family: var(--mono); font-size: 10.5px; letter-spacing: .18em;
+  text-transform: uppercase; color: var(--c-faint);
+  margin: 16px 0 6px; padding-left: 4px;
+}
+.side a {
+  display: block; padding: 4px 10px; border-radius: 7px;
+  color: var(--c-dim); font-size: 13px; border-left: 2px solid transparent;
+}
+.side a:hover, .side a.active {
+  color: var(--c-text); background: var(--c-surface2); border-left-color: var(--violet);
+}
+
+.main { min-width: 0; }
+.hero-frame {
+  border: 1px solid var(--c-border); border-radius: var(--radius);
+  background: var(--c-surface); overflow: hidden;
+  margin-bottom: 28px;
+  box-shadow: 0 30px 80px rgba(0,0,0,.45);
+}
+.frame-tabs {
+  display: flex; align-items: center; gap: 4px;
+  padding: 7px 10px; border-bottom: 1px solid var(--c-border);
+}
+.win-dots { display: flex; gap: 6px; margin-right: 10px; }
+.win-dots i { width: 11px; height: 11px; border-radius: 50%; display: block; }
+.win-dots i:nth-child(1) { background: #e05a5a; }
+.win-dots i:nth-child(2) { background: #e0a83e; }
+.win-dots i:nth-child(3) { background: #34d399; }
+.tab {
+  font-size: 12px; font-weight: 600; padding: 4px 12px; border-radius: 7px;
+  color: var(--c-text); background: var(--c-surface2); box-shadow: inset 0 0 0 1px var(--c-border);
+}
+.tab::before {
+  content: ""; display: inline-block; width: 7px; height: 7px; border-radius: 2px;
+  background: var(--grad); margin-right: 7px;
+}
+.tab-right { margin-left: auto; font-size: 11.5px; color: var(--c-faint); font-family: var(--mono); }
+.hero-body {
+  padding: 42px 36px 32px;
+  background:
+    radial-gradient(900px 320px at 15% -10%, rgba(34,211,238,.16), transparent 60%),
+    radial-gradient(700px 280px at 90% 110%, rgba(232,121,249,.12), transparent 55%),
+    var(--c-surface);
+}
+.kicker {
+  font-family: var(--mono); font-size: 12px; letter-spacing: .28em;
+  color: var(--cyan); text-transform: uppercase; margin-bottom: 14px;
+}
+.hero-body h1 { font-size: clamp(30px, 5vw, 52px); font-weight: 800; }
+.grad {
+  background: var(--grad);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.hero-sub { margin-top: 14px; max-width: 760px; color: var(--c-dim); font-size: 17.5px; }
+.badges { margin-top: 22px; display: flex; gap: 8px; flex-wrap: wrap; }
+.badges span {
+  font-family: var(--mono); font-size: 11.5px; color: var(--c-faint);
+  border: 1px solid var(--c-border); background: rgba(21,23,29,.75);
+  padding: 4px 10px; border-radius: 999px;
+}
+.badges span b { color: var(--c-dim); font-weight: 600; }
+.frame-status {
+  display: flex; align-items: center; gap: 18px; flex-wrap: wrap;
+  padding: 8px 14px; border-top: 1px solid var(--c-border);
+  font-family: var(--mono); font-size: 11.5px; color: var(--c-faint);
+}
+.ok { color: var(--ok); }
+
+.section { margin: 48px 0 8px; scroll-margin-top: 76px; }
+.section-kicker {
+  font-family: var(--mono); font-size: 11.5px; letter-spacing: .26em;
+  text-transform: uppercase; color: var(--cyan); margin-bottom: 8px;
+}
+.section h2 { font-size: clamp(24px, 3.2vw, 34px); font-weight: 800; margin-bottom: 10px; }
+.lede { color: var(--c-dim); max-width: 820px; margin-bottom: 18px; }
+
+.panel {
+  border: 1px solid var(--c-border); border-radius: var(--radius);
+  background: var(--c-surface); overflow: hidden; margin: 16px 0 22px;
+}
+.panel-head {
+  display: flex; align-items: center; gap: 10px;
+  padding: 11px 16px; border-bottom: 1px solid var(--c-border);
+  background: linear-gradient(180deg, var(--c-surface2), var(--c-surface));
+}
+.panel-head .dot { width: 9px; height: 9px; border-radius: 3px; background: var(--grad); flex: none; }
+.pname { font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--c-dim); }
+.pchip { margin-left: auto; font-family: var(--mono); font-size: 11px; color: var(--c-faint); border: 1px solid var(--c-border); border-radius: 6px; padding: 2px 8px; }
+.panel-body { padding: 22px 24px 24px; }
+.panel-body p { color: var(--c-dim); margin-bottom: 12px; }
+.panel-body p:last-child { margin-bottom: 0; }
+
+.pull {
+  border-left: 3px solid; border-image: linear-gradient(180deg, #22d3ee, #818cf8, #e879f9) 1;
+  padding: 16px 22px; margin: 18px 0;
+  background: var(--grad-soft); border-radius: 0 12px 12px 0;
+  font-size: 18.5px; font-weight: 600; color: #eef1f7;
+}
+.pull small { display: block; margin-top: 8px; font-size: 12.5px; font-weight: 500; color: var(--c-faint); font-family: var(--mono); }
+
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.card {
+  border: 1px solid var(--c-border); border-radius: 12px;
+  background: var(--c-surface2); padding: 16px 18px;
+}
+.card h3 { font-size: 15.5px; margin-bottom: 6px; }
+.card p, .card li { font-size: 13.5px; color: var(--c-dim); }
+.card .foot { margin-top: 10px; font-family: var(--mono); font-size: 11px; color: var(--c-faint); }
+
+.table-scroll { overflow-x: auto; border-radius: 10px; }
+table { width: 100%; border-collapse: collapse; font-size: 13.5px; min-width: 640px; }
+th, td { padding: 10px 12px; text-align: left; border-bottom: 1px solid var(--c-border); vertical-align: top; }
+thead th {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--c-faint); background: var(--c-surface2);
+}
+td { color: var(--c-dim); }
+td.hl { color: var(--c-text); }
+.yes { color: var(--ok); font-weight: 700; }
+.no { color: var(--bad); }
+.mid { color: var(--warn); }
+
+.flow {
+  font-family: var(--mono); font-size: 12.5px; line-height: 1.55;
+  color: #aeb8cc; background: #0a0c12; border: 1px solid var(--c-border);
+  border-radius: 10px; padding: 16px 18px; white-space: pre; overflow-x: auto;
+}
+.pill {
+  display: inline-block; font-family: var(--mono); font-size: 10.5px;
+  padding: 2px 7px; border-radius: 999px; border: 1px solid var(--c-border);
+  color: var(--c-faint); margin-right: 4px;
+}
+.pill.a { color: #9feaf6; border-color: rgba(34,211,238,.35); }
+.pill.b { color: #c4b5fd; border-color: rgba(129,140,248,.35); }
+.pill.r { color: #f0abfc; border-color: rgba(232,121,249,.35); }
+
+.timeline { position: relative; padding-left: 28px; }
+.timeline::before {
+  content: ""; position: absolute; left: 8px; top: 8px; bottom: 8px; width: 2px;
+  background: linear-gradient(180deg, #22d3ee, #818cf8 55%, #e879f9); opacity: .55;
+}
+.phase { position: relative; padding: 10px 0 16px 8px; }
+.phase::before {
+  content: ""; position: absolute; left: -26px; top: 16px;
+  width: 12px; height: 12px; border-radius: 50%;
+  background: var(--c-bg); border: 3px solid var(--violet);
+}
+.phase h3 { font-size: 16px; margin-bottom: 4px; }
+.phase .num { font-family: var(--mono); font-size: 12px; color: var(--c-faint); margin-right: 8px; }
+.phase p, .phase li { font-size: 14px; color: var(--c-dim); }
+
+.note {
+  border: 1px solid var(--c-border); border-radius: 10px;
+  background: var(--grad-soft); padding: 14px 18px; font-size: 14.5px; color: var(--c-dim);
+}
+.note b { color: var(--c-text); }
+
+ul.clean { padding-left: 18px; color: var(--c-dim); }
+ul.clean li { margin: 5px 0; }
+.site-footer {
+  border-top: 1px solid var(--c-border); margin-top: 60px; background: var(--c-surface);
+}
+.foot-inner {
+  max-width: 1360px; margin: 0 auto; padding: 22px 20px;
+  display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+  font-size: 13px; color: var(--c-faint);
+}
+
+@media (max-width: 980px) {
+  .layout { grid-template-columns: 1fr; }
+  .side { position: static; max-height: none; display: grid; grid-template-columns: 1fr 1fr; }
+  .grid-4, .grid-3 { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 640px) {
+  .grid-2, .grid-3, .grid-4, .side { grid-template-columns: 1fr; }
+  .hero-body { padding: 28px 18px; }
+  .brand-tag { display: none; }
+}
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="hdr">
+    <a class="brand" href="#top">
+      <span class="brand-mark"></span>
+      <span class="brand-name">3JSE</span>
+      <span class="brand-tag">Causal Field · Gaussian Plan</span>
+    </a>
+    <nav class="nav">
+      <a href="#invention">Invention</a>
+      <a href="#element">Element</a>
+      <a href="#join">Join</a>
+      <a href="#study">Study</a>
+      <a href="#demos">Demos</a>
+      <a href="#harness">Harness</a>
+    </nav>
+  </div>
+</header>
+
+<div class="layout" id="top">
+  <aside class="side">
+    <h3>Thesis</h3>
+    <a href="#invention">What 3JSE adds</a>
+    <a href="#not-this">What we will not build</a>
+    <a href="#realities">Two realities</a>
+    <h3>Primitive</h3>
+    <a href="#element">ResponseElement</a>
+    <a href="#weights">State-dependent weights</a>
+    <a href="#pyramid">Resolution pyramid</a>
+    <a href="#gltf">glTF extension</a>
+    <h3>Research</h3>
+    <a href="#join">Four-project join</a>
+    <a href="#scorecard">Scorecard</a>
+    <a href="#donors">Donor map</a>
+    <h3>Build</h3>
+    <a href="#halves">Compiler / Evaluator</a>
+    <a href="#study">Study order</a>
+    <a href="#demos">Three demos</a>
+    <a href="#harness">Harness wiring</a>
+    <a href="#packages">Packages</a>
+    <a href="#later">After it works</a>
+    <a href="#gates">Gates</a>
+  </aside>
+
+  <article class="main">
+    <div class="hero-frame">
+      <div class="frame-tabs">
+        <span class="win-dots"><i></i><i></i><i></i></span>
+        <span class="tab">Viewport · Causal Field</span>
+        <span class="tab-right">docs / FIELD · 2026-09-08</span>
+      </div>
+      <div class="hero-body">
+        <div class="kicker">Stop accumulating splat papers</div>
+        <h1>3JSE does not ship a Gaussian physics engine.<br /><span class="grad">It ships a response-function field.</span></h1>
+        <p class="hero-sub">
+          Gaussian splats are the spectacular projection of hidden state — not the state itself.
+          The invention is a baked material response \(R(\text{state}, \text{environment}, \text{direction})\)
+          evaluated on a coarse field and projected into photons, contact, language queries and vendor FX.
+        </p>
+        <div class="badges">
+          <span><b>Status</b> plan lock</span>
+          <span><b>Join</b> OmniPhysGS + PIDG + PhysTalk + FieryGS</span>
+          <span><b>Carrier</b> Feature Splatting / LangSplat V2</span>
+          <span><b>Demos</b> snow · trail · fire</span>
+          <span><b>Runtime</b> WebGPU / TS · no CUDA</span>
+        </div>
+      </div>
+      <div class="frame-status">
+        <span class="ok">● thesis stable</span>
+        <span>SH = appearance only</span>
+        <span>field ≠ splat count</span>
+        <span>agent writes field ops</span>
+        <span style="margin-left:auto">GPL-3.0 engine · Apache/MIT donors</span>
+      </div>
+    </div>
+
+    <section class="section" id="invention">
+      <div class="section-kicker">01 · Invention</div>
+      <h2>The one sentence that survives three review passes</h2>
+      <p class="lede">
+        Copilot found the adjacency graph. ChatGPT named the join. The papers confirm the pieces exist separately.
+        3JSE’s contribution is the product of those pieces as an engine abstraction — not another 3DGS paper.
+      </p>
+      <div class="pull">
+        Build a multiresolution causal field whose live state and baked response coefficients project into Gaussians, continuum simulation, Rapier, audio, semantics and AI.
+        <small>Gaussian splatting makes the visible projection practical. The field is the primitive.</small>
+      </div>
+      <div class="grid-2">
+        <div class="card">
+          <h3>What already exists</h3>
+          <ul class="clean">
+            <li>Constitutive <em>mixtures</em> on Gaussians (OmniPhysGS)</li>
+            <li>Time-varying scalars under a momentum residual (PIDG)</li>
+            <li>Language → physics proxies → splat skin (PhysTalk)</li>
+            <li>Separate combustion grid → fire/smoke/char (FieryGS)</li>
+            <li>Cheap semantic latents on the kernel (Feature Splatting / LangSplat V2)</li>
+            <li>Feed-forward \(E,\nu,\rho\) volumes (VoMP)</li>
+            <li>Live WebGPU buffers (Brush) and live mutate (Playground)</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>What nobody generalized</h3>
+          <ul class="clean">
+            <li>A compact <code>R(state, env, direction)</code> as a first-class type</li>
+            <li>Expert <em>weights that are functions of live state</em></li>
+            <li>One field update → visual + mechanical + semantic + acoustic</li>
+            <li>Dual resolution as a law, not a paper trick</li>
+            <li>Agent verbs that write field state, never render objects</li>
+            <li>Offline CUDA compilers vs a tiny web evaluator</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="not-this">
+      <div class="section-kicker">02 · Non-goals</div>
+      <h2>What we will not build</h2>
+      <div class="panel">
+        <div class="panel-head"><span class="dot"></span><span class="pname">Refuse list</span><span class="pchip">harness doctrine</span></div>
+        <div class="panel-body">
+          <div class="table-scroll">
+            <table>
+              <thead><tr><th>Temptation</th><th>Why it dies</th></tr></thead>
+              <tbody>
+                <tr><td class="hl">“3JSE supports Gaussian splats”</td><td>Names the renderer. Agents will put state on kernels again.</td></tr>
+                <tr><td class="hl">A 3JSE snow / fire / mud system</td><td>Sixteen gameplay systems. The field is one system with many cards.</td></tr>
+                <tr><td class="hl">Infer physics from SH every frame</td><td>Orange is fire, a lamp, sunset, or plastic. Appearance ≠ cause.</td></tr>
+                <tr><td class="hl">One particle per Gaussian</td><td>Suicidal. GASP / VR-GS / FieryGS all refuse this.</td></tr>
+                <tr><td class="hl">Video diffusion or a VLM in the player</td><td>Compiler only. Runtime is <code>state → R → project</code>.</td></tr>
+                <tr><td class="hl">Fork Three.js or fight Babylon on rendering</td><td>Three.js remains the renderer. Splats are a view backend.</td></tr>
+                <tr><td class="hl">Replace Rapier with MPM</td><td>Rapier stays for rigid / character / vehicle. Continuum is a second backend.</td></tr>
+                <tr><td class="hl"><code>if (t &gt; 0) material = SLUSH</code></td><td>That is the prefab world we are leaving.</td></tr>
+                <tr><td class="hl">Closed SplatStroll as a dependency</td><td>Study GroundField behavior. Write our own. No license.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="realities">
+      <div class="section-kicker">03 · Dual reality</div>
+      <h2>Phenomenal world and causal world, co-located</h2>
+      <p class="lede">A game already has two synchronized realities. Splats become interesting when they are the bridge — not when they are another asset type.</p>
+      <div class="flow">WORLD STATE
+        │
+   FIELD / CAUSAL LAYER     ← ResponseElement cells
+        │
+  ─────────────┬─────────────
+        │                     │
+ PHYSICS PROJECTION     VISUAL PROJECTION
+        │                     │
+ Rapier / SDF / SVO      Gaussians / Mesh
+ Poseidon / Tiamat       Gaia / Dryad / VFX
+        │                     │
+ collision &amp; logic          photons
+        \                     /
+          PLAYER EXPERIENCE</div>
+      <p class="lede" style="margin-top:16px">Spherical harmonics stay view-dependent radiance. The same <em>basis idea</em> can encode directional heat, wind response, fracture susceptibility — as extra coefficient tables, not as a misreading of RGB.</p>
+    </section>
+
+    <section class="section" id="element">
+      <div class="section-kicker">04 · Primitive</div>
+      <h2>ResponseElement — not “Gaussian with more attributes”</h2>
+      <div class="panel">
+        <div class="panel-head"><span class="dot"></span><span class="pname">@3jse/field</span><span class="pchip">IR</span></div>
+        <div class="panel-body">
+<pre><code>interface ResponseElement {
+  // identity
+  semantic: SemanticLatent
+  materialPrior: MaterialDistribution
+  uncertainty: Uncertainty
+
+  // slowly changing or baked
+  response: ResponseCoefficients   // palette index + small latent
+
+  // rapidly changing
+  state: {
+    temperature: number
+    moisture: number
+    density: number
+    strain: Tensor
+    velocity: Vector3
+    phase: number
+    fuel: number
+  }
+
+  // projections (bindings, not copies of the world)
+  visualBinding: VisualBinding     // splat cluster / mesh / vendor FX
+  physicsBinding: PhysicsBinding   // Rapier collider / MPM subset
+}</code></pre>
+          <p>The revolutionary member is <code>response</code>. Not <code>friction = 0.7</code>. Not even <code>E, ν, ρ</code> as the whole story. A function:</p>
+<pre><code>R(state, environment, direction) → {
+  visual:     { sh, opacity, emission, covariance }
+  mechanical: { friction, stiffness, cohesion, viscosity }
+  chemical:   { ignition, burnRate, smokeYield }
+  acoustic:   { absorption, impact }
+  semantic:   { affordances }
+}</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="weights">
+      <div class="section-kicker">05 · Manifold walk</div>
+      <h2>Steal OmniPhysGS’s experts. Make the weights a function of state.</h2>
+      <p class="lede">Do not search for one universal constitutive equation. Keep a small behavior basis. The 3JSE extension — the part that is not in OmniPhysGS — is that mixture weights move when the field moves.</p>
+      <div class="grid-2">
+        <div class="card">
+          <h3>Runtime expert basis (four, not twelve)</h3>
+          <p>Elastic · Granular · Cohesive · Fluid-like</p>
+          <p class="foot">Plastic / brittle / porous / viscous fold into these or wait for a second card generation. Player runtime does not host 12 networks.</p>
+        </div>
+        <div class="card">
+          <h3>Baked walker</h3>
+<pre><code>weights = W(
+  temperature,
+  moisture,
+  pressure,
+  density,
+  phase,
+  strain
+)</code></pre>
+          <p class="foot">W is fitted offline (compiler). Evaluated every tick (evaluator).</p>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-head"><span class="dot"></span><span class="pname">Snow walk — no materialId swap</span><span class="pchip">demo A target</span></div>
+        <div class="panel-body">
+          <div class="table-scroll">
+            <table>
+              <thead><tr><th>State</th><th>Granular</th><th>Cohesive</th><th>Fluid</th><th>What the player sees / feels</th></tr></thead>
+              <tbody>
+                <tr><td class="hl">−15 °C dry</td><td>↑</td><td>↓</td><td>~0</td><td>Powder, high scatter, low cohesion, plume</td></tr>
+                <tr><td class="hl">−1 °C</td><td>↓</td><td>↑</td><td>slight</td><td>Packed / wet, clump, more drag</td></tr>
+                <tr><td class="hl">+2 °C</td><td>↓↓</td><td>↑</td><td>↑↑</td><td>Slush, translucency, sink, spray</td></tr>
+                <tr><td class="hl">refreeze</td><td>low</td><td>crust</td><td>0</td><td>Ice skin, bright spec, low grip</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="pyramid">
+      <div class="section-kicker">06 · Scale law</div>
+      <h2>Layers do not share a resolution</h2>
+      <p class="lede">GASP grouping + VR-GS two-level embedding + FieryGS combustion grid. This is not optional.</p>
+      <div class="table-scroll">
+        <table>
+          <thead><tr><th>Layer</th><th>Order of magnitude</th><th>Job</th><th>Donor pattern</th></tr></thead>
+          <tbody>
+            <tr><td class="hl">Visual Gaussians</td><td>10⁷</td><td>Photons</td><td>Brush / Three / SuperSplat-class</td></tr>
+            <tr><td class="hl">Semantic clusters</td><td>10⁵</td><td><code>query("dry grass")</code></td><td>LangSplat V2 dict · Grouping</td></tr>
+            <tr><td class="hl">Causal field cells</td><td>10⁵ or fewer</td><td>State + R</td><td>WorldSample</td></tr>
+            <tr><td class="hl">Geometry / GroundField</td><td>10⁴–10⁵</td><td>Walk, walls, stairs</td><td>SplatStroll behavior · GOF/2DGS</td></tr>
+            <tr><td class="hl">Active simulation</td><td>10³–10⁴</td><td>Rapier + continuum subset</td><td>GASP reps</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section" id="gltf">
+      <div class="section-kicker">07 · Container</div>
+      <h2>KHR_gaussian_splatting + EXT_xirtus_causal_field</h2>
+      <p class="lede">No <code>.xirtussplat</code>. Khronos already allows extra attributes. Store indices, not 40 floats per Gaussian.</p>
+      <div class="grid-2">
+        <div class="card">
+          <h3>Per Gaussian</h3>
+<pre><code>POSITION
+SCALE
+ROTATION
+OPACITY
+SH
+XIRTUS:MATERIAL_INDEX
+XIRTUS:SEMANTIC_INDEX
+XIRTUS:CAUSAL_CELL
+XIRTUS:DYNAMIC_GROUP
+XIRTUS:RESPONSE_INDEX</code></pre>
+        </div>
+        <div class="card">
+          <h3>Shared tables</h3>
+<pre><code>ResponsePalette[17] = {
+  materialHint: "wet_snow",
+  W: /* baked walker */,
+  optical, mechanical,
+  thermal, moisture,
+  combustion, acoustic
+}
+
+WorldSample[cell] = { T, θ, … }</code></pre>
+          <p class="foot">LangSplat V2 already proved the dictionary trick for language. Same law for response.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="join">
+      <div class="section-kicker">08 · Adjacency</div>
+      <h2>The four-project join, plus the carrier</h2>
+      <div class="grid-2">
+        <div class="card">
+          <h3>OmniPhysGS <span class="pill a">ICLR 2025</span></h3>
+          <p>12-expert constitutive mix per Gaussian. Material is a location in behavior space. Mix is <em>static after training</em>.</p>
+          <p class="foot">Steal the basis. Do not ship the trainer.</p>
+        </div>
+        <div class="card">
+          <h3>PIDG <span class="pill a">AAAI 2026</span></h3>
+          <p>Lagrangian point, time-varying \(E,\nu,\rho\), Cauchy momentum residual. Closest “field evolves.”</p>
+          <p class="foot">Steal the scalars. Do <b>not</b> set splat count = particle count.</p>
+        </div>
+        <div class="card">
+          <h3>PhysTalk <span class="pill b">arXiv 2512.24986</span></h3>
+          <p>LLM emits code against physics proxies. Viewport is witness. Matches harness doctrine.</p>
+          <p class="foot">Steal the verb surface. Genesis is not the 3JSE backend.</p>
+        </div>
+        <div class="card">
+          <h3>FieryGS <span class="pill r">ICLR 2026 · Apache-2.0</span></h3>
+          <p>MLLM paint + volumetric combustion grid ≠ splat count + project fire/smoke/char. Public repo: <a href="https://github.com/PKU-VCL-Geometry/FieryGS">PKU-VCL-Geometry/FieryGS</a> — audit completeness before any copy.</p>
+          <p class="foot">Steal the loop. Combustion is one card, not a product.</p>
+        </div>
+      </div>
+      <p class="lede" style="margin-top:12px">Feature Splatting / LangSplat V2 supply the semantic carrier and the compression lesson: 32-D (or a dictionary) beats 768-D per Gaussian.</p>
+    </section>
+
+    <section class="section" id="scorecard">
+      <div class="section-kicker">09 · Scorecard</div>
+      <h2>Corrected grading (Copilot table, fixed)</h2>
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th>Work</th>
+              <th>State channel</th>
+              <th>Response coeff</th>
+              <th>Stepper</th>
+              <th>Field ≠ splat</th>
+              <th>Agent causality</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="hl">OmniPhysGS</td>
+              <td class="mid">Partial (frozen mix)</td>
+              <td class="yes">Mix weights</td>
+              <td class="yes">MPM</td>
+              <td class="yes">MPM family</td>
+              <td class="no">Trainer only</td>
+            </tr>
+            <tr>
+              <td class="hl">PIDG</td>
+              <td class="yes">ρ,E,ν(t)</td>
+              <td class="mid">Time-varying scalars</td>
+              <td class="mid">Residual / PINN</td>
+              <td class="no">1:1 coupling</td>
+              <td class="no">Per-seq opt</td>
+            </tr>
+            <tr>
+              <td class="hl">PhysTalk</td>
+              <td class="mid">Genesis particles</td>
+              <td class="no">—</td>
+              <td class="yes">Genesis</td>
+              <td class="yes">Proxies</td>
+              <td class="yes">Yes</td>
+            </tr>
+            <tr>
+              <td class="hl">FieryGS</td>
+              <td class="yes">T, fuel, smoke</td>
+              <td class="no">Fixed rules</td>
+              <td class="yes">Combustion grid</td>
+              <td class="yes">Strongest</td>
+              <td class="mid">Authoring MLLM</td>
+            </tr>
+            <tr>
+              <td class="hl">3JSE target</td>
+              <td class="yes">WorldSample</td>
+              <td class="yes">W(state) + palette</td>
+              <td class="yes">Field + Rapier</td>
+              <td class="yes">Law</td>
+              <td class="yes">field.* verbs</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section" id="donors">
+      <div class="section-kicker">10 · Donors</div>
+      <h2>Everything else is a compiler, a buffer, or infra</h2>
+      <div class="table-scroll">
+        <table>
+          <thead><tr><th>Project</th><th>Role</th><th>Tier</th></tr></thead>
+          <tbody>
+            <tr><td class="hl">VoMP / AdaVoMP</td><td>Mechanical compiler: volumetric \(E,\nu,\rho\). Not fire or snow grain.</td><td><span class="pill b">authoring</span></td></tr>
+            <tr><td class="hl">GaussianProperty / PhysGS</td><td>VLM / Bayesian property paint + uncertainty</td><td><span class="pill b">authoring</span></td></tr>
+            <tr><td class="hl">Brush + brush-js</td><td>Apache-2.0 WebGPU train + zero-copy GPUBuffers</td><td><span class="pill a">capture</span></td></tr>
+            <tr><td class="hl">Playground</td><td>MIT live rewrite of pos / cov / color</td><td><span class="pill a">mutate proto</span></td></tr>
+            <tr><td class="hl">GASP</td><td>Black-box physics + hierarchy</td><td><span class="pill a">adapter</span></td></tr>
+            <tr><td class="hl">PhysGaussian / warp-mpm</td><td>WS² reference. Pattern port only</td><td><span class="pill r">reference</span></td></tr>
+            <tr><td class="hl">MatSpray / GI-GS</td><td>PBR / relight projection</td><td><span class="pill b">optical</span></td></tr>
+            <tr><td class="hl">3DGRUT</td><td>CUDA hybrid RT. Not web runtime</td><td><span class="pill r">watch</span></td></tr>
+            <tr><td class="hl">GOF / 2DGS</td><td>Collision / TSDF meshes</td><td><span class="pill b">geometry</span></td></tr>
+            <tr><td class="hl">SplatStroll</td><td>Closed GroundField existence proof</td><td><span class="pill r">behavior only</span></td></tr>
+            <tr><td class="hl">SuperSplat 3 / LightGaussian / gsplat</td><td>LOD, compression, GPU storage</td><td><span class="pill a">infra</span></td></tr>
+            <tr><td class="hl">Poseidon / Gaia / Dryad / Tiamat / Demiurge</td><td>Visible cores the field <em>drives</em></td><td><span class="pill a">pantheon</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section" id="halves">
+      <div class="section-kicker">11 · Two halves</div>
+      <h2>Causal Compiler (offline) · Causal Evaluator (runtime)</h2>
+      <div class="grid-2">
+        <div class="panel" style="margin:0">
+          <div class="panel-head"><span class="dot"></span><span class="pname">Compiler</span><span class="pchip">CUDA allowed</span></div>
+          <div class="panel-body">
+            <div class="flow">photos / video / generated world
+        ↓
+   Brush / existing PLY-SPZ
+        ↓
+ ┌──────┼──────┬──────┐
+ Lang   VoMP   Mat    GOF
+ Splat  PhysGS Spray  Ground
+        ↓
+   fit W(state) + palettes
+   estimate uncertainty
+        ↓
+ KHR_gs + EXT_xirtus_causal_field</div>
+            <p style="margin-top:12px">VLMs, VoMP, video diffusion, OptiX — none of this ships in the game.</p>
+          </div>
+        </div>
+        <div class="panel" style="margin:0">
+          <div class="panel-head"><span class="dot"></span><span class="pname">Evaluator</span><span class="pchip">WebGPU / TS</span></div>
+          <div class="panel-body">
+            <div class="flow">tick
+  ↓
+update WorldSample
+  (heat, moisture, fuel, strain)
+  ↓
+evaluate W(state) → experts
+  ↓
+evaluate R(...)
+  ↓
+project
+  visual  → splat mutate / vendors
+  mechanic → Rapier friction / MPM subset
+  semantic → agent queries</div>
+            <p style="margin-top:12px">No giant VLM. No per-scene training. No CUDA.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="study">
+      <div class="section-kicker">12 · Study order</div>
+      <h2>Implementation dependency — one question per repo</h2>
+      <div class="timeline">
+        <div class="phase">
+          <h3><span class="num">01</span> OmniPhysGS</h3>
+          <p>How are constitutive experts represented, mixed, and consumed by MPM? Deliverable: <code>docs/research/OMNIPHYSGS_PATTERN.md</code> + a tiny standalone mixer (4 experts, no trainer).</p>
+        </div>
+        <div class="phase">
+          <h3><span class="num">02</span> GASP</h3>
+          <p>How do millions of visual Gaussians map onto far fewer simulation elements and back? This is the scale law.</p>
+        </div>
+        <div class="phase">
+          <h3><span class="num">03</span> PIDG paper §§3.2–3.3</h3>
+          <p>Which constitutive quantities can evolve without wrecking the representation? Extract the state model. Do not port the learning loop. Put scalars on <em>cells</em>.</p>
+        </div>
+        <div class="phase">
+          <h3><span class="num">04</span> Feature Splatting / LangSplat V2</h3>
+          <p>Minimum semantic latent per cluster. Dictionary / 32-D packing. This sizes <code>XIRTUS:RESPONSE_INDEX</code>.</p>
+        </div>
+        <div class="phase">
+          <h3><span class="num">05</span> PhysTalk + Genesis mapping</h3>
+          <p>What may the agent call? Target verbs only: <code>field.ignite</code> <code>field.addMoisture</code> <code>field.applyHeat</code> <code>field.applyForce</code> <code>field.query</code>.</p>
+        </div>
+        <div class="phase">
+          <h3><span class="num">06</span> FieryGS repo audit</h3>
+          <p>Apache-2.0 at PKU-VCL-Geometry/FieryGS. How does a separate sim project into an existing Gaussian scene? Completeness check before any code donor status.</p>
+        </div>
+        <div class="phase">
+          <h3><span class="num">parallel</span> Brush device · Playground mutate · VoMP paint</h3>
+          <p>Capture / live buffers / mechanical compiler. Infra for demos, not the invention.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="demos">
+      <div class="section-kicker">13 · Proof</div>
+      <h2>Only three experimental demos</h2>
+      <p class="lede">If A works we have a ResponseElement. If B works on the same code we have a general field. If C works we have emergence. Stop there.</p>
+      <div class="grid-3">
+        <div class="panel" style="margin:0">
+          <div class="panel-head"><span class="dot"></span><span class="pname">Demo A</span><span class="pchip">snow tile</span></div>
+          <div class="panel-body">
+            <p><b>20 m × 20 m.</b> State: temperature, moisture, density, compression.</p>
+            <p>Outputs: SH/color, opacity, covariance, ski friction, penetration, spray, sound parameter.</p>
+            <p>Sweep −15 °C → +2 °C through powder → packed → wet → slush → crust <b>without changing materialId</b>.</p>
+            <p class="foot" style="font-family:var(--mono);font-size:11px;color:var(--c-faint)">Fail = five prefabs.</p>
+          </div>
+        </div>
+        <div class="panel" style="margin:0">
+          <div class="panel-head"><span class="dot"></span><span class="pname">Demo B</span><span class="pchip">rainy trail</span></div>
+          <div class="panel-body">
+            <p><b>Same evaluator.</b> Rain writes one number: moisture.</p>
+            <p>That number must darken dirt, raise specularity, cut dust, raise splash, drop bearing strength, cut tire grip, allow ruts.</p>
+            <p>Couple Gaia color and Rapier friction from the same cell.</p>
+            <p class="foot" style="font-family:var(--mono);font-size:11px;color:var(--c-faint)">Fail = a “wet dirt” material swap.</p>
+          </div>
+        </div>
+        <div class="panel" style="margin:0">
+          <div class="panel-head"><span class="dot"></span><span class="pname">Demo C</span><span class="pchip">forest fire</span></div>
+          <div class="panel-body">
+            <p>Sun, wind, temperature, fuel, moisture. Ember → heat → evaporation → ignition response → combustion → neighbor.</p>
+            <p><b>No <code>SetTreeOnFire()</code>.</b> Spot fire downwind is the evidence, plus a field dump — not an orange screenshot.</p>
+            <p>Project emission/opacity onto existing VFX / Tiamat-class smoke.</p>
+            <p class="foot" style="font-family:var(--mono);font-size:11px;color:var(--c-faint)">Fail = a fire AI.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="harness">
+      <div class="section-kicker">14 · Harness</div>
+      <h2>Skills and capabilities — not twelve new engines</h2>
+      <div class="note">
+        Assemble-first still holds. Poseidon / Gaia / Dryad / Tiamat / Demiurge remain the visible cores.
+        The field <b>drives</b> them. The viewport remains a witness. Schroeder-garden rule: allowed mechanic library and stop conditions decide the result.
+      </div>
+      <div class="grid-2" style="margin-top:14px">
+        <div class="card">
+          <h3>New capabilities</h3>
+          <ul class="clean">
+            <li><code>world-field</code></li>
+            <li><code>material-estimate</code></li>
+            <li><code>language-field</code></li>
+            <li><code>splat-capture</code></li>
+            <li><code>splat-mutate</code></li>
+            <li><code>ground-from-splat</code></li>
+            <li><code>combustion</code> / <code>phase-change</code></li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>On-demand skills</h3>
+          <ul class="clean">
+            <li><code>provider-field</code></li>
+            <li><code>provider-physgs-author</code></li>
+            <li><code>reference-physgaussian</code></li>
+            <li><code>reference-fierygs</code></li>
+            <li><code>provider-brush</code> (after device-share bench)</li>
+          </ul>
+          <p class="foot">Never always-load. Capability resolver only.</p>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-head"><span class="dot"></span><span class="pname">Agent command surface</span><span class="pchip">PhysTalk pattern</span></div>
+        <div class="panel-body">
+<pre><code>field.query("dry vegetation")
+field.query("snow near freezing")
+field.addMoisture(region, mm)
+field.applyHeat(region, watts)
+field.applyForce(region, vec3)
+field.ignite(cell)           // only if R says ignition is already legal
+world.getSample(x,y,z)       // includes uncertainty</code></pre>
+          <p>Agents do not edit Gaussian buffers. Mutate is a projection of field state.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="packages">
+      <div class="section-kicker">15 · Packages</div>
+      <h2>Promote only after Demo C is boring</h2>
+      <div class="table-scroll">
+        <table>
+          <thead><tr><th>Now</th><th>Later</th></tr></thead>
+          <tbody>
+            <tr><td>Skills, capability ids, source ledger, three demos</td><td class="hl"><code>@3jse/field</code> schema + sampler</td></tr>
+            <tr><td>Offline benches of OmniPhysGS / GASP / FieryGS</td><td class="hl"><code>@3jse/field-physics</code> interface + one cheap stepper</td></tr>
+            <tr><td>Playground-class mutate prototype</td><td class="hl"><code>@3jse/field-gaussian</code> projector</td></tr>
+            <tr><td>VoMP / Property paint as author tools</td><td class="hl"><code>@3jse/field-chemistry</code> / <code>field-ecology</code></td></tr>
+            <tr><td><code>@3jse/splat-view</code> adapter stub</td><td class="hl">backends: three-native | brush-buffers | custom-webgpu</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="lede">Rapier remains <code>@3jse/physics-rapier</code>. Continuum is a second implementer of <code>@3jse/physics</code>, not a replacement.</p>
+    </section>
+
+    <section class="section" id="later">
+      <div class="section-kicker">16 · After the three demos</div>
+      <h2>The same card, stranger worlds</h2>
+      <div class="grid-4">
+        <div class="card"><h3>Avalanche</h3><p>Layered snowpack walks the manifold under load and temperature.</p></div>
+        <div class="card"><h3>Rockfall</h3><p>Directional brittle response + accumulated stress.</p></div>
+        <div class="card"><h3>Erosion</h3><p>Soil × water velocity × saturation → transport.</p></div>
+        <div class="card"><h3>Landslide</h3><p>Saturation walks cohesive → fluid until shear fails.</p></div>
+        <div class="card"><h3>Growth</h3><p>Moisture / sun / nutrient → biomass on the same cells Dryad reads.</p></div>
+        <div class="card"><h3>Tree bend</h3><p>Wind evaluates directional elasticity; Gaia/Dryad instances follow.</p></div>
+        <div class="card"><h3>Tire wear</h3><p><code>TireResponse × SurfaceResponse</code>; heat and tread live on the field.</p></div>
+        <div class="card"><h3>Ice crack</h3><p>Gradient + stress evolve brittle weights.</p></div>
+        <div class="card"><h3>Fog / cloud</h3><p>Phase + optical projection. Cousin of Poseidon foam.</p></div>
+        <div class="card"><h3>Ocean foam</h3><p>Aeration state writes Poseidon’s foam layer instead of a second FX system.</p></div>
+        <div class="card"><h3>Rust</h3><p>Slow moisture × exposure integral. Weathering is a long tick.</p></div>
+        <div class="card"><h3>NPC sense</h3><p>Agents query the same field players see projected. No anonymous triangles.</p></div>
+      </div>
+    </section>
+
+    <section class="section" id="gates">
+      <div class="section-kicker">17 · Gates</div>
+      <h2>A paper does not enter the registry until it answers four questions</h2>
+      <div class="grid-2">
+        <div class="card">
+          <h3>Intake</h3>
+          <ol class="clean" style="padding-left:18px;color:var(--c-dim)">
+            <li>State channel, response coefficient, stepper, or only a prettier skin?</li>
+            <li>Can it run at field resolution, or does it demand one particle per Gaussian?</li>
+            <li>License, no surprise CUDA in the web path?</li>
+            <li>Can an agent cause fire / ice / mud by writing state, or only by swapping prefabs?</li>
+          </ol>
+        </div>
+        <div class="card">
+          <h3>Demo completion</h3>
+          <ul class="clean">
+            <li>A: temperature sweep, one palette, measured friction + picture</li>
+            <li>B: one moisture write, dirt and snow share the evaluator</li>
+            <li>C: spot fire with no tree-id script; field dump in <code>evidence/</code></li>
+            <li>Schroeder rematch: same prompt, pantheon-only vs pantheon+field</li>
+          </ul>
+        </div>
+      </div>
+      <div class="pull" style="margin-top:22px">
+        The next clone that does not change the invention sentence is infrastructure, not architecture.
+        <small>Pinned 2026-09-08 · 3JSE Causal Field Architecture</small>
+      </div>
+    </section>
+  </article>
+</div>
+
+<footer class="site-footer">
+  <div class="foot-inner">
+    <p>3JSE · Causal Field plan · not a second source of truth for engine APIs — promote into <code>docs/</code> after Demo A.</p>
+    <p>Join: OmniPhysGS · PIDG · PhysTalk · FieryGS · Feature Splatting</p>
+  </div>
+</footer>
+</body>
+</html>

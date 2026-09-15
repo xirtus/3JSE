@@ -30,3 +30,5 @@ pnpm-debug.log*
 # Editors
 .idea/
 *.swp
+
+.pnpm-store/

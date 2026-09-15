@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>3JSE · Free Climb — Causal Field on a Cliff</title>
+<meta name="description" content="Do not author a list of climbable holds. Author geology, then infer climbability. Carpenter statistical subdivision for the cliff. Gaussian causal field for every tiny piece of that surface." />
+<style>
+:root {
+  --c-bg: #0c0d11;
+  --c-surface: #15171d;
+  --c-surface2: #1a1d26;
+  --c-border: #262b36;
+  --c-border2: #333a49;
+  --c-text: #d7d9de;
+  --c-dim: #b0b4ba;
+  --c-faint: #6d7686;
+  --cyan: #22d3ee;
+  --violet: #818cf8;
+  --magenta: #e879f9;
+  --ok: #34d399;
+  --warn: #e0a83e;
+  --bad: #e05a5a;
+  --grad: linear-gradient(90deg, #22d3ee, #818cf8 50%, #e879f9);
+  --grad-soft: linear-gradient(135deg, rgba(34,211,238,.14), rgba(129,140,248,.14) 50%, rgba(232,121,249,.14));
+  --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --radius: 14px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; scroll-padding-top: 72px; }
+body {
+  background: var(--c-bg);
+  color: var(--c-text);
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+::selection { background: rgba(129,140,248,.35); }
+a { color: var(--cyan); text-decoration: none; }
+a:hover { color: #8be9f6; }
+h1, h2, h3, h4 { line-height: 1.2; letter-spacing: -0.015em; color: #f2f4f8; }
+code, .mono { font-family: var(--mono); }
+code {
+  font-size: 12.5px;
+  background: var(--c-surface2);
+  border: 1px solid var(--c-border);
+  border-radius: 5px;
+  padding: 1px 6px;
+  color: #9fd8ff;
+}
+pre {
+  background: #0a0c12;
+  border: 1px solid var(--c-border);
+  border-radius: 10px;
+  padding: 14px 16px;
+  overflow-x: auto;
+  margin: 14px 0;
+}
+pre code { background: none; border: none; padding: 0; color: #aeb8cc; font-size: 12.3px; line-height: 1.55; display: block; }
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: var(--c-bg); }
+::-webkit-scrollbar-thumb { background: #2c3242; border-radius: 6px; border: 2px solid var(--c-bg); }
+
+.site-header {
+  position: fixed; inset: 0 0 auto 0; z-index: 100;
+  background: rgba(12,13,17,.88);
+  backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--c-border);
+}
+.hdr {
+  max-width: 1360px; margin: 0 auto;
+  display: flex; align-items: center; gap: 16px;
+  padding: 0 20px; height: 56px;
+}
+.brand { display: flex; align-items: center; gap: 10px; color: var(--c-text); }
+.brand-mark {
+  width: 22px; height: 22px; border-radius: 6px;
+  background: var(--grad);
+}
+.brand-name { font-weight: 800; font-size: 17px; letter-spacing: .04em; }
+.brand-tag { font-size: 12px; color: var(--c-faint); border-left: 1px solid var(--c-border2); padding-left: 10px; }
+.nav { display: flex; gap: 2px; margin-left: auto; flex-wrap: wrap; }
+.nav a {
+  padding: 5px 10px; border-radius: 8px;
+  color: var(--c-dim); font-size: 12.5px; font-weight: 500;
+}
+.nav a:hover { color: var(--c-text); background: var(--c-surface2); }
+
+.layout {
+  max-width: 1360px; margin: 0 auto;
+  padding: 78px 20px 60px;
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  gap: 28px;
+  align-items: start;
+}
+.side {
+  position: sticky; top: 72px;
+  max-height: calc(100vh - 88px);
+  overflow-y: auto;
+  padding-right: 4px;
+}
+.side h3 {
+  font-family: var(--mono); font-size: 10.5px; letter-spacing: .18em;
+  text-transform: uppercase; color: var(--c-faint);
+  margin: 16px 0 6px; padding-left: 4px;
+}
+.side a {
+  display: block; padding: 4px 10px; border-radius: 7px;
+  color: var(--c-dim); font-size: 13px; border-left: 2px solid transparent;
+}
+.side a:hover, .side a.active {
+  color: var(--c-text); background: var(--c-surface2); border-left-color: var(--violet);
+}
+
+.main { min-width: 0; }
+.hero-frame {
+  border: 1px solid var(--c-border); border-radius: var(--radius);
+  background: var(--c-surface); overflow: hidden;
+  margin-bottom: 28px;
+  box-shadow: 0 30px 80px rgba(0,0,0,.45);
+}
+.frame-tabs {
+  display: flex; align-items: center; gap: 4px;
+  padding: 7px 10px; border-bottom: 1px solid var(--c-border);
+}
+.win-dots { display: flex; gap: 6px; margin-right: 10px; }
+.win-dots i { width: 11px; height: 11px; border-radius: 50%; display: block; }
+.win-dots i:nth-child(1) { background: #e05a5a; }
+.win-dots i:nth-child(2) { background: #e0a83e; }
+.win-dots i:nth-child(3) { background: #34d399; }
+.tab {
+  font-size: 12px; font-weight: 600; padding: 4px 12px; border-radius: 7px;
+  color: var(--c-text); background: var(--c-surface2); box-shadow: inset 0 0 0 1px var(--c-border);
+}
+.tab::before {
+  content: ""; display: inline-block; width: 7px; height: 7px; border-radius: 2px;
+  background: var(--grad); margin-right: 7px;
+}
+.tab-right { margin-left: auto; font-size: 11.5px; color: var(--c-faint); font-family: var(--mono); }
+.hero-body {
+  padding: 42px 36px 32px;
+  background:
+    radial-gradient(900px 320px at 15% -10%, rgba(34,211,238,.16), transparent 60%),
+    radial-gradient(700px 280px at 90% 110%, rgba(232,121,249,.12), transparent 55%),
+    var(--c-surface);
+}
+.kicker {
+  font-family: var(--mono); font-size: 12px; letter-spacing: .28em;
+  color: var(--cyan); text-transform: uppercase; margin-bottom: 14px;
+}
+.hero-body h1 { font-size: clamp(30px, 5vw, 52px); font-weight: 800; }
+.grad {
+  background: var(--grad);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.hero-sub { margin-top: 14px; max-width: 820px; color: var(--c-dim); font-size: 17.5px; }
+.badges { margin-top: 22px; display: flex; gap: 8px; flex-wrap: wrap; }
+.badges span {
+  font-family: var(--mono); font-size: 11.5px; color: var(--c-faint);
+  border: 1px solid var(--c-border); background: rgba(21,23,29,.75);
+  padding: 4px 10px; border-radius: 999px;
+}
+.badges span b { color: var(--c-dim); font-weight: 600; }
+.frame-status {
+  display: flex; align-items: center; gap: 18px; flex-wrap: wrap;
+  padding: 8px 14px; border-top: 1px solid var(--c-border);
+  font-family: var(--mono); font-size: 11.5px; color: var(--c-faint);
+}
+.ok { color: var(--ok); }
+
+.section { margin: 48px 0 8px; scroll-margin-top: 76px; }
+.section-kicker {
+  font-family: var(--mono); font-size: 11.5px; letter-spacing: .26em;
+  text-transform: uppercase; color: var(--cyan); margin-bottom: 8px;
+}
+.section h2 { font-size: clamp(24px, 3.2vw, 34px); font-weight: 800; margin-bottom: 10px; }
+.lede { color: var(--c-dim); max-width: 820px; margin-bottom: 18px; }
+
+.panel {
+  border: 1px solid var(--c-border); border-radius: var(--radius);
+  background: var(--c-surface); overflow: hidden; margin: 16px 0 22px;
+}
+.panel-head {
+  display: flex; align-items: center; gap: 10px;
+  padding: 11px 16px; border-bottom: 1px solid var(--c-border);
+  background: linear-gradient(180deg, var(--c-surface2), var(--c-surface));
+}
+.panel-head .dot { width: 9px; height: 9px; border-radius: 3px; background: var(--grad); flex: none; }
+.pname { font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--c-dim); }
+.pchip { margin-left: auto; font-family: var(--mono); font-size: 11px; color: var(--c-faint); border: 1px solid var(--c-border); border-radius: 6px; padding: 2px 8px; }
+.panel-body { padding: 22px 24px 24px; }
+.panel-body p { color: var(--c-dim); margin-bottom: 12px; }
+.panel-body p:last-child { margin-bottom: 0; }
+
+.pull {
+  border-left: 3px solid; border-image: linear-gradient(180deg, #22d3ee, #818cf8, #e879f9) 1;
+  padding: 16px 22px; margin: 18px 0;
+  background: var(--grad-soft); border-radius: 0 12px 12px 0;
+  font-size: 18.5px; font-weight: 600; color: #eef1f7;
+}
+.pull small { display: block; margin-top: 8px; font-size: 12.5px; font-weight: 500; color: var(--c-faint); font-family: var(--mono); }
+
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.card {
+  border: 1px solid var(--c-border); border-radius: 12px;
+  background: var(--c-surface2); padding: 16px 18px;
+}
+.card h3 { font-size: 15.5px; margin-bottom: 6px; }
+.card p, .card li { font-size: 13.5px; color: var(--c-dim); }
+.card .foot { margin-top: 10px; font-family: var(--mono); font-size: 11px; color: var(--c-faint); }
+
+.table-scroll { overflow-x: auto; border-radius: 10px; }
+table { width: 100%; border-collapse: collapse; font-size: 13.5px; min-width: 640px; }
+th, td { padding: 10px 12px; text-align: left; border-bottom: 1px solid var(--c-border); vertical-align: top; }
+thead th {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--c-faint); background: var(--c-surface2);
+}
+td { color: var(--c-dim); }
+td.hl { color: var(--c-text); }
+.yes { color: var(--ok); font-weight: 700; }
+.no { color: var(--bad); }
+.mid { color: var(--warn); }
+
+.pill {
+  display: inline-block; font-family: var(--mono); font-size: 10.5px;
+  padding: 2px 7px; border-radius: 999px; border: 1px solid var(--c-border);
+  color: var(--c-faint); margin-right: 4px;
+}
+.pill.a { color: #9feaf6; border-color: rgba(34,211,238,.35); }
+.pill.b { color: #c4b5fd; border-color: rgba(129,140,248,.35); }
+.pill.r { color: #f0abfc; border-color: rgba(232,121,249,.35); }
+
+.timeline { position: relative; padding-left: 28px; }
+.timeline::before {
+  content: ""; position: absolute; left: 8px; top: 8px; bottom: 8px; width: 2px;
+  background: linear-gradient(180deg, #22d3ee, #818cf8 55%, #e879f9); opacity: .55;
+}
+.phase { position: relative; padding: 10px 0 16px 8px; }
+.phase::before {
+  content: ""; position: absolute; left: -26px; top: 16px;
+  width: 12px; height: 12px; border-radius: 50%;
+  background: var(--c-bg); border: 3px solid var(--violet);
+}
+.phase h3 { font-size: 16px; margin-bottom: 4px; }
+.phase .num { font-family: var(--mono); font-size: 12px; color: var(--c-faint); margin-right: 8px; }
+.phase p, .phase li { font-size: 14px; color: var(--c-dim); }
+
+.note {
+  border: 1px solid var(--c-border); border-radius: 10px;
+  background: var(--grad-soft); padding: 14px 18px; font-size: 14.5px; color: var(--c-dim);
+}
+.note b { color: var(--c-text); }
+
+ul.clean { padding-left: 18px; color: var(--c-dim); }
+ul.clean li { margin: 5px 0; }
+.site-footer {
+  border-top: 1px solid var(--c-border); margin-top: 60px; background: var(--c-surface);
+}
+.foot-inner {
+  max-width: 1360px; margin: 0 auto; padding: 22px 20px;
+  display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+  font-size: 13px; color: var(--c-faint);
+}
+
+@media (max-width: 980px) {
+  .layout { grid-template-columns: 1fr; }
+  .side { position: static; max-height: none; display: grid; grid-template-columns: 1fr 1fr; }
+  .grid-4, .grid-3 { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 640px) {
+  .grid-2, .grid-3, .grid-4, .side { grid-template-columns: 1fr; }
+  .hero-body { padding: 28px 18px; }
+  .brand-tag { display: none; }
+}
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="hdr">
+    <a class="brand" href="#top">
+      <span class="brand-mark"></span>
+      <span class="brand-name">3JSE</span>
+      <span class="brand-tag">Xirtus Summer · Free Climb</span>
+    </a>
+    <nav class="nav">
+      <a href="#sentence">Sentence</a>
+      <a href="#not-this">Not this</a>
+      <a href="#geology">Geology</a>
+      <a href="#climber">Climber</a>
+      <a href="#refs">Refs</a>
+      <a href="#phases">Phases</a>
+    </nav>
+  </div>
+</header>
+
+<div class="layout" id="top">
+  <aside class="side">
+    <h3>Thesis</h3>
+    <a href="#sentence">One sentence</a>
+    <a href="#not-this">What we will not build</a>
+    <a href="#join">Join to causal field</a>
+    <a href="#carpenter">Carpenter ancestor</a>
+    <h3>World</h3>
+    <a href="#geology">Author geology</a>
+    <a href="#holds">Inferred holds</a>
+    <a href="#layers">Splat layers</a>
+    <a href="#lithology">Lithology grammars</a>
+    <h3>Body</h3>
+    <a href="#climber">Four-patch climber</a>
+    <a href="#feel">FeelSpec</a>
+    <h3>Build</h3>
+    <a href="#refs">X + GitHub refs</a>
+    <a href="#vendors">Vendor routing</a>
+    <a href="#phases">Phases + gates</a>
+    <a href="#agents">Agent verbs</a>
+  </aside>
+
+  <article class="main">
+    <div class="hero-frame">
+      <div class="frame-tabs">
+        <span class="win-dots"><i></i><i></i><i></i></span>
+        <span class="tab">Viewport · Demo D · Free climb</span>
+        <span class="tab-right">docs / CLIMB · 2026-09-10</span>
+      </div>
+      <div class="hero-body">
+        <div class="kicker">Xirtus Summer Game · mountain sport expansion</div>
+        <h1>Do not author holds.<br /><span class="grad">Author geology. Infer the climb.</span></h1>
+        <p class="hero-sub">
+          Carpenter’s 1980 statistical subdivision gives the cliff its fractal character.
+          The Gaussian causal field gives every tiny piece of that surface meaning —
+          friction, edge, smear, wet streak, loose flake. The climber is a four-patch
+          Rapier sampler, same contract as the 4×4 on mud.
+        </p>
+        <div class="badges">
+          <span><b>Parent</b> causal-field-plan.html</span>
+          <span><b>Sibling</b> offroad-trail-plan.html</span>
+          <span><b>Demo</b> D · cliff face</span>
+          <span><b>Body</b> 4 contact patches</span>
+          <span><b>Kills</b> gym-hold lists · magnet hands</span>
+          <span><b>Runtime</b> Rapier + field sampler + splat projectors</span>
+        </div>
+      </div>
+      <div class="frame-status">
+        <span class="ok">● plan lock</span>
+        <span>holds are projections</span>
+        <span>Rapier stays</span>
+        <span>Gaia for lithology color</span>
+        <span>Poseidon for seeps</span>
+        <span style="margin-left:auto">assemble-first · GPL-3.0</span>
+      </div>
+    </div>
+
+    <section class="section" id="sentence">
+      <div class="section-kicker">01 · Invention</div>
+      <h2>The sentence that must survive review</h2>
+      <p class="lede">
+        This is not a new climbing minigame and not a new renderer. It is the causal field
+        specialized onto a near-vertical face, plus a body that is allowed to peel off.
+      </p>
+      <div class="pull">
+        Author a multiresolution rock field on a cliff. Project it into Gaussian crystals, flakes, seeps and lichen. Climb with four independent contact patches whose per-patch load writes the same field they read.
+        <small>If lithology, moisture and fracture do not change both the picture and the grip, it is a skin — delete it.</small>
+      </div>
+      <div class="grid-2">
+        <div class="card">
+          <h3>What already exists</h3>
+          <ul class="clean">
+            <li>Causal field primitive — <code>R(state, env, direction)</code></li>
+            <li>Demo A snow / B trail / C fire — same compiler + evaluator</li>
+            <li>Trail overhaul: 4-wheel Rapier sampler, FeelSpec, fail conditions</li>
+            <li><code>ground-from-splat</code> capability</li>
+            <li>Poseidon / Gaia / three-vfx / kimodo (editor-only)</li>
+            <li>FieryGS Apache-2.0 audit already on the books</li>
+            <li>Harness: SKILL.md + agent verbs, assemble-first</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>What this expansion adds</h3>
+          <ul class="clean">
+            <li>Cliff as a <em>field face</em>, not a collider slab with hold props</li>
+            <li>Carpenter statistical subdivision for macro / meso roughness</li>
+            <li>Joint-set geology: dip, dip-direction, spacing, persistence</li>
+            <li>Hold types inferred from curvature × edge × μ × reach</li>
+            <li>World-space 4-patch climber (2 hands, 2 feet) + COM</li>
+            <li>Dual contact law: smear friction vs positive edge</li>
+            <li>Weather writes: seep, freeze, polish, flake detach</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="not-this">
+      <div class="section-kicker">02 · Refusals</div>
+      <h2>What we will not build</h2>
+      <div class="table-scroll">
+        <table>
+          <thead><tr><th>Temptation</th><th>Why it dies</th></tr></thead>
+          <tbody>
+            <tr><td class="hl">A list of climbable holds</td><td>Indoor-gym logic. Outdoor rock does not ship with tagged jugs. Holds are a projection of geology.</td></tr>
+            <tr><td class="hl">Magnet hands / “press forward to climb”</td><td>Assassin’s Creed / BotW-lite. Difficulty is four small patches on an honest field, not a stamina bar on a sticky wall.</td></tr>
+            <tr><td class="hl">One trimesh collider per cliff</td><td>Smooths the difficulty out. Fingers need curvature, edges and μ at the sample, not a hull.</td></tr>
+            <tr><td class="hl">A “wet granite” material swap</td><td>Same fail as “wet dirt”. Moisture is a field number. Poseidon paints the seep; μ drops because the field said so.</td></tr>
+            <tr><td class="hl">Track-space <code>(s, n)</code> climbing</td><td>Routes are discovered, not laid as a spline the body is forced onto. Centerline is a tool hint only.</td></tr>
+            <tr><td class="hl">One Gaussian per crystal as a physics body</td><td>Field resolution ≠ splat count. Sample a coarse cell; project many crystals.</td></tr>
+            <tr><td class="hl">Full indoor MoonBoard route setter</td><td>Climb-5 / LED-wall pattern is useful as a <em>debug overlay</em>, never as the world authoring surface.</td></tr>
+            <tr><td class="hl">Keyframe climb cycles as the source of truth</td><td>Kimodo and ClimbingCap are references and editor-only motion. Runtime is IK + field samples.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section" id="join">
+      <div class="section-kicker">03 · Join</div>
+      <h2>This is Demo D: the trail crawler stood on its side</h2>
+      <p class="lede">
+        The trail overhaul already named the contract. A wheel patch samples μ, sinkage, roughness.
+        A hand patch samples μ, edge quality, pull-off, smear. Same field, different constitutive law,
+        gravity now fighting four small contacts instead of four tires.
+      </p>
+      <div class="grid-3">
+        <div class="card">
+          <h3>Field writes</h3>
+          <p>Seep, freeze-thaw, polish from traffic, flake detach, lichen. One cell. Many projections.</p>
+          <p class="foot">parent · ResponseElement</p>
+        </div>
+        <div class="card">
+          <h3>Climber reads</h3>
+          <p>Per patch: height, normal, μ, edge, smear area, looseness, temperature.</p>
+          <p class="foot">new · ContactSample</p>
+        </div>
+        <div class="card">
+          <h3>Climber writes</h3>
+          <p>Contact pressure, chalk/polish, flake impulse. Broken holds are field state.</p>
+          <p class="foot">new · PatchImpulse</p>
+        </div>
+      </div>
+      <div class="note" style="margin-top:16px">
+        <b>Two realities, same as the parent plan.</b> Offline compiler paints the cliff
+        (Carpenter subdivision + joint sets + optional capture). Runtime evaluator is tiny:
+        sample four patches + COM, integrate the body, project splat mutate + Poseidon seeps + audio.
+      </div>
+    </section>
+
+    <section class="section" id="carpenter">
+      <div class="section-kicker">04 · Ancestor</div>
+      <h2>Carpenter 1980 is the right grandfather. It is not the hold solver.</h2>
+      <p class="lede">
+        <em>Computer rendering of fractal curves and surfaces</em> (SIGGRAPH 1980) introduced
+        statistical subdivision: split a geometric entity while preserving statistical character.
+        Vol Libre started from ~100 big triangles and recursively quartered them until the triangles disappeared.
+        That is the macro and meso of our cliff. The causal field is what those triangles <em>mean</em>.
+      </p>
+      <div class="grid-2">
+        <div class="card">
+          <h3>Steal</h3>
+          <ul class="clean">
+            <li>Statistical subdivision of a coarse face mesh</li>
+            <li>Preserve lithology character at every level (Hurst / roughness exponent per rock type)</li>
+            <li>On-the-fly detail as the climber approaches (10 km → 10 cm, same contract as Vol Libre)</li>
+            <li>Independently: Fournier / Fussell stochastic modeling, same conference</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Do not steal</h3>
+          <ul class="clean">
+            <li>Uniform Brownian roughness as “the geology”</li>
+            <li>Infinite quartered triangles with no joint sets — that is noise, not rock</li>
+            <li>Mandelbrot as a hold generator (the user named the ancestor correctly; the field does the rest)</li>
+            <li>A second terrain engine beside the existing mountain world</li>
+          </ul>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-head"><span class="dot"></span><span class="pname">Scale stack</span><span class="pchip">macro → micro</span></div>
+        <div class="panel-body">
+          <table>
+            <thead><tr><th>Scale</th><th>Authoring</th><th>What the climber feels</th></tr></thead>
+            <tbody>
+              <tr><td class="hl">10–100 m</td><td>Mountain mass, aspect, big dihedrals, roofs</td><td>Route finding, exposure</td></tr>
+              <tr><td class="hl">1–10 m</td><td>Joint sets, bedding, columns, roofs, corners</td><td>Pitch character (slab / vertical / overhang)</td></tr>
+              <tr><td class="hl">10–100 cm</td><td>Carpenter subdivision + fracture intersections</td><td>Holds appear as edges, pockets, flakes</td></tr>
+              <tr><td class="hl">1–10 cm</td><td>Gaussian crystals, crystals vs fines, polish</td><td>Crimp vs sloper vs smear</td></tr>
+              <tr><td class="hl">&lt; 1 cm</td><td>Field μ, moisture film, ice, lichen</td><td>Why a hold works or suddenly doesn’t</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="geology">
+      <div class="section-kicker">05 · World</div>
+      <h2>A cliff is a face of cells, not a wall mesh</h2>
+      <p class="lede">
+        Author the geology a body is allowed to suffer on. Difficulty is the distribution of
+        support under four patches — not a YDS slider painted onto a collider.
+      </p>
+      <div class="panel">
+        <div class="panel-head"><span class="dot"></span><span class="pname">Face schema</span><span class="pchip">world.cliff</span></div>
+        <div class="panel-body">
+<pre><code>CliffFace
+  coarseMesh          # Carpenter root triangles / implicit block union
+  lithology           # granite | sandstone | limestone | basalt | mixed
+  joints[]            # {dip_deg, dip_dir_deg, spacing_m, persistence_m, aperture_mm}
+  bedding?            # sandstone / limestone only
+  tiles[]             # overlapping field tiles + splat tiles on the face
+  seeps[]             # moisture wells (Poseidon streaks)
+  freezeBand          # altitude / aspect / season
+  capture?            # optional Gaussian capture of a real crag
+  routes?             # discovered or hinted — never the physics path</code></pre>
+          <p>The “route” is a comment the agent or a local can leave. The body never rides it. If the climber is constrained to a hold graph the overhaul failed.</p>
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="card">
+          <h3>Cell state (rock)</h3>
+          <ul class="clean">
+            <li><code>height</code> / <code>normal</code> (from subdivision + capture)</li>
+            <li><code>curvature</code> (mean + Gaussian) — pocket vs bulge</li>
+            <li><code>edge</code> 0–1 — fracture intersection sharpness</li>
+            <li><code>lithology</code> + <code>grain</code></li>
+            <li><code>moisture</code> 0–1 (seep / rain / melt)</li>
+            <li><code>ice</code> 0–1 (Demo A leftover on the same face)</li>
+            <li><code>looseness</code> — flake / block detach risk</li>
+            <li><code>polish</code> — traffic-worn smear</li>
+            <li><code>temperature</code></li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Derived response</h3>
+          <ul class="clean">
+            <li>μ peak / μ smear for the contact law</li>
+            <li>positive-edge pull-off vs friction-only smear</li>
+            <li>hold class: jug · incut · crimp · sloper · pinch · pocket · smear</li>
+            <li>usable area for hand vs foot (different sample radii)</li>
+            <li>flake detach probability under impulse</li>
+            <li>audio grain (crystal tick, sandy hiss, wet slap)</li>
+            <li>SH / albedo / spec / covariance hints</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="holds">
+      <div class="section-kicker">06 · Inference</div>
+      <h2>A hold is a query, not an object</h2>
+      <p class="lede">
+        At runtime the climber never looks up <code>Hold#482</code>. It asks the field:
+        given this patch radius, this pull direction, this moisture — how much force
+        can I take before I peel?
+      </p>
+      <div class="table-scroll">
+        <table>
+          <thead><tr><th>Inferred class</th><th>Field signature</th><th>Fails when</th></tr></thead>
+          <tbody>
+            <tr><td class="hl">Jug / incut</td><td>Negative curvature pocket + high edge + dry</td><td>Filled with ice or running seep</td></tr>
+            <tr><td class="hl">Crimp</td><td>Sharp positive edge, tiny usable area</td><td>Edge rounds (polish) or flake loosens</td></tr>
+            <tr><td class="hl">Sloper</td><td>Low curvature, high μ demand, large smear area</td><td>Moisture film, lichen, heat-soft skin</td></tr>
+            <tr><td class="hl">Pinch</td><td>Two opposing faces within hand width</td><td>One face is a detached flake</td></tr>
+            <tr><td class="hl">Pocket</td><td>Deep concavity, limited finger count</td><td>Sand fills it; ice lenses</td></tr>
+            <tr><td class="hl">Smear / slab</td><td>Almost no edge; μ × area × angle only</td><td>Any drop in μ. The honest slab.</td></tr>
+            <tr><td class="hl">No-hold</td><td>Convex bulge, low μ, no edge</td><td>Always — this is the blank face</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="note">
+        <b>Debug overlay is allowed.</b> A Climb-5-style hold graph can be <em>visualized</em>
+        from the inference so designers and agents can see what the field thinks.
+        That overlay is not serialized as the world. Regen the cliff, the overlay changes.
+      </div>
+    </section>
+
+    <section class="section" id="layers">
+      <div class="section-kicker">07 · Splats</div>
+      <h2>Every Gaussian layer has a job</h2>
+      <div class="table-scroll">
+        <table>
+          <thead><tr><th>Layer</th><th>Looks like</th><th>Reads</th><th>Writes / mutates</th></tr></thead>
+          <tbody>
+            <tr><td class="hl">Mass / bedrock</td><td>Stable face, columns, bedding</td><td>height, normal</td><td>almost never — the floor the field sits on</td></tr>
+            <tr><td class="hl">Joint faces</td><td>Anisotropic planar Gaussians</td><td>joint set orientation</td><td>none at runtime; authored structure</td></tr>
+            <tr><td class="hl">Crystals / grains</td><td>Small, high-count, lithology-tinted</td><td>grain, polish</td><td>spec up when polished; chip under impulse</td></tr>
+            <tr><td class="hl">Flakes / scales</td><td>Thin oriented ellipsoids</td><td>looseness</td><td>detach → talus projector</td></tr>
+            <tr><td class="hl">Seep / wet streak</td><td>Anisotropic dark Gaussians + Poseidon film</td><td>moisture, water_depth</td><td>μ drop, spec up, drip</td></tr>
+            <tr><td class="hl">Ice lens / verglas</td><td>Demo A leftover on the face</td><td>ice, temperature</td><td>melt writes moisture; freeze locks a smear</td></tr>
+            <tr><td class="hl">Lichen / chalk</td><td>soft carpet, traffic marks</td><td>polish, traffic integral</td><td>grows on revisit</td></tr>
+            <tr><td class="hl">Chip / dust</td><td>transient grains</td><td>impulse × looseness</td><td>die in &lt;2 s; three-vfx</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="note">
+        <b>Capture path.</b> A real crag scan (Dany Bittel-class macro splat, UAV 3DGS outcrop)
+        is welcome as appearance + crude height. Mechanical channels are painted by the compiler
+        (joint extraction, hand seeps, or agent <code>field.addSeep</code>), never inferred from SH color alone.
+        Color is not friction.
+      </div>
+    </section>
+
+    <section class="section" id="lithology">
+      <div class="section-kicker">08 · Grammars</div>
+      <h2>Granite, sandstone, limestone are different games</h2>
+      <p class="lede">
+        maxliebscher’s Three.js rock lab already refuses a generic displacement recipe.
+        We steal that posture: form grammars, not texture swaps. Climbing character falls out.
+      </p>
+      <div class="grid-3">
+        <div class="card">
+          <h3>Granite</h3>
+          <p>Broad lobes, restrained joints, crystals, rounded weathering. Slopers and smears. Cracks where two joint families meet. Wet = glass.</p>
+          <p class="foot">Yosemite / Elbe sandstone-adjacent slabs in Saxony differ — do not collapse them</p>
+        </div>
+        <div class="card">
+          <h3>Sandstone</h3>
+          <p>Persistent bedding, banks, undercuts, pockets. Holds are sculpted by bedding + wind. Wet sandstone can be a different rock.</p>
+          <p class="foot">Sächsische Schweiz is local truth for Dresden</p>
+        </div>
+        <div class="card">
+          <h3>Limestone</h3>
+          <p>Block structure, dissolution pockets, continuous fracture distances. Tufas, pockets, sharp edges. Seeps live in the karst.</p>
+          <p class="foot">sport-climb grammar</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="climber">
+      <div class="section-kicker">09 · Body</div>
+      <h2>The climber is a four-patch sampler with a center of mass</h2>
+      <p class="lede">
+        UpRoom’s 2021 write-up is the locomotion ancestor: five effectors
+        (L/R hand, L/R foot, root), LAST / CURRENT / NEXT, IK to targets.
+        We keep the effector math. We throw away their pre-baked hold queue.
+        Targets are field queries.
+      </p>
+      <div class="panel">
+        <div class="panel-head"><span class="dot"></span><span class="pname">Contact law</span><span class="pchip">dual regime</span></div>
+        <div class="panel-body">
+<pre><code>ContactSample
+  position, normal
+  mu_peak, mu_smear
+  edge            # 0..1 positive interlocking
+  area            # usable patch for this limb
+  looseness
+  moisture, ice, temperature
+
+force_budget =
+    edge * pull_off(lithology, aperture)          # "I can hang on this"
+  + mu_smear * N * smear_area                     # "I can stand on this"
+  - ice_penalty - seep_penalty - polish_penalty
+
+peel if  sum(force_budget) &lt; body_weight * load_share + dynamic</code></pre>
+          <p>
+            Smear-only contacts are legal — that is slab climbing.
+            Edge-only contacts are legal — that is a tiny crimp.
+            Zero-budget contacts are legal — that is a dead point that will not hold.
+            The FeelSpec decides whether a peel is “player missed” or “field lied”.
+          </p>
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="card">
+          <h3>Rapier job</h3>
+          <p>Rigid torso + limb constraints. Contacts are sampled, not magnetized. A patch that loses budget becomes a sliding constraint, then a free body. Same spirit as a wheel that unloads on a shelf.</p>
+          <p class="foot">@3jse/physics-rapier</p>
+        </div>
+        <div class="card">
+          <h3>IK job</h3>
+          <p>Place effectors on the best field query inside a reach cone. Spider-style surface-normal clinging (majidmanzarpour) is the wall-walk reference, not the human gait. Kimodo stays editor-only motion gen.</p>
+          <p class="foot">runtime IK · kimodo editor-only</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="feel">
+      <div class="section-kicker">10 · FeelSpec</div>
+      <h2>Difficulty is four small patches on an honest field</h2>
+      <div class="table-scroll">
+        <table>
+          <thead><tr><th>Beat</th><th>Must be true</th><th>Fail if</th></tr></thead>
+          <tbody>
+            <tr><td class="hl">Dry granite sloper</td><td>Smear holds at given angle; peel when moisture += 0.3</td><td>Still sticks when wet</td></tr>
+            <tr><td class="hl">Positive edge crimp</td><td>Holds body on two fingers of budget</td><td>Requires magnet or authored hold</td></tr>
+            <tr><td class="hl">Seep streak</td><td>Same geometry, μ drops, Poseidon visible</td><td>Texture swap only</td></tr>
+            <tr><td class="hl">Loose flake</td><td>First pull holds; impulse writes looseness; second pull detaches</td><td>Cosmetic crack</td></tr>
+            <tr><td class="hl">Verglas</td><td>Demo A ice on Demo D face; smear becomes skate</td><td>Separate ice material</td></tr>
+            <tr><td class="hl">Off-width / corner</td><td>Two faces, opposing normals, pinch budget</td><td>Single collider crease</td></tr>
+            <tr><td class="hl">Regen invariance</td><td>Same seed + joints → same inferred class histogram</td><td>Hold list baked in the glTF</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section" id="refs">
+      <div class="section-kicker">11 · References</div>
+      <h2>What is actually useful on X and GitHub right now</h2>
+      <p class="lede">
+        Ranked by how much we can steal without violating assemble-first or the refusals.
+        Indoor-gym repos stay in the “debug overlay” column.
+      </p>
+
+      <h3 style="margin:18px 0 8px;font-size:18px">GitHub — steal the geology</h3>
+      <div class="table-scroll">
+        <table>
+          <thead><tr><th>Repo</th><th>Why it matters</th><th>Disposition</th></tr></thead>
+          <tbody>
+            <tr>
+              <td class="hl"><a href="https://github.com/maxliebscher/threejs-procedural-rocks-cliffs">maxliebscher/threejs-procedural-rocks-cliffs</a></td>
+              <td>Best current Three.js cliff lab. Granite / sandstone / limestone as form grammars, SDF union, marching tetrahedra, Codex skill, MIT.</td>
+              <td><span class="pill a">Tier B / reference</span> pattern port, not a second engine</td>
+            </tr>
+            <tr>
+              <td class="hl"><a href="https://github.com/Erkaman/gl-rock">Erkaman/gl-rock</a></td>
+              <td>Scrape + disk projection → concave rocks. Cheap meso language for flakes and scooped holds.</td>
+              <td><span class="pill r">reference</span></td>
+            </tr>
+            <tr>
+              <td class="hl"><a href="https://github.com/MingmingRen0616/RockDiscontinuityExtraction">MingmingRen0616/RockDiscontinuityExtraction</a></td>
+              <td>Joint sets from point clouds: DBSCAN + RANSAC planes + dip / dip-direction. This is how capture becomes geology.</td>
+              <td><span class="pill r">compiler</span></td>
+            </tr>
+            <tr>
+              <td class="hl"><a href="https://github.com/adririquelme/DSE">adririquelme/DSE</a></td>
+              <td>Discontinuity Set Extractor. Spacing + persistence of planes. Compiler-side only (MATLAB).</td>
+              <td><span class="pill r">compiler</span></td>
+            </tr>
+            <tr>
+              <td class="hl"><a href="https://github.com/mrdoob/three.js/blob/dev/examples/jsm/generators/TerrainGenerator.js">three.js TerrainGenerator</a></td>
+              <td>Thermal erosion + slope. Useful for the approach slopes under the cliff, not the face itself.</td>
+              <td><span class="pill b">already in-family</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 style="margin:22px 0 8px;font-size:18px">GitHub — steal the body, not the holds</h3>
+      <div class="table-scroll">
+        <table>
+          <thead><tr><th>Repo / paper</th><th>Why it matters</th><th>Disposition</th></tr></thead>
+          <tbody>
+            <tr>
+              <td class="hl"><a href="https://github.com/majidmanzarpour/threejs-procedural-spider">majidmanzarpour/threejs-procedural-spider</a></td>
+              <td>Closed-form IK, planted feet, body up-vector blends to surface normal. Wall and overhang clinging without clips.</td>
+              <td><span class="pill a">runtime IK pattern</span></td>
+            </tr>
+            <tr>
+              <td class="hl"><a href="https://www.uproomgames.com/dev-log/procedural-climbing">UpRoom procedural climbing</a></td>
+              <td>5 effectors × LAST/CURRENT/NEXT. Best public write-up of free-climb locomotion. Their hold queue is the anti-pattern we refuse.</td>
+              <td><span class="pill r">locomotion ref</span></td>
+            </tr>
+            <tr>
+              <td class="hl"><a href="https://www.lidarhumanmotion.net/climbingcap/">ClimbingCap / AscendMotion</a></td>
+              <td>CVPR 2025 Highlight. 412k frames, 22 coaches, 12 real rocks, world-coordinate climbing motion + registered wall meshes. License: paper CC BY-NC-ND — dataset on request. Motion prior, not a runtime.</td>
+              <td><span class="pill r">motion prior</span></td>
+            </tr>
+            <tr>
+              <td class="hl"><a href="https://github.com/ryanzhao2/Climb-5">ryanzhao2/Climb-5</a></td>
+              <td>Three.js + R3F route planner. Hold types as enums. Use as the debug overlay that visualizes inferred classes.</td>
+              <td><span class="pill b">debug only</span></td>
+            </tr>
+            <tr>
+              <td class="hl"><a href="https://github.com/lylaminju/climick-client">lylaminju/climick-client</a></td>
+              <td>Click hands and feet onto holds. Useful as an accessibility / practice input map, not as world truth.</td>
+              <td><span class="pill b">input sketch</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 style="margin:22px 0 8px;font-size:18px">X — living references</h3>
+      <div class="table-scroll">
+        <table>
+          <thead><tr><th>Post</th><th>Steal</th></tr></thead>
+          <tbody>
+            <tr>
+              <td class="hl"><a href="https://x.com/UpRoomGames/status/1400479493777760258">@UpRoomGames · Jun 2021</a></td>
+              <td>Still the clip to beat for procedural climbing feel. Dynamic surfaces, moving holds, weight shift. FeelSpec target, not a Three.js port.</td>
+            </tr>
+            <tr>
+              <td class="hl"><a href="https://x.com/LincolnMargison/status/1751315513156698467">@LincolnMargison · Jan 2024</a></td>
+              <td>Fully procedural climbing, no keyframes, FullBodyIK to five targets. Body solver reference. Wall is still a prop in his demo — we replace the prop with the field.</td>
+            </tr>
+            <tr>
+              <td class="hl"><a href="https://x.com/Kirschdieb/status/1956081084615286946">@Kirschdieb · Aug 2025</a></td>
+              <td>Endless climbing in the browser. Three.js + Rapier, 1.6M-triangle collider. Proof the stack holds. Their world is a mesh; ours is a field projected into a mesh.</td>
+            </tr>
+            <tr>
+              <td class="hl"><a href="https://x.com/DanyBittel/status/2064592184158880078">@DanyBittel · Jun 2026</a></td>
+              <td>Macro Gaussian splat of a real rock: 114 views × 62 focus stacks, 5.0M splats. Capture-quality ceiling for a single hold-scale stone. Appearance only until the compiler paints channels.</td>
+            </tr>
+            <tr>
+              <td class="hl"><a href="https://x.com/DanyBittel/status/2078887635964092585">@DanyBittel · Jul 2026</a></td>
+              <td>Same rock under UVIVF. Reminder that crystals have a life the RGB albedo does not show — field channels, not more SH.</td>
+            </tr>
+            <tr>
+              <td class="hl"><a href="https://x.com/alightinastorm/status/2091649089272156592">@alightinastorm · Aug 2026</a></td>
+              <td>ThreeJS Super Terrain: dig holes, non-destructive CSG, auto-LOD cells. Useful for caves behind the face, not for holds.</td>
+            </tr>
+            <tr>
+              <td class="hl"><a href="https://x.com/givros/status/2096823099152826597">@givros · Sep 2026</a></td>
+              <td>Unreal mountain rebuilt in Three.js. Mood reference for the approach hike. Not a climbing solver.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 style="margin:22px 0 8px;font-size:18px">Papers that sit under the compiler</h3>
+      <ul class="clean">
+        <li>Carpenter, L. C. <em>Computer rendering of fractal curves and surfaces.</em> SIGGRAPH 1980. Statistical subdivision.</li>
+        <li>Paris, Peytavie, Guérin, Galin, Dischler. <em>Modeling rocky scenery using implicit blocks.</em> The Visual Computer 2020. Fractured bedrock as implicit primitives — the missing joint-set language Carpenter never had.</li>
+        <li>Yan et al. <em>ClimbingCap.</em> CVPR 2025 Highlight. World-coordinate climbing + registered walls.</li>
+        <li>Wang et al. Planar-based 3DGS + triangle-wise clustering for rock-mass discontinuities (2025/26). Capture → joints.</li>
+        <li>MDPI Geosciences 2025: 3DGS of outcrops and minerals, including columnar jointing. Appearance fidelity argument for keeping Gaussians as projectors.</li>
+      </ul>
+    </section>
+
+    <section class="section" id="vendors">
+      <div class="section-kicker">12 · Vendors</div>
+      <h2>Assemble-first. Do not invent rock, water, or motion.</h2>
+      <div class="table-scroll">
+        <table>
+          <thead><tr><th>Need</th><th>Route</th></tr></thead>
+          <tbody>
+            <tr><td class="hl">Rock color / weathering / grain</td><td>Gaia + lithology grammar (maxliebscher patterns as reference)</td></tr>
+            <tr><td class="hl">Seeps, wet streaks, drip</td><td>Poseidon. Field moisture drives it. No second water.</td></tr>
+            <tr><td class="hl">Chip / dust / detached flake</td><td>three-vfx + talus instances. Not a new particle engine.</td></tr>
+            <tr><td class="hl">Editor-only motion ideas</td><td>kimodo. Never the runtime solver.</td></tr>
+            <tr><td class="hl">Capture of a real face</td><td>Existing Gaussian path + FieryGS lessons. Compiler paints joints.</td></tr>
+            <tr><td class="hl">Trees / grass on the approach</td><td>dryad / gaia. Already the rule.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section" id="phases">
+      <div class="section-kicker">13 · Phases</div>
+      <h2>Gates, not vibes</h2>
+      <div class="timeline">
+        <div class="phase">
+          <h3><span class="num">0</span> Face tile on the existing mountain</h3>
+          <p>One Carpenter-subdivided face, one lithology, no climber. Gate: joint set is visible in the mesh and in the field debugger.</p>
+        </div>
+        <div class="phase">
+          <h3><span class="num">1</span> Inference overlay</h3>
+          <p>Hold-class histogram from curvature × edge × μ. Climb-5-style debug dots. Gate: regenerating the seed changes the dots. No serialized hold list.</p>
+        </div>
+        <div class="phase">
+          <h3><span class="num">2</span> Four-patch dummy</h3>
+          <p>A rigid body with four probes. Hang, smear, peel. Gate: dry sloper holds; <code>field.addSeep</code> peels it. Same evaluator as snow / trail.</p>
+        </div>
+        <div class="phase">
+          <h3><span class="num">3</span> Human IK + Rapier</h3>
+          <p>UpRoom effector loop, spider normal blend, Reach cones query the field. Gate: a player can leave the trail, get on the face, and fall off honestly.</p>
+        </div>
+        <div class="phase">
+          <h3><span class="num">4</span> Weather writes</h3>
+          <p>Seep, verglas (Demo A on Demo D), flake detach, polish from traffic. Gate: second pull on a loose flake is a different rock.</p>
+        </div>
+        <div class="phase">
+          <h3><span class="num">5</span> Mountain-sport loop</h3>
+          <p>Approach trail (Demo B) → slab → vertical → optional roof. Agent verbs lay joints and seeps. Stop. Do not build a route setter.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="agents">
+      <div class="section-kicker">14 · Harness</div>
+      <h2>Agents write geology, never hold lists</h2>
+      <div class="panel">
+        <div class="panel-head"><span class="dot"></span><span class="pname">Allowed verbs</span><span class="pchip">PhysTalk pattern</span></div>
+        <div class="panel-body">
+<pre><code>cliff.placeFace(polyline, height_m, lithology)
+cliff.addJointSet({dip, dipDir, spacing, persistence})
+field.addSeep(region, mm)
+field.addIce(region, mm)                // Demo A leftover
+field.paintGrain(region, "crystal"|"sand"|"karst")
+field.setLooseness(region, 0..1)
+field.applyForce(region, vec3)          // already named
+climber.setReach(m)
+world.getSample(x,y,z)                  // includes hold class + uncertainty
+feel.assert("wet_sloper_peel", moisture=0.4)</code></pre>
+          <p>Agents do not author <code>HoldType.Jug</code>. They do not edit Gaussian buffers. They do not place a “wet granite” prefab. Mutate is a projection of field state.</p>
+        </div>
+      </div>
+      <div class="pull" style="margin-top:22px">
+        A route is what a body discovers on an honest cliff. Everything else is a gym.
+        <small>Pinned 2026-09-10 · Xirtus Summer · sibling of Causal Field + Trail Overhaul</small>
+      </div>
+    </section>
+  </article>
+</div>
+
+<footer class="site-footer">
+  <div class="foot-inner">
+    <p>3JSE · Free-climb plan · sibling of <code>causal-field-plan.html</code> and <code>offroad-trail-plan.html</code> · not a second source of truth until promoted into <code>docs/</code>.</p>
+    <p>Demo D · Rapier 4-patch climber · Carpenter face · Gaia lithology · Poseidon seeps · FeelSpec first</p>
+  </div>
+</footer>
+</body>
+</html>
