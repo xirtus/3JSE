@@ -12,6 +12,8 @@
   <a href="#contributing"><img src="https://img.shields.io/badge/PRs-welcome-brightgreen" alt="PRs welcome" /></a>
 </p>
 
+![3JSE editor](docs/screenshot.jpg)
+
 > **"If Unreal Engine were invented today — for WebGPU, TypeScript, and AI-assisted development — what would it look like?"**
 >
 > That is the question 3JSE exists to answer. This is the answer.
